@@ -6,6 +6,8 @@ inoremap <silent> <Plug>(operator-copy-ctrl-y)
 inoremap <silent> <Plug>(operator-copy-ctrl-e)
       \ <Esc>:call op_copy#start('j')<CR>
 
-imap <C-y> <Plug>(operator-copy-ctrl-y)
-imap <C-e> <Plug>(operator-copy-ctrl-e)
+if !get(g:, 'operator_copy#no_default_mappings', 0)
+  imap <C-y> <Plug>(operator-copy-ctrl-y)
+  imap <C-e> <Plug>(operator-copy-ctrl-e)
+endif
 
