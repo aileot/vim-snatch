@@ -1,10 +1,6 @@
 function! op_copy#copy_as_range(...) abort
-  if exists('s:repeat_keys')
-    " Tips: Because the motion keys might override `g:repeat_sequence`,
-    " repeat#set() should be invoked inside this function, which is registered
-    " in &operatorfunc.
-    silent! call repeat#set(s:repeat_keys)
-    unlet s:repeat_keys
+  if !exists('s:save_pos')
+    throw 'Operator Copy: unexpected usage.'
   endif
 
   if a:0
@@ -16,17 +12,31 @@ function! op_copy#copy_as_range(...) abort
   endif
 
   const line = getline('.')
-  const chars = line[ LEFT : RIGHT - 1 ]
-
   " TODO: Let `.` make sense.
-  exe 'norm! gi'. chars
+  const chars = line[ LEFT - 1 : RIGHT - 1 ]
+  echomsg chars
+
+  const old_lnum = s:save_pos[1]
+  const old_col = s:save_pos[2]
+  unlet s:save_pos
+
+  const old_line = getline(old_lnum)
+  const new_line = old_line[ : LEFT - 2 ] . chars . old_line[ LEFT - 1 : ]
+  call setline(old_lnum, new_line)
+
+  call setpos('.', [0, old_lnum, old_col + strdisplaywidth(chars), 0])
+
+  if strdisplaywidth(old_line) < LEFT
+    norm! a
+  else
+    norm! i
+  endif
 endfunction
 
 function! op_copy#start(scout_keys) abort
-  stopinsert
-
-  exe 'norm!' a:scout_keys
+  let s:save_pos = getpos('.')
+  exe 'norm! '. a:scout_keys
   set operatorfunc=op_copy#copy_as_range
-  call feedkeys('g@', 'n')
+  call feedkeys("\<C-c>g@", 'n')
 endfunction
 
