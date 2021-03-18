@@ -21,15 +21,16 @@ function! op_copy#copy_as_range(...) abort
   unlet s:save_pos
 
   const old_line = getline(old_lnum)
-  const new_line = old_line[ : LEFT - 2 ] . chars . old_line[ LEFT - 1 : ]
+  const preceding = old_col == 1 ? '' : old_line[ : old_col - 2 ]
+  const new_line = preceding . chars . old_line[ old_col - 1 : ]
   call setline(old_lnum, new_line)
 
   call setpos('.', [0, old_lnum, old_col + strdisplaywidth(chars), 0])
 
-  if strdisplaywidth(old_line) < LEFT
-    norm! a
+  if strdisplaywidth(old_line) < old_col
+    call feedkeys('a', 'n')
   else
-    norm! i
+    call feedkeys('i', 'n')
   endif
 endfunction
 
