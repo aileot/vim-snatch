@@ -68,8 +68,8 @@ imap <C-y> <Plug>(operator-copy-ctrl-y)<SID>f
 ### Options
 
 ```vim
-" While the registers are used, this plugin will never
-" overridden.
+" While the registers are used to copy, this plugin will never override the
+" register.
 " Default: '0'
 let g:operator_copy#clean_registers = '0"abc'
 
