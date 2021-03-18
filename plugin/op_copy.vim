@@ -18,6 +18,9 @@ inoremap <silent> <Plug>(operator-copy-ctrl-y)
 inoremap <silent> <Plug>(operator-copy-ctrl-e)
       \ <Cmd>call op_copy#start('jl')<CR>
 
+inoremap <silent> <Plug>(operator-copy-here)
+      \ <Cmd>call op_copy#start()<CR>
+
 if !get(g:, 'operator_copy#no_default_mappings', 0)
   imap <C-y> <Plug>(operator-copy-ctrl-y)
   imap <C-e> <Plug>(operator-copy-ctrl-e)

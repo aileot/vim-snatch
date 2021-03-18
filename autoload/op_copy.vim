@@ -87,11 +87,14 @@ function! s:wait_motions() abort
   augroup END
 endfunction
 
-function! op_copy#start(scout_keys) abort
+function! op_copy#start(...) abort
   let s:insert_pos = getpos('.')
   call s:save_reg()
 
-  exe 'norm! '. a:scout_keys
+  if a:0
+    exe 'norm! '. a:1
+  endif
+
   noautocmd stopinsert
   call s:wait_motions()
 endfunction
