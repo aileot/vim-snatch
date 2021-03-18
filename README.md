@@ -46,18 +46,10 @@ Or you can predefine the first `{motion}`.
 ```vim
 let g:operator_copy#no_default_mappings = 1
 
-" Cursor will move as the first arg, and then {motion} the second arg.
-inoremap <silent> <C-y> <C-c>:call op_copy#start('kl', "\<Plug>(easymotion-f)")<CR>
-inoremap <silent> <C-e> <C-c>:call op_copy#start('jl', "\<Plug>(shot-f)")<CR>
+imap <C-y> <Plug>(operator-copy-ctrl-y)<Plug>(easymotion-f)
+imap <C-y> <Plug>(operator-copy-ctrl-y)<Plug>(shot-f)
 
-" Because the second arg is interpreted as remap keys, the trick is required.
+" Use some tricks for non-recursive {motion}.
 onoremap <SID>f f
-inoremap <C-y> <C-c>:call op_copy#start('kl', "\<SID>f")<CR>
+imap <C-y> <Plug>(operator-copy-ctrl-y)<SID>f
 ```
-
-### Note
-
-- `<expr>` is not suitable.
-  It only throws `E523` as the function trys to move cursor.
-- `<Cmd>` is not suitable.
-  It only throws `E5522` when you set `<Plug>(some-motions)` as the second arg.
