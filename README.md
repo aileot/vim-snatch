@@ -2,17 +2,26 @@
 
 vim-operator-copy replaces `i_CTRL-E`/`i_CTRL-Y`.
 Most of the `{motion}`s are available,
-including those defined by `:omap`/`:onoremap`.
+including those defined by `:nmap`/`:nnoremap`.
 
 ## Features
 
 - Accept text-objects: `iw`, `a[`, ...
-- No extra `:omap`pings, thus, available with other plugins:
+  (To be honest, since the feature uses TextYankPost,
+  you have to type `yiw`, or `da[`, etc.)
+
+- Provide no extra `:nmap`pings/`:omap`pings for {motion}.
+  Thus, this plugin is hardly interfered with other mappings, but highly
+  customizable with the existing fantastic plugins:
 
   - [easymotion/vim-easymotion](https://github.com/easymotion/vim-easymotion)
   - [deris/vim-shot-f](https://github.com/deris/vim-shot-f)
   - Text-objects of [machakann/vim-sandwich](https://github.com/machakann/vim-sandwich)
   - ...
+
+- Let us select a line to copy until the cursor moves horizontally or
+  `TextYankPost` is triggered.
+  Thus, this plugin will be more convenient with a sort of easymotion.
 
 ## Installation
 
