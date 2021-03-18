@@ -1,9 +1,12 @@
 function! s:insert_copied(chars) abort
-  const chars = a:chars
+  autocmd! operator_copy
 
+  if !exists('s:insert_pos') | return | endif
   const old_lnum = s:insert_pos[1]
   const old_col = s:insert_pos[2]
   unlet s:insert_pos
+
+  const chars = a:chars
 
   const old_line = getline(old_lnum)
   const preceding = old_col == 1 ? '' : old_line[ : old_col - 2 ]
@@ -19,7 +22,12 @@ function! s:insert_copied(chars) abort
   endif
 endfunction
 
-function! op_copy#get_range() abort
+function! s:insert_as_register(...) abort
+  const chars = getreg(v:register)
+  call s:insert_copied(chars)
+endfunction
+
+function! s:insert_as_motion() abort
   if !exists('s:start_pos')
     let s:start_pos = getpos('.')
     call s:wait_motions()
@@ -48,8 +56,18 @@ endfunction
 
 function! s:wait_motions() abort
   augroup operator_copy
-    au!
-    au CursorMoved * ++once call op_copy#get_range()
+    autocmd!
+
+    autocmd CursorMoved * ++once call s:insert_as_motion()
+    autocmd TextYankPost * ++once unlet s:start_pos
+
+    " `TextYankPost` is not allowed to modify texts directly.
+    autocmd TextYankPost * ++once call timer_start(0, expand('<SID>') .'insert_as_register')
+
+    " Although CursorMoved is not always triggered as TextYankPost has been
+    " triggered, once it is triggered, CursorMoved is sometimes earlier than
+    " TextYankPost.
+    autocmd TextYankPost * ++once silent! autocmd! operator_copy
   augroup END
 endfunction
 
