@@ -65,6 +65,13 @@ onoremap <SID>f f
 imap <C-y> <Plug>(operator-copy-ctrl-y)<SID>f
 ```
 
+We have another mapping, `<Plug>(operator-copy-here)`.
+It may be useful with the motions that assumes twice a `{motion}` or more.
+
+```vim
+imap <C-y> <Plug>(operator-copy-here)<Plug>(easymotion-s)
+```
+
 ### Options
 
 ```vim
