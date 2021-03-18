@@ -78,7 +78,7 @@ function! s:wait_motions() abort
 
     " `TextYankPost` is not allowed to modify texts directly.
     autocmd TextYankPost * ++once call timer_start(0, expand('<SID>') .'insert_as_register')
-    autocmd TextYankPost * ++once call s:restore_reg()
+    autocmd TextYankPost * ++once call timer_start(100, expand('<SID>') .'restore_reg')
 
     " Although CursorMoved is not always triggered as TextYankPost has been
     " triggered, once it is triggered, CursorMoved is sometimes earlier than
