@@ -1,6 +1,6 @@
 function! op_copy#copy_as_range(...) abort
   if !exists('s:save_pos')
-    throw 'Operator Copy: unexpected usage.'
+    throw 'Operator Copy: unexpected usage'
   endif
 
   if a:0
@@ -14,7 +14,6 @@ function! op_copy#copy_as_range(...) abort
   const line = getline('.')
   " TODO: Let `.` make sense.
   const chars = line[ LEFT - 1 : RIGHT - 1 ]
-  echomsg chars
 
   const old_lnum = s:save_pos[1]
   const old_col = s:save_pos[2]
