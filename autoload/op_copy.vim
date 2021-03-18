@@ -22,6 +22,21 @@ function! s:insert_copied(chars) abort
   endif
 endfunction
 
+function! s:save_reg() abort
+  if g:operator_copy#clean_registers is# '' | return | endif
+  let s:save_regcontents = {}
+  for regname in split(g:operator_copy#clean_registers, '\zs')
+    call extend(s:save_regcontents, { regname : getreg(regname) })
+  endfor
+endfunction
+
+function! s:restore_reg(...) abort
+  const regname = v:operator ==# 'y' ? '0' : v:register
+  if matchstr(g:operator_copy#clean_registers, regname) is# '' | return | endif
+  call setreg(regname, s:save_regcontents[regname])
+  unlet s:save_regcontents
+endfunction
+
 function! s:insert_as_register(...) abort
   const chars = getreg(v:register)
   call s:insert_copied(chars)
@@ -63,6 +78,7 @@ function! s:wait_motions() abort
 
     " `TextYankPost` is not allowed to modify texts directly.
     autocmd TextYankPost * ++once call timer_start(0, expand('<SID>') .'insert_as_register')
+    autocmd TextYankPost * ++once call s:restore_reg()
 
     " Although CursorMoved is not always triggered as TextYankPost has been
     " triggered, once it is triggered, CursorMoved is sometimes earlier than
@@ -73,6 +89,8 @@ endfunction
 
 function! op_copy#start(scout_keys) abort
   let s:insert_pos = getpos('.')
+  call s:save_reg()
+
   exe 'norm! '. a:scout_keys
   noautocmd stopinsert
   call s:wait_motions()

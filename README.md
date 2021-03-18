@@ -44,6 +44,8 @@ on_event = ['InsertEnter']
 
 ## Usage
 
+### Mappings
+
 ```vim
 " Default mappings
 imap <C-y> <Plug>(operator-copy-ctrl-y)
@@ -61,4 +63,14 @@ imap <C-y> <Plug>(operator-copy-ctrl-y)<Plug>(shot-f)
 " Use some tricks for non-recursive {motion}.
 onoremap <SID>f f
 imap <C-y> <Plug>(operator-copy-ctrl-y)<SID>f
+```
+
+### Options
+
+```vim
+" While the registers are used, this plugin will never
+" overridden.
+" Default: '0'
+let g:operator_copy#clean_registers = '0"abc'
+
 ```

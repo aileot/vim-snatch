@@ -1,5 +1,8 @@
 let g:loaded_operator_copy = 1
 
+let g:operator_copy#clean_registers =
+      \ get(g:, 'operator_copy#clean_registers', '0')
+
 " Note: Use <Cmd> for the first hand mappings.
 " - <Esc> invokes `InsertLeave`.
 " - <C-c> cannot distinguish which col cursor was inserted at 1 or 2 from the
