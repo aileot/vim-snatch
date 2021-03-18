@@ -33,10 +33,14 @@ function! op_copy#copy_as_range(...) abort
   endif
 endfunction
 
-function! op_copy#start(scout_keys) abort
+function! op_copy#start(pre_keys, ...) abort
   let s:save_pos = getpos('.')
-  exe 'norm! '. a:scout_keys
+  exe 'norm! '. a:pre_keys
   set operatorfunc=op_copy#copy_as_range
-  call feedkeys("\<C-c>g@", 'n')
+  call feedkeys('g@', 'n')
+  if a:0
+    const post_keys = a:1
+    call feedkeys(post_keys)
+  endif
 endfunction
 

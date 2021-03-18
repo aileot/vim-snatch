@@ -39,7 +39,25 @@ on_event = ['InsertEnter']
 " Default mappings
 imap <C-y> <Plug>(operator-copy-ctrl-y)
 imap <C-e> <Plug>(operator-copy-ctrl-e)
-
-" Uncomment below if you want to disable the default mappings above.
-" let g:operator_copy#no_default_mappings = 1
 ```
+
+Or you can predefine the first `{motion}`.
+
+```vim
+let g:operator_copy#no_default_mappings = 1
+
+" Cursor will move as the first arg, and then {motion} the second arg.
+inoremap <silent> <C-y> <C-c>:call op_copy#start('kl', "\<Plug>(easymotion-f)")<CR>
+inoremap <silent> <C-e> <C-c>:call op_copy#start('jl', "\<Plug>(shot-f)")<CR>
+
+" Because the second arg is interpreted as remap keys, the trick is required.
+onoremap <SID>f f
+inoremap <C-y> <C-c>:call op_copy#start('kl', "\<SID>f")<CR>
+```
+
+### Note
+
+- `<expr>` is not suitable.
+  It only throws `E523` as the function trys to move cursor.
+- `<Cmd>` is not suitable.
+  It only throws `E5522` when you set `<Plug>(some-motions)` as the second arg.
