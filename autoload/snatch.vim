@@ -1,5 +1,5 @@
 function! s:insert_copied(chars) abort
-  autocmd! operator_copy
+  autocmd! snatch
 
   if !exists('s:insert_pos') | return | endif
   const old_lnum = s:insert_pos[1]
@@ -23,16 +23,16 @@ function! s:insert_copied(chars) abort
 endfunction
 
 function! s:save_reg() abort
-  if g:operator_copy#clean_registers is# '' | return | endif
+  if g:snatch#clean_registers is# '' | return | endif
   let s:save_regcontents = {}
-  for regname in split(g:operator_copy#clean_registers, '\zs')
+  for regname in split(g:snatch#clean_registers, '\zs')
     call extend(s:save_regcontents, { regname : getreg(regname) })
   endfor
 endfunction
 
 function! s:restore_reg(...) abort
   const regname = v:operator ==# 'y' ? '0' : v:register
-  if matchstr(g:operator_copy#clean_registers, regname) is# '' | return | endif
+  if matchstr(g:snatch#clean_registers, regname) is# '' | return | endif
   call setreg(regname, s:save_regcontents[regname])
   unlet s:save_regcontents
 endfunction
@@ -70,7 +70,7 @@ function! s:insert_as_motion() abort
 endfunction
 
 function! s:wait_motions() abort
-  augroup operator_copy
+  augroup snatch
     autocmd!
 
     autocmd CursorMoved * ++once call s:insert_as_motion()
@@ -83,11 +83,11 @@ function! s:wait_motions() abort
     " Although CursorMoved is not always triggered as TextYankPost has been
     " triggered, once it is triggered, CursorMoved is sometimes earlier than
     " TextYankPost.
-    autocmd TextYankPost * ++once silent! autocmd! operator_copy
+    autocmd TextYankPost * ++once silent! autocmd! snatch
   augroup END
 endfunction
 
-function! op_copy#start(...) abort
+function! snatch#start(...) abort
   let s:insert_pos = getpos('.')
   call s:save_reg()
 

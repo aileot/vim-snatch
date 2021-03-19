@@ -1,6 +1,6 @@
-# vim-operator-copy
+# vim-snatch
 
-vim-operator-copy replaces `i_CTRL-E`/`i_CTRL-Y`.
+vim-snatch replaces `i_CTRL-E`/`i_CTRL-Y`.
 Most of the `{motion}`s are available,
 including those defined by `:nmap`/`:nnoremap`.
 
@@ -32,13 +32,13 @@ for [Dein](https://github.com/Shougo/dein.vim) users:
 
 ```toml
 [[plugin]]
-repo = 'kaile256/vim-operator-copy'
+repo = 'kaile256/vim-snatch'
 lazy = 1
 on_event = ['InsertEnter']
 # Or uncomment below.
 # on_map = {i = [
-#  '<Plug>(operator-copy-ctrl-e)',
-#  '<Plug>(operator-copy-ctrl-y)',
+#  '<Plug>(snatch-ctrl-e)',
+#  '<Plug>(snatch-ctrl-y)',
 # ]}
 ```
 
@@ -48,28 +48,28 @@ on_event = ['InsertEnter']
 
 ```vim
 " Default mappings
-imap <C-y> <Plug>(operator-copy-ctrl-y)
-imap <C-e> <Plug>(operator-copy-ctrl-e)
+imap <C-y> <Plug>(snatch-ctrl-y)
+imap <C-e> <Plug>(snatch-ctrl-e)
 ```
 
 Or you can predefine the first `{motion}`.
 
 ```vim
-let g:operator_copy#no_default_mappings = 1
+let g:snatch#no_default_mappings = 1
 
-imap <C-y> <Plug>(operator-copy-ctrl-y)<Plug>(easymotion-f)
-imap <C-y> <Plug>(operator-copy-ctrl-y)<Plug>(shot-f)
+imap <C-y> <Plug>(snatch-ctrl-y)<Plug>(easymotion-f)
+imap <C-y> <Plug>(snatch-ctrl-y)<Plug>(shot-f)
 
 " Use some tricks for non-recursive {motion}.
 onoremap <SID>f f
-imap <C-y> <Plug>(operator-copy-ctrl-y)<SID>f
+imap <C-y> <Plug>(snatch-ctrl-y)<SID>f
 ```
 
-We have another mapping, `<Plug>(operator-copy-here)`.
+We have another mapping, `<Plug>(snatch-here)`.
 It may be useful with the motions that assumes twice a `{motion}` or more.
 
 ```vim
-imap <C-y> <Plug>(operator-copy-here)<Plug>(easymotion-s)
+imap <C-y> <Plug>(snatch-here)<Plug>(easymotion-s)
 ```
 
 ### Options
@@ -78,6 +78,6 @@ imap <C-y> <Plug>(operator-copy-here)<Plug>(easymotion-s)
 " While the registers are used to copy, this plugin will never override the
 " register.
 " Default: '0'
-let g:operator_copy#clean_registers = '0"abc'
+let g:snatch#clean_registers = '0"abc'
 
 ```
