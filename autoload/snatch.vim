@@ -46,6 +46,7 @@ function! s:insert_as_motion() abort
   if !exists('s:start_pos')
     let s:start_pos = getpos('.')
     call s:wait_motions()
+    return
   endif
 
   const pos = getpos('.')
