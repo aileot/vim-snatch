@@ -36,40 +36,49 @@ repo = 'kaile256/vim-snatch'
 lazy = 1
 on_event = ['InsertEnter']
 # Or uncomment below.
-# on_map = {i = [
-#  '<Plug>(snatch-ctrl-e)',
-#  '<Plug>(snatch-ctrl-y)',
-# ]}
+# on_map = {i = ['<Plug>(snatch-']}
+# hook_add = '''
+#   imap <C-y> <Plug>(snatch-reg-detached-ctrl-y)
+#   imap <C-e> <Plug>(snatch-reg-detached-ctrl-e)
+# '''
+# hook_source = '''
+#   let g:snatch#no_default_mappings = 1
+# '''
 ```
 
 ## Usage
 
 ### Mappings
 
+This plugin provides several `<Plug>`-mappings.
+Each mappings will snatch text by either motion or updating register.
+Read `doc/snatch.txt` for more details.
+
 ```vim
 " Default mappings
-imap <C-y> <Plug>(snatch-ctrl-y)
-imap <C-e> <Plug>(snatch-ctrl-e)
+imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
+imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
 ```
 
-Or you can predefine the first `{motion}`.
+Or define mappings as your preference.
 
 ```vim
 let g:snatch#no_default_mappings = 1
 
-imap <C-y> <Plug>(snatch-ctrl-y)<Plug>(easymotion-f)
-imap <C-y> <Plug>(snatch-ctrl-y)<Plug>(shot-f)
+imap <C-y> <Plug>(snatch-reg-sensitive-ctrl-y)
+
+" Or you can predefine the first `{motion}`.
+imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)<Plug>(easymotion-f)
+imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
 
 " Use some tricks for non-recursive {motion}.
 onoremap <SID>f f
-imap <C-y> <Plug>(snatch-ctrl-y)<SID>f
-```
+imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 
-We have another mapping, `<Plug>(snatch-here)`.
-It may be useful with the motions that assumes twice a `{motion}` or more.
-
-```vim
-imap <C-y> <Plug>(snatch-here)<Plug>(easymotion-s)
+" We have another kind of mappings to start sneaking right at the spot.
+" It may be useful with the motions that assumes twice a `{motion}` or more.
+imap <C-y> <Plug>(snatch-reg-detached-here)<Plug>(easymotion-s)
+imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 ```
 
 ### Options
