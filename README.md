@@ -30,10 +30,12 @@ for [Dein](https://github.com/Shougo/dein.vim) users:
 [[plugin]]
 repo = 'kaile256/vim-snatch'
 lazy = 1
-on_event = ['InsertEnter']
+on_event = ['CmdlineEnter', 'InsertEnter']
 # Or uncomment below.
-# on_map = {i = ['<Plug>(snatch-']}
+# on_map = {ic = ['<Plug>(snatch-']}
 # hook_add = '''
+#   cmap <C-o> <Plug>(snatch-operator)
+#
 #   imap <C-y> <Plug>(snatch-reg-ctrl-y)
 #   imap <C-e> <Plug>(snatch-reg-ctrl-e)
 # '''
@@ -61,6 +63,8 @@ Read `doc/snatch.txt` for more details.
 
 ```vim
 " Default mappings
+cmap <C-o> <Plug>(snatch-operator)
+
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
 imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
 ```
