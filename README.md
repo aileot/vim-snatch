@@ -1,6 +1,6 @@
 # vim-snatch
 
-Snatch texts, from Insert mode, by horizontal motion or by `TextYankPost`.
+Snatch texts, from Insert/Command mode, by motion.
 
 ## Concept
 
