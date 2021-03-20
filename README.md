@@ -65,8 +65,6 @@ Or define mappings as your preference.
 ```vim
 let g:snatch#no_default_mappings = 1
 
-imap <C-y> <Plug>(snatch-reg-sensitive-ctrl-y)
-
 " Or you can predefine the first `{motion}`.
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)<Plug>(easymotion-f)
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
@@ -79,6 +77,14 @@ imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 " It may be useful with the motions that assumes twice a `{motion}` or more.
 imap <C-y> <Plug>(snatch-reg-detached-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
+
+" Suggestion:
+" You might enjoy the trick that snatch texts as soon as cursor has moved.
+imap <C-y> <Plug>(snatch-reg-detached-ctrl-y)y
+" Or name the mapping, using <SID>:
+inoremap <SID>y y
+imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-detached-ctrl-y)<SID>y
+imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
 
 ### Options

@@ -24,19 +24,6 @@ inoremap <silent> <Plug>(snatch-horizontal-here) <Cmd>call snatch#start({
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-sensitive-ctrl-y) <Cmd>call snatch#start({
-      \   'pre_keys': 'kl',
-      \   'snatch_by': ['any_motion'],
-      \ })<CR>
-inoremap <silent> <Plug>(snatch-sensitive-ctrl-e) <Cmd>call snatch#start({
-      \   'pre_keys': 'jl',
-      \   'snatch_by': ['any_motion'],
-      \ })<CR>
-inoremap <silent> <Plug>(snatch-sensitive-here) <Cmd>call snatch#start({
-      \   'pre_keys': '',
-      \   'snatch_by': ['any_motion'],
-      \ })<CR>
-
 inoremap <silent> <Plug>(snatch-reg-detached-ctrl-y) <Cmd>call snatch#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register'],
@@ -61,19 +48,6 @@ inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e) <Cmd>call snatch#start({
 inoremap <silent> <Plug>(snatch-reg-horizontal-here) <Cmd>call snatch#start({
       \   'pre_keys': '',
       \   'snatch_by': ['register', 'horizontal_motion'],
-      \ })<CR>
-
-inoremap <silent> <Plug>(snatch-reg-sensitive-ctrl-y) <Cmd>call snatch#start({
-      \   'pre_keys': 'kl',
-      \   'snatch_by': ['register', 'any_motion'],
-      \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-sensitive-ctrl-e) <Cmd>call snatch#start({
-      \   'pre_keys': 'jl',
-      \   'snatch_by': ['register', 'any_motion'],
-      \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-sensitive-here) <Cmd>call snatch#start({
-      \   'pre_keys': '',
-      \   'snatch_by': ['register', 'any_motion'],
       \ })<CR>
 
 if !get(g:, 'snatch#no_default_mappings', 0)
