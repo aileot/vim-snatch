@@ -1,28 +1,23 @@
 # vim-snatch
 
-vim-snatch replaces `i_CTRL-E`/`i_CTRL-Y`.
-Most of the `{motion}`s are available,
-including those defined by `:nmap`/`:nnoremap`.
+Snatch texts, from Insert mode, by horizontal motion or by `TextYankPost`.
 
-## Features
+## Concept
 
-- Accept text-objects: `iw`, `a[`, ...
+- Unnecessary to set any extra `:nmap`pings/`:omap`pings for `{motion}`.
 
-  - To be honest, since the feature uses `TextYankPost`,
-    you have to type `yiw`, or `da[`, etc.
+- Acceptive of text-objects: `iw`, `a[`, ...
 
-- Provide no extra `:nmap`pings/`:omap`pings for `{motion}`.
-  Thus, this plugin is hardly interfered with other mappings, but highly
-  customizable with the existing fantastic plugins:
+  (To be honest, since the feature works with `TextYankPost`,
+  you have to type `yiw`, or `da[`, etc.,
+  but it won't mess up your register or clipboard.)
+
+- Friendly with the existing mappings of the fantastic plugins:
 
   - [easymotion/vim-easymotion](https://github.com/easymotion/vim-easymotion)
   - [deris/vim-shot-f](https://github.com/deris/vim-shot-f)
   - Text-objects of [machakann/vim-sandwich](https://github.com/machakann/vim-sandwich)
   - ...
-
-- Let us select a line to copy until the cursor moves horizontally or
-  `TextYankPost` is triggered.
-  Thus, this plugin will be more convenient with a sort of easymotion.
 
 ## Installation
 
