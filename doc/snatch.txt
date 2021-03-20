@@ -38,6 +38,11 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
 
+c_<Plug>(snatch-operator)                           *c_<Plug>(snatch-operator)*
+
+        Via |operator-pending-mode|, snatch {motion} text into pending cmdline.
+        It might replace such mappings as |c_CTRL-R_CTRL-A|.
+
 i_<Plug>(snatch-horizontal-ctrl-y)         *i_<Plug>(snatch-horizontal-ctrl-y)*
 i_<Plug>(snatch-horizontal-ctrl-e)         *i_<Plug>(snatch-horizontal-ctrl-e)*
 i_<Plug>(snatch-horizontal-here)             *i_<Plug>(snatch-horizontal-here)*
