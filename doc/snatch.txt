@@ -1,0 +1,68 @@
+*snatch.txt*                Snatch texts as i_CTRL-Y/i_CTRL-E
+
+Version: 1.0.0
+Author: kaile256 <kaile256acc at gmail.com>
+License: MIT license
+
+==============================================================================
+CONTENTS                                                       *snatch-contents*
+
+Introduction            |snatch-introduction|
+Usage                   |snatch-usage|
+  Variable                |snatch-variable|
+  Mapping                 |snatch-mapping|
+Compatibility           |snatch-compatibility|
+
+==============================================================================
+INTRODUCTION                                               *snatch-introduction*
+
+
+==============================================================================
+USAGE                                                             *snatch-usage*
+
+------------------------------------------------------------------------------
+VARIABLE                                                       *snatch-variable*
+
+g:snatch#no_default_mappings                     *g:snatch#no_default_mappings*
+        (default: 0)
+
+g:snatch#clean_registers                             *g:snatch#clean_registers*
+        (default: '0')
+
+        Set in |String|.
+        Using the provided mappings like |<Plug>(snatch-reg-horizontal-ctrl-y)|,
+        |vim-snatch| will snatch texts but won't override the |registers| set
+        in this option, as if to intercept it. (Actually, save & restore the
+        |registers|.) The rest of |registers| works as usual, snatching texts.
+
+------------------------------------------------------------------------------
+MAPPING                                                         *snatch-mapping*
+
+i_<Plug>(snatch-horizontal-ctrl-y)         *i_<Plug>(snatch-horizontal-ctrl-y)*
+i_<Plug>(snatch-horizontal-ctrl-e)         *i_<Plug>(snatch-horizontal-ctrl-e)*
+i_<Plug>(snatch-horizontal-here)             *i_<Plug>(snatch-horizontal-here)*
+
+        As soon as cursor moves horizontally, it'll snatch {motion} text; as
+        long as vertically, it waits for {motion}.
+
+i_<Plug>(snatch-reg-ctrl-y)                       *i_<Plug>(snatch-reg-ctrl-y)*
+i_<Plug>(snatch-reg-ctrl-e)                       *i_<Plug>(snatch-reg-ctrl-e)*
+i_<Plug>(snatch-reg-here)                           *i_<Plug>(snatch-reg-here)*
+
+        Snatch the text to be registered. Any {motion} won't stop snatching.
+        See |g:snatch#clean_registers|.
+
+i_<Plug>(snatch-reg-horizontal-ctrl-y) *i_<Plug>(snatch-reg-horizontal-ctrl-y)*
+i_<Plug>(snatch-reg-horizontal-ctrl-e) *i_<Plug>(snatch-reg-horizontal-ctrl-e)*
+i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
+
+        Mixed mapping of |<Plug>(snatch-horizontal-ctrl-y)| and
+        |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
+        details, follow the respective tags.
+
+==============================================================================
+COMPATIBILITY                                             *snatch-compatibility*
+
+
+==============================================================================
+vim:ft=help:tw=78:ts=8:sts=8:sw=8:norl:fen

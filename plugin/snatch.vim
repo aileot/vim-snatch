@@ -1,7 +1,6 @@
 let g:loaded_snatch = 1
 
-let g:snatch#clean_registers =
-      \ get(g:, 'snatch#clean_registers', '0')
+let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
 
 " Note: Use <Cmd> for the first hand mappings.
 " - <Esc> invokes `InsertLeave`.
@@ -12,17 +11,47 @@ let g:snatch#clean_registers =
 "   inoremap <C-y> <Cmd>call s:foo("\<Plug>(bar)")<CR>
 "   ```
 "   throws the error E5522.
-inoremap <silent> <Plug>(snatch-ctrl-y)
-      \ <Cmd>call snatch#start('kl')<CR>
+inoremap <silent> <Plug>(snatch-horizontal-ctrl-y) <Cmd>call snatch#start({
+      \   'pre_keys': 'kl',
+      \   'snatch_by': ['horizontal_motion'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-horizontal-ctrl-e) <Cmd>call snatch#start({
+      \   'pre_keys': 'jl',
+      \   'snatch_by': ['horizontal_motion'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-horizontal-here) <Cmd>call snatch#start({
+      \   'pre_keys': '',
+      \   'snatch_by': ['horizontal_motion'],
+      \ })<CR>
 
-inoremap <silent> <Plug>(snatch-ctrl-e)
-      \ <Cmd>call snatch#start('jl')<CR>
+inoremap <silent> <Plug>(snatch-reg-ctrl-y) <Cmd>call snatch#start({
+      \   'pre_keys': 'kl',
+      \   'snatch_by': ['register'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-reg-ctrl-e) <Cmd>call snatch#start({
+      \   'pre_keys': 'jl',
+      \   'snatch_by': ['register'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-reg-here) <Cmd>call snatch#start({
+      \   'pre_keys': '',
+      \   'snatch_by': ['register'],
+      \ })<CR>
 
-inoremap <silent> <Plug>(snatch-here)
-      \ <Cmd>call snatch#start()<CR>
+inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-y) <Cmd>call snatch#start({
+      \   'pre_keys': 'kl',
+      \   'snatch_by': ['register', 'horizontal_motion'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e) <Cmd>call snatch#start({
+      \   'pre_keys': 'jl',
+      \   'snatch_by': ['register', 'horizontal_motion'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-reg-horizontal-here) <Cmd>call snatch#start({
+      \   'pre_keys': '',
+      \   'snatch_by': ['register', 'horizontal_motion'],
+      \ })<CR>
 
 if !get(g:, 'snatch#no_default_mappings', 0)
-  imap <C-y> <Plug>(snatch-ctrl-y)
-  imap <C-e> <Plug>(snatch-ctrl-e)
+  imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
+  imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
 endif
 

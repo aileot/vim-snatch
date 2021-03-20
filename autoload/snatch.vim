@@ -46,13 +46,15 @@ function! s:insert_as_motion() abort
   if !exists('s:start_pos')
     let s:start_pos = getpos('.')
     call s:wait_motions()
+    return
   endif
 
   const pos = getpos('.')
   const old_lnum = s:start_pos[1]
   const new_lnum = pos[1]
 
-  if new_lnum != old_lnum || pos == s:start_pos
+  if s:recursive_motion ==# 'vertical'
+        \ && (new_lnum != old_lnum || pos == s:start_pos)
     let s:start_pos = pos
     call s:wait_motions()
     return
@@ -69,30 +71,48 @@ function! s:insert_as_motion() abort
   unlet s:start_pos
 endfunction
 
+function! s:parse_snatch_events() abort
+  const snatch_by = deepcopy(s:config.snatch_by)
+  let s:use_register = index(snatch_by, 'register') >= 0
+  let s:recursive_motion = index(snatch_by, 'any_motion') >= 0 ? 'none'
+        \ : index(snatch_by, 'horizontal_motion') >= 0 ? 'vertical'
+        \ : 'any'
+endfunction
+
 function! s:wait_motions() abort
+  call s:parse_snatch_events()
+
   augroup snatch
     autocmd!
 
-    autocmd CursorMoved * ++once call s:insert_as_motion()
-    autocmd TextYankPost * ++once unlet s:start_pos
+    if s:recursive_motion !=# 'any'
+      autocmd CursorMoved * ++once call s:insert_as_motion()
+      autocmd TextYankPost * ++once unlet s:start_pos
+    endif
 
-    " `TextYankPost` is not allowed to modify texts directly.
-    autocmd TextYankPost * ++once call timer_start(0, expand('<SID>') .'insert_as_register')
-    autocmd TextYankPost * ++once call timer_start(100, expand('<SID>') .'restore_reg')
+    if s:use_register
+      " `TextYankPost` is not allowed to modify texts directly.
+      autocmd TextYankPost * ++once
+            \ call timer_start(0, expand('<SID>') .'insert_as_register')
+      autocmd TextYankPost * ++once
+            \ call timer_start(100, expand('<SID>') .'restore_reg')
 
-    " Although CursorMoved is not always triggered as TextYankPost has been
-    " triggered, once it is triggered, CursorMoved is sometimes earlier than
-    " TextYankPost.
-    autocmd TextYankPost * ++once silent! autocmd! snatch
+      " Although CursorMoved is not always triggered as TextYankPost has been
+      " triggered, once it is triggered, CursorMoved is sometimes earlier than
+      " TextYankPost.
+      autocmd TextYankPost * ++once silent! autocmd! snatch
+    endif
   augroup END
 endfunction
 
-function! snatch#start(...) abort
+function! snatch#start(config) abort
   let s:insert_pos = getpos('.')
   call s:save_reg()
 
-  if a:0
-    exe 'norm! '. a:1
+  let s:config = a:config
+  const pre_keys = s:config.pre_keys
+  if pre_keys !=# ''
+    exe 'norm!' pre_keys
   endif
 
   noautocmd stopinsert
