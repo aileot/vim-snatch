@@ -55,7 +55,8 @@ let g:snatch#clean_registers = '0"abc'
 ### Mappings
 
 This plugin provides several `<Plug>`-mappings.
-Each mappings will snatch text by either motion or updating register.
+Each mappings will snatch text by either motion or intercepting it from the
+register.
 Read `doc/snatch.txt` for more details.
 
 ```vim
