@@ -90,8 +90,8 @@ imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ### Options
 
 ```vim
-" While the registers are used to copy, this plugin will never override the
-" register.
+" As long as the registers are used to snatch, this plugin will never override
+" the register.
 " Default: '0'
 let g:snatch#clean_registers = '0"abc'
 
