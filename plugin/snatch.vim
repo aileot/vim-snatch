@@ -2,6 +2,8 @@ let g:loaded_snatch = 1
 
 let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
 
+xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#insert()<CR>
+
 cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 
 " Note: Use <Cmd> for the first hand mappings.
@@ -53,6 +55,7 @@ inoremap <silent> <Plug>(snatch-reg-horizontal-here) <Cmd>call snatch#start({
       \ })<CR>
 
 if !get(g:, 'snatch#no_default_mappings', 0)
+  xmap z: <Plug>(snatch-into-cmdline)
   cmap <C-o> <Plug>(snatch-operator)
 
   imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)

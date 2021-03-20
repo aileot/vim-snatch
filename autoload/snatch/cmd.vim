@@ -15,8 +15,9 @@ function! snatch#cmd#insert(...) abort
     const LEFT =  col("'[") - 1
     const RIGHT =  col("']") - 1
   else
-    const LEFT =  col("'<") - 1
-    const RIGHT =  col("'>") - 1
+    const text = getline('.')[ col("'<") - 1 : col("'>") - 1]
+    call feedkeys(':'. text, 'n')
+    return
   endif
   const line = getline('.')
   const chars = line[ LEFT : RIGHT ]
