@@ -44,6 +44,14 @@ on_event = ['InsertEnter']
 
 ## Usage
 
+### Options
+
+```vim
+" As long as the registers are used to snatch, this plugin will never override the register.
+" Default: '0'
+let g:snatch#clean_registers = '0"abc'
+```
+
 ### Mappings
 
 This plugin provides several `<Plug>`-mappings.
@@ -81,14 +89,4 @@ imap <C-y> <Plug>(snatch-reg-detached-ctrl-y)y
 inoremap <SID>y y
 imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-detached-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
-```
-
-### Options
-
-```vim
-" As long as the registers are used to snatch, this plugin will never override
-" the register.
-" Default: '0'
-let g:snatch#clean_registers = '0"abc'
-
 ```
