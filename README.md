@@ -60,7 +60,6 @@ let g:snatch#clean_registers = '0"abc'
 This plugin provides several `<Plug>`-mappings.
 Each mappings will snatch text by either motion or intercepting it from the
 register.
-Read `doc/snatch.txt` for more details.
 
 ```vim
 " Default mappings
@@ -97,3 +96,5 @@ inoremap <SID>y y
 imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
+
+Read `doc/snatch.txt` for more details.
