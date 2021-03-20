@@ -32,8 +32,9 @@ repo = 'kaile256/vim-snatch'
 lazy = 1
 on_event = ['CmdlineEnter', 'InsertEnter']
 # Or uncomment below.
-# on_map = {ic = ['<Plug>(snatch-']}
+# on_map = {icx = ['<Plug>(snatch-']}
 # hook_add = '''
+#   xmap z: <Plug>(snatch-into-cmdline)
 #   cmap <C-o> <Plug>(snatch-operator)
 #
 #   imap <C-y> <Plug>(snatch-reg-ctrl-y)
@@ -63,6 +64,7 @@ Read `doc/snatch.txt` for more details.
 
 ```vim
 " Default mappings
+xmap z: <Plug>(snatch-into-cmdline)
 cmap <C-o> <Plug>(snatch-operator)
 
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
