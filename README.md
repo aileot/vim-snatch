@@ -1,6 +1,6 @@
 # vim-snatch
 
-Snatch texts, from Insert mode, by horizontal motion or by `TextYankPost`.
+Snatch texts, from Insert/Command mode, by motion.
 
 ## Concept
 
@@ -30,10 +30,13 @@ for [Dein](https://github.com/Shougo/dein.vim) users:
 [[plugin]]
 repo = 'kaile256/vim-snatch'
 lazy = 1
-on_event = ['InsertEnter']
+on_event = ['CmdlineEnter', 'InsertEnter']
 # Or uncomment below.
-# on_map = {i = ['<Plug>(snatch-']}
+# on_map = {icx = ['<Plug>(snatch-']}
 # hook_add = '''
+#   xmap z: <Plug>(snatch-into-cmdline)
+#   cmap <C-o> <Plug>(snatch-operator)
+#
 #   imap <C-y> <Plug>(snatch-reg-ctrl-y)
 #   imap <C-e> <Plug>(snatch-reg-ctrl-e)
 # '''
@@ -61,6 +64,9 @@ Read `doc/snatch.txt` for more details.
 
 ```vim
 " Default mappings
+xmap z: <Plug>(snatch-into-cmdline)
+cmap <C-o> <Plug>(snatch-operator)
+
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
 imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
 ```

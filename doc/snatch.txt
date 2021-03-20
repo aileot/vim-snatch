@@ -38,6 +38,16 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
 
+c_<Plug>(snatch-operator)                           *c_<Plug>(snatch-operator)*
+
+        Via |operator-pending-mode|, snatch {motion} text into pending cmdline.
+        It might replace such mappings as |c_CTRL-R_CTRL-A|.
+
+x_<Plug>(snatch-into-cmdline)                   *x_<Plug>(snatch-into-cmdline)*
+
+        This is a by-product of |c_<Plug>(snatch-operator)|. Enter |cmdline| mode
+        with Visually selected text.
+
 i_<Plug>(snatch-horizontal-ctrl-y)         *i_<Plug>(snatch-horizontal-ctrl-y)*
 i_<Plug>(snatch-horizontal-ctrl-e)         *i_<Plug>(snatch-horizontal-ctrl-e)*
 i_<Plug>(snatch-horizontal-here)             *i_<Plug>(snatch-horizontal-here)*
