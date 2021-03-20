@@ -90,7 +90,7 @@ imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 
 " Suggestion:
-" You might enjoy the trick that snatch texts as soon as cursor has moved.
+" You might enjoy the trick to snatch texts as soon as cursor has moved.
 imap <C-y> <Plug>(snatch-reg-ctrl-y)y
 " Or name the mapping, using <SID>:
 inoremap <SID>y y
