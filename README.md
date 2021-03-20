@@ -97,4 +97,6 @@ imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
 
-Read `doc/snatch.txt` for more details.
+Read
+[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
+for more details.
