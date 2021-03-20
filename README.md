@@ -76,7 +76,7 @@ Or define mappings as your preference.
 ```vim
 let g:snatch#no_default_mappings = 1
 
-" Or you can predefine the first `{motion}`.
+" Or you can predefine the first {motion}.
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)<Plug>(easymotion-f)
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
 
@@ -85,7 +85,7 @@ onoremap <SID>f f
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 
 " We have another kind of mappings to start sneaking right at the spot.
-" It may be useful with the motions that assumes twice a `{motion}` or more.
+" It may be useful with the motions that assumes twice a {motion} or more.
 imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 
