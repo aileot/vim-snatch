@@ -7,10 +7,11 @@ including those defined by `:nmap`/`:nnoremap`.
 ## Features
 
 - Accept text-objects: `iw`, `a[`, ...
-  (To be honest, since the feature uses TextYankPost,
-  you have to type `yiw`, or `da[`, etc.)
 
-- Provide no extra `:nmap`pings/`:omap`pings for {motion}.
+  - To be honest, since the feature uses `TextYankPost`,
+    you have to type `yiw`, or `da[`, etc.
+
+- Provide no extra `:nmap`pings/`:omap`pings for `{motion}`.
   Thus, this plugin is hardly interfered with other mappings, but highly
   customizable with the existing fantastic plugins:
 
