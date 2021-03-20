@@ -60,7 +60,6 @@ let g:snatch#clean_registers = '0"abc'
 This plugin provides several `<Plug>`-mappings.
 Each mappings will snatch text by either motion or intercepting it from the
 register.
-Read `doc/snatch.txt` for more details.
 
 ```vim
 " Default mappings
@@ -76,7 +75,7 @@ Or define mappings as your preference.
 ```vim
 let g:snatch#no_default_mappings = 1
 
-" Or you can predefine the first `{motion}`.
+" Or you can predefine the first {motion}.
 imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)<Plug>(easymotion-f)
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
 
@@ -85,15 +84,19 @@ onoremap <SID>f f
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 
 " We have another kind of mappings to start sneaking right at the spot.
-" It may be useful with the motions that assumes twice a `{motion}` or more.
+" It may be useful with the motions that assumes twice a {motion} or more.
 imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 
 " Suggestion:
-" You might enjoy the trick that snatch texts as soon as cursor has moved.
+" You might enjoy the trick to snatch texts as soon as cursor has moved.
 imap <C-y> <Plug>(snatch-reg-ctrl-y)y
 " Or name the mapping, using <SID>:
 inoremap <SID>y y
 imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
+
+Read
+[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
+for more details.
