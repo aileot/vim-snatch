@@ -24,15 +24,15 @@ inoremap <silent> <Plug>(snatch-horizontal-here) <Cmd>call snatch#start({
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-reg-detached-ctrl-y) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-ctrl-y) <Cmd>call snatch#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-detached-ctrl-e) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-ctrl-e) <Cmd>call snatch#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-detached-here) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-here) <Cmd>call snatch#start({
       \   'pre_keys': '',
       \   'snatch_by': ['register'],
       \ })<CR>

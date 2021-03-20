@@ -34,8 +34,8 @@ on_event = ['InsertEnter']
 # Or uncomment below.
 # on_map = {i = ['<Plug>(snatch-']}
 # hook_add = '''
-#   imap <C-y> <Plug>(snatch-reg-detached-ctrl-y)
-#   imap <C-e> <Plug>(snatch-reg-detached-ctrl-e)
+#   imap <C-y> <Plug>(snatch-reg-ctrl-y)
+#   imap <C-e> <Plug>(snatch-reg-ctrl-e)
 # '''
 # hook_source = '''
 #   let g:snatch#no_default_mappings = 1
@@ -79,14 +79,14 @@ imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 
 " We have another kind of mappings to start sneaking right at the spot.
 " It may be useful with the motions that assumes twice a `{motion}` or more.
-imap <C-y> <Plug>(snatch-reg-detached-here)<Plug>(easymotion-s)
+imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 
 " Suggestion:
 " You might enjoy the trick that snatch texts as soon as cursor has moved.
-imap <C-y> <Plug>(snatch-reg-detached-ctrl-y)y
+imap <C-y> <Plug>(snatch-reg-ctrl-y)y
 " Or name the mapping, using <SID>:
 inoremap <SID>y y
-imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-detached-ctrl-y)<SID>y
+imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
