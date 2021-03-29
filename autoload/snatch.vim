@@ -1,10 +1,19 @@
+let s:stat = {}
+let s:stat.win_id = snatch#status#new(0)
+let s:stat.insert_pos = snatch#status#new([])
+let s:stat.prev_mode = snatch#status#new('')
+let s:stat.is_sneaking = snatch#status#new(v:false)
+let s:stat.snatch_by = snatch#status#new([])
+
 function! s:insert_copied(chars) abort
   autocmd! snatch
 
-  if !exists('s:insert_pos') | return | endif
-  const old_lnum = s:insert_pos[1]
-  const old_col = s:insert_pos[2]
-  unlet s:insert_pos
+  if s:stat.insert_pos.is_reset() | return | endif
+  const insert_pos = s:stat.insert_pos.get()
+  const old_lnum = insert_pos[1]
+  const old_col = insert_pos[2]
+  call s:stat.insert_pos.reset()
+  call s:stat.is_sneaking.set(v:false)
 
   const chars = a:chars
 
@@ -43,36 +52,37 @@ function! s:insert_as_register(...) abort
 endfunction
 
 function! s:insert_as_motion() abort
-  if !exists('s:start_pos')
-    let s:start_pos = getpos('.')
+  if s:stat.insert_pos.is_reset()
+    call s:stat.insert_pos.set(getpos('.'))
     call s:wait_motions()
     return
   endif
 
   const pos = getpos('.')
-  const old_lnum = s:start_pos[1]
+  const insert_pos = s:stat.insert_pos.get()
+  const old_lnum = insert_pos[1]
   const new_lnum = pos[1]
 
   if s:recursive_motion ==# 'vertical'
-        \ && (new_lnum != old_lnum || pos == s:start_pos)
-    let s:start_pos = pos
+        \ && (new_lnum != old_lnum || pos == insert_pos)
+    let insert_pos = pos
     call s:wait_motions()
     return
   endif
 
-  const start_col = s:start_pos[2]
+  const insert_col = insert_pos[2]
   const end_col = col('.')
-  const [ LEFT, RIGHT ] = sort([start_col, end_col], 'n')
+  const [ LEFT, RIGHT ] = sort([insert_col, end_col], 'n')
 
   const target_line = getline('.')
   const chars = target_line[ LEFT - 1 : RIGHT - 1 ]
 
   call s:insert_copied(chars)
-  unlet s:start_pos
+  call s:stat.insert_pos.reset()
 endfunction
 
 function! s:parse_snatch_events() abort
-  const snatch_by = deepcopy(s:config.snatch_by)
+  const snatch_by = deepcopy(s:stat.snatch_by.get())
   let s:use_register = index(snatch_by, 'register') >= 0
   let s:recursive_motion = index(snatch_by, 'any_motion') >= 0 ? 'none'
         \ : index(snatch_by, 'horizontal_motion') >= 0 ? 'vertical'
@@ -80,14 +90,15 @@ function! s:parse_snatch_events() abort
 endfunction
 
 function! s:wait_motions() abort
+  call s:stat.is_sneaking.set(v:true)
   call s:parse_snatch_events()
 
   augroup snatch
     autocmd!
 
     if s:recursive_motion !=# 'any'
-      autocmd CursorMoved * ++once call s:insert_as_motion()
-      autocmd TextYankPost * ++once unlet s:start_pos
+      autocmd CursorMoved * ++once call s:stat.insert_as_motion()
+      autocmd TextYankPost * ++once s:stat.insert_pos.reset()
     endif
 
     if s:use_register
@@ -106,11 +117,14 @@ function! s:wait_motions() abort
 endfunction
 
 function! snatch#start(config) abort
-  let s:insert_pos = getpos('.')
+  call s:stat.insert_pos.set(getpos('.'))
+  call s:stat.win_id.set(win_getid())
+  call s:stat.prev_mode.set('insert')
+  call s:stat.snatch_by.set(a:config.snatch_by)
+
   call s:save_reg()
 
-  let s:config = a:config
-  const pre_keys = s:config.pre_keys
+  const pre_keys = a:config.pre_keys
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
@@ -119,3 +133,12 @@ function! snatch#start(config) abort
   call s:wait_motions()
 endfunction
 
+function! snatch#status() abort
+  let stat = {}
+
+  for key in keys(s:stat)
+    let val = s:stat[key].get()
+    let stat[key] = val
+  endfor
+  return stat
+endfunction
