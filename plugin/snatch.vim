@@ -15,41 +15,50 @@ cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 "   inoremap <C-y> <Cmd>call s:foo("\<Plug>(bar)")<CR>
 "   ```
 "   throws the error E5522.
-inoremap <silent> <Plug>(snatch-horizontal-ctrl-y) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-horizontal-ctrl-y)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-horizontal-ctrl-e) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-horizontal-ctrl-e)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-horizontal-here) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-horizontal-here)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': '',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-reg-ctrl-y) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-ctrl-y)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-ctrl-e) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-ctrl-e)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-here) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-here)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': '',
       \   'snatch_by': ['register'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-y) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-y)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-horizontal-here) <Cmd>call snatch#start({
+inoremap <silent> <Plug>(snatch-reg-horizontal-here)
+      \ <Cmd>call snatch#ins#start({
       \   'pre_keys': '',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
