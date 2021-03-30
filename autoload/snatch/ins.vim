@@ -1,7 +1,30 @@
 let s:insert_pos = snatch#status#new([])
 
+hi def link SnatchPrevPos DiffAdd
+
+augroup snatch/ins/highlight
+  autocmd!
+augroup END
+
+function! s:highlight_insert_pos() abort
+  let [l, c] = s:insert_pos.get()[1 : 2]
+  if c == col('$')
+    let c -= 1
+  endif
+  const m = matchaddpos('SnatchPrevPos', [[l, c]])
+  augroup snatch/ins/highlight
+    exe 'autocmd User SnatchStopPost ++once call s:highlight_clear(' m ')'
+  augroup END
+endfunction
+
+function! s:highlight_clear(m) abort
+  call matchdelete(a:m)
+endfunction
+
+
 function! s:prepare(config) abort
   call s:insert_pos.set(getpos('.'))
+  call s:highlight_insert_pos()
   call snatch#common#prepare(a:config)
 endfunction
 
