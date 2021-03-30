@@ -4,6 +4,7 @@ endfunction
 
 function! snatch#cancel() abort
   if !snatch#status().is_sneaking | return | endif
-  doautocmd User SnatchStopPre
+  doautocmd User SnatchCancelledPre
   call snatch#common#stop()
+  doautocmd User SnatchCancelledPost
 endfunction

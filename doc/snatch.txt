@@ -9,6 +9,7 @@ CONTENTS                                                       *snatch-contents*
 
 Introduction            |snatch-introduction|
 Usage                   |snatch-usage|
+  Function                |snatch-function|
   Variable                |snatch-variable|
   Mapping                 |snatch-mapping|
 Compatibility           |snatch-compatibility|
@@ -18,7 +19,38 @@ INTRODUCTION                                               *snatch-introduction*
 
 
 ==============================================================================
+OVERVIEW                                                       *snatch-overview*
+
+|Snatch| works as the following process:
+
+1. Saving current position, leave current mode.
+
+        Trigger |SnatchStartPre| and |SnatchStopPost|.
+
+2. Enter |sneaking| mode.                                        *snatch-sneaking*
+
+        Currently, we have three snatch-strategies:
+
+                - register
+                - operator
+                - horizontal_motion
+
+3. Get back to saved position, and insert |snatch|ed text.
+
+==============================================================================
 USAGE                                                             *snatch-usage*
+
+------------------------------------------------------------------------------
+FUNCTION                                                       *snatch-function*
+
+snatch#status()                                               *snatch#status()*
+
+snatch#cancel()                                               *snatch#cancel()*
+
+        Nothing happens unless |sneaking| is in progress. Forcibly stop
+        |sneaking|. Instead of |SnatchStopPre| and |SnatchStopPost|, this
+        function invokes two special |snatch-autocmd|s: |SnatchCancelledPre| and
+        |SnatchCancelledPost|.
 
 ------------------------------------------------------------------------------
 VARIABLE                                                       *snatch-variable*
@@ -34,6 +66,25 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
         |vim-snatch| will snatch texts but won't override the |registers| set
         in this option, as if to intercept it. (Actually, save & restore the
         |registers|.) The rest of |registers| works as usual, snatching texts.
+
+g:snatch#timeoutlen                                       *g:snatch#timeoutlen*
+        (default: 8000)
+
+        Time in milliseconds to cancel |sneaking| process.
+        Also read |g:snatch#cancellation_policy|.
+
+g:snatch#cancellation_policy                     *g:snatch#cancellation_policy*
+        (default: "abort")
+
+        Available: ["abort", "restore"]
+        Set the behavior when |sneaking| is cancelled.
+
+        abort           Whichever the previous mode is, or wherever the cursor
+                        position before entering |sneaking| mode is, just cancel
+                        |sneaking| and change nothing.
+        restore         Restore cursor and re-enter the previous mode. If the
+                        mode is |Cmdline-mode|, the pending line in |Cmdline| will
+                        be, of cource, restored with cursor position.
 
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
@@ -69,6 +120,27 @@ i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
         Mixed mapping of |<Plug>(snatch-horizontal-ctrl-y)| and
         |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
         details, follow the respective tags.
+
+------------------------------------------------------------------------------
+AUTOCMD                                                         *snatch-autocmd*
+
+:autocmd User SnatchStartPre {command}                          *SnatchStartPre*
+
+        Triggered before any process start.
+
+:autocmd User SnatchStartPost {command}                        *SnatchStartPost*
+
+:autocmd User SnatchStopPre {command}                            *SnatchStopPre*
+
+:autocmd User SnatchStopPost {command}                          *SnatchStopPost*
+
+:autocmd User SnatchCancelledPre {command}                  *SnatchCancelledPre*
+
+        Triggered by |snatch#cancel()|.
+
+:autocmd User SnatchCancelledPost {command}                *SnatchCancelledPost*
+
+        Triggered by |snatch#cancel()|.
 
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*

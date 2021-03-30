@@ -54,7 +54,6 @@ function! snatch#common#stop() abort
   "   call s:stat[key].reset()
   " endfor
   call snatch#augroup#clear()
-  doautocmd User SnatchStopPost
 endfunction
 
 function! snatch#common#insert(chars) abort
@@ -70,6 +69,7 @@ function! snatch#common#insert(chars) abort
   endif
 
   call snatch#common#stop()
+  doautocmd User SnatchStopPost
 endfunction
 
 function! snatch#common#status() abort
