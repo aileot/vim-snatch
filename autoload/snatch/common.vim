@@ -49,7 +49,7 @@ function! snatch#common#wait() abort
   call snatch#augroup#end()
 endfunction
 
-function! s:stop_snatching() abort
+function! snatch#common#stop() abort
   " for key in keys(s:stat)
   "   call s:stat[key].reset()
   " endfor
@@ -69,7 +69,7 @@ function! snatch#common#insert(chars) abort
     call snatch#utils#throw('unexpected usage')
   endif
 
-  call s:stop_snatching()
+  call snatch#common#stop()
 endfunction
 
 function! snatch#common#status() abort
