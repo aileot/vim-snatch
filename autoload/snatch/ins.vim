@@ -9,6 +9,9 @@ augroup END
 function! s:highlight_insert_pos() abort
   let [l, c] = s:insert_pos.get()[1 : 2]
   if c == col('$')
+    " TODO: Distinguish the highlight for the last column from that for the one
+    " just before the last. If we could set highlight in vertical line instead
+    " of in rectangle, substitute it.
     let c -= 1
   endif
   const m = matchaddpos('SnatchPrevPos', [[l, c]])
