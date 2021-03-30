@@ -3,6 +3,13 @@ let s:stat.win_id = snatch#status#new(0)
 let s:stat.insert_pos = snatch#status#new([])
 let s:stat.prev_mode = snatch#status#new('NONE')
 let s:stat.snatch_by = snatch#status#new([])
+let s:stat.is_snatching = snatch#status#new(v:false)
+
+augroup snatch/watch
+  autocmd!
+  autocmd User SnatchStartPost call s:stat.is_snatching.set(v:true)
+  autocmd User SnatchStopPost  call s:stat.is_snatching.set(v:false)
+augroup END
 
 function! s:save_state(config) abort
   call s:stat.win_id.set(win_getid())
