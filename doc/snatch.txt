@@ -70,8 +70,8 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
 g:snatch#timeoutlen                                       *g:snatch#timeoutlen*
         (default: 8000)
 
-        Time in milliseconds to cancel |sneaking| process.
-        Also read |g:snatch#cancellation_policy|.
+        Time in milliseconds to cancel |sneaking| process. Set to `-1` to disable
+        timeout. Also read |g:snatch#cancellation_policy|.
 
 g:snatch#cancellation_policy                     *g:snatch#cancellation_policy*
         (default: "abort")
