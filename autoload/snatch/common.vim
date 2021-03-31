@@ -6,6 +6,8 @@ let s:stat.snatch_by = snatch#status#new([])
 let s:stat.is_sneaking = snatch#status#new(v:false)
 
 augroup snatch/watch
+  " For the simplicity, keep `is_sneaking` managed within this augroup.
+
   autocmd!
   autocmd User SnatchStartPost call s:stat.is_sneaking.set(v:true)
   autocmd User SnatchStopPost  call s:stat.is_sneaking.set(v:false)
