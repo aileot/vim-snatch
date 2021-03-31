@@ -56,6 +56,13 @@ function! snatch#common#stop() abort
   call snatch#augroup#clear()
 endfunction
 
+function! snatch#common#cancel() abort
+  if !s:stat.is_sneaking.get() | return | endif
+  doautocmd User SnatchCancelledPre
+  call snatch#common#stop()
+  doautocmd User SnatchCancelledPost
+endfunction
+
 function! snatch#common#insert(chars) abort
   doautocmd User SnatchStopPre
 
