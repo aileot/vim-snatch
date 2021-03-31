@@ -9,6 +9,8 @@ augroup snatch/watch
   autocmd!
   autocmd User SnatchStartPost call s:stat.is_sneaking.set(v:true)
   autocmd User SnatchStopPost  call s:stat.is_sneaking.set(v:false)
+
+  autocmd User SnatchCancelledPost  call s:stat.is_sneaking.set(v:false)
 augroup END
 
 function! s:save_state(config) abort
