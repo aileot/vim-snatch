@@ -2,7 +2,7 @@ let s:insert_pos = snatch#status#new([])
 
 hi def link SnatchPrevPos DiffAdd
 
-augroup snatch/ins/highlight
+augroup snatch/ins/highlight-insert_pos
   autocmd!
 augroup END
 
@@ -15,7 +15,7 @@ function! s:highlight_insert_pos() abort
     let c -= 1
   endif
   const m = matchaddpos('SnatchPrevPos', [[l, c]])
-  augroup snatch/ins/highlight
+  augroup snatch/ins/highlight-insert_pos
     exe 'autocmd User SnatchStopPost ++once call s:highlight_clear(' m ')'
     exe 'autocmd User SnatchAbortedPost ++once call s:highlight_clear(' m ')'
     exe 'autocmd User SnatchCancelledPost ++once call s:highlight_clear(' m ')'
@@ -24,7 +24,7 @@ endfunction
 
 function! s:highlight_clear(m) abort
   call matchdelete(a:m)
-  silent! autocmd! snatch/ins/highlight
+  silent! autocmd! snatch/ins/highlight-insert_pos
 endfunction
 
 
