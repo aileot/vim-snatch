@@ -61,3 +61,15 @@ function! snatch#ins#insert(chars) abort
   endif
 endfunction
 
+function! snatch#ins#restore_pos() abort
+  const insert_pos = s:insert_pos.get()
+  const [lnum, col] = insert_pos[1:2]
+  call setpos('.', [0, lnum, col])
+
+  const line = getline(lnum)
+  if strdisplaywidth(line) < col
+    call feedkeys('a', 'n')
+  else
+    call feedkeys('i', 'n')
+  endif
+endfunction
