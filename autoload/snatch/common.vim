@@ -7,6 +7,11 @@ let s:stat.is_sneaking = snatch#status#new(v:false)
 
 let s:is_cmdline_mode = '^[-:>/?@=]$'
 
+let s:use_guicursor = exists('&guicursor')
+if s:use_guicursor
+  let s:hl_cursor_config = 'n-o:SnatchCursor'
+endif
+
 augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
@@ -23,11 +28,36 @@ function! s:save_state(config) abort
   call s:stat.snatch_by.set(a:config.snatch_by)
 endfunction
 
+function! s:set_another_cursorhl() abort
+  if s:use_guicursor
+    exe 'setlocal guicursor+='. s:hl_cursor_config
+    return
+  endif
+
+  let s:save_hl = matchstr(execute('hi Cursor'), 'xxx\s\+\zs.*')
+  hi! link Cursor SnatchCursor
+endfunction
+
+function! s:restore_cursorhl() abort
+  if s:use_guicursor
+    exe 'setlocal guicursor-='. s:hl_cursor_config
+    return
+  endif
+
+  if s:save_hl =~# '^links'
+    const hl_group = matchstr(s:save_hl, 'links to \zs\S\+')
+    exe 'hi! link Cursor' hl_group
+    return
+  endif
+  exe 'hi! Cursor' s:save_hl
+endfunction
+
 function! snatch#common#prepare(config) abort
   doautocmd User SnatchStartPre
   noautocmd stopinsert
 
   call s:save_state(a:config)
+  call s:set_another_cursorhl()
 
   const pre_keys = get(a:config, 'pre_keys', '')
   if pre_keys !=# ''
@@ -67,6 +97,7 @@ function! snatch#common#stop() abort
   " for key in keys(s:stat)
   "   call s:stat[key].reset()
   " endfor
+  call s:restore_cursorhl()
   call snatch#augroup#clear()
 endfunction
 
