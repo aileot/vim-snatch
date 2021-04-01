@@ -26,7 +26,7 @@ function! snatch#common#prepare(config) abort
 
   call s:save_state(a:config)
 
-  const pre_keys = a:config.pre_keys
+  const pre_keys = get(a:config, 'pre_keys', '')
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
