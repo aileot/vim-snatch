@@ -48,6 +48,10 @@ function! s:save_cmdline() abort
   return ''
 endfunction
 
+function! snatch#cmd#restore_pos() abort
+  call s:insert_to_cmdline('')
+endfunction
+
 function! snatch#cmd#operator() abort
   call s:save_cmdline()
   set operatorfunc=snatch#cmd#insert
