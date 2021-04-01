@@ -45,12 +45,24 @@ FUNCTION                                                       *snatch-function*
 
 snatch#status()                                               *snatch#status()*
 
+snatch#abort()                                                 *snatch#abort()*
+
+        Forcibly stop |Sneaking| mode (practically, |Normal| mode), staying in
+        |Normal| mode, and return |v:true|; besides, instead of |SnatchStopPre| and
+        |SnatchStopPost|, this function triggers two special |snatch-autocmd|s:
+        |SnatchCancelledPre| and |SnatchCancelledPost|. On the other hand, when
+        |sneaking| is NOT in progress, do nothing but return |v:false|.
+        See also |snatch#cancel()|.
+
 snatch#cancel()                                               *snatch#cancel()*
 
-        Nothing happens unless |sneaking| is in progress. Forcibly stop
-        |sneaking|. Instead of |SnatchStopPre| and |SnatchStopPost|, this
-        function invokes two special |snatch-autocmd|s: |SnatchCancelledPre| and
-        |SnatchCancelledPost|.
+        Forcibly stop |Sneaking| mode, go back to the starting position in the
+        previous mode (|Insert| mode or |Cmdline| mode), and return |v:true|;
+        besides, instead of |SnatchStopPre| and |SnatchStopPost|, this function
+        triggers two special |snatch-autocmd|s: |SnatchCancelledPre| and
+        |SnatchCancelledPost|. On the other hand, when |sneaking| is NOT in
+        progress, do nothing but return |v:false|.
+        See also |snatch#abort()|.
 
 ------------------------------------------------------------------------------
 VARIABLE                                                       *snatch-variable*
@@ -74,17 +86,15 @@ g:snatch#timeoutlen                                       *g:snatch#timeoutlen*
         timeout. Also read |g:snatch#cancellation_policy|.
 
 g:snatch#cancellation_policy                     *g:snatch#cancellation_policy*
-        (default: "abort")
+        (default: "cancel")
 
-        Available: ["abort", "restore"]
-        Set the behavior when |sneaking| is cancelled.
+        Set the behavior when |sneaking| is cancelled by the timeout, as
+        |g:snatch#timeoutlen|.
 
-        abort           Whichever the previous mode is, or wherever the cursor
-                        position before entering |sneaking| mode is, just cancel
-                        |sneaking| and change nothing.
-        restore         Restore cursor and re-enter the previous mode. If the
-                        mode is |Cmdline-mode|, the pending line in |Cmdline| will
-                        be, of cource, restored with cursor position.
+        Available: ["abort", "cancel"]
+
+        cancel          Call |snatch#cancel()|.
+        abort           Call |snatch#abort()|.
 
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
