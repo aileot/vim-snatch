@@ -1,7 +1,5 @@
 let s:insert_pos = snatch#status#new([])
 
-hi def link SnatchPrevPos DiffAdd
-
 augroup snatch/ins/highlight-insert_pos
   autocmd!
 augroup END

@@ -1,6 +1,7 @@
 let g:loaded_snatch = 1
 
 hi def SnatchCursor ctermfg=white guifg=white ctermbg=magenta guibg=magenta cterm=bold gui=bold
+hi def SnatchPrevPos cterm=bold,reverse gui=bold,reverse
 
 let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
 let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 8000)
