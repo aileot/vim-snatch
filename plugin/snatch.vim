@@ -28,7 +28,6 @@ inoremap <silent> <Plug>(snatch-horizontal-ctrl-e)
       \ })<CR>
 inoremap <silent> <Plug>(snatch-horizontal-here)
       \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': '',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
 
@@ -44,7 +43,6 @@ inoremap <silent> <Plug>(snatch-reg-ctrl-e)
       \ })<CR>
 inoremap <silent> <Plug>(snatch-reg-here)
       \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': '',
       \   'snatch_by': ['register'],
       \ })<CR>
 
@@ -60,7 +58,6 @@ inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e)
       \ })<CR>
 inoremap <silent> <Plug>(snatch-reg-horizontal-here)
       \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': '',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
 
