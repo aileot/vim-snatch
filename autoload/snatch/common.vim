@@ -70,9 +70,9 @@ function! snatch#common#abort(...) abort
     return v:false
   endif
 
-  doautocmd User SnatchCancelledPre
+  doautocmd User SnatchAbortedPre
   call snatch#common#stop()
-  doautocmd User SnatchCancelledPost
+  doautocmd User SnatchAbortedPost
   return v:true
 endfunction
 
