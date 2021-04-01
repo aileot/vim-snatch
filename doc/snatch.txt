@@ -134,30 +134,30 @@ i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
 ------------------------------------------------------------------------------
 AUTOCMD                                                         *snatch-autocmd*
 
-:autocmd User SnatchStartPre {command}                          *SnatchStartPre*
+:autocmd User SnatchStartPre {command}                         *SnatchStartPre*
 
         Triggered before any process start.
 
-:autocmd User SnatchStartPost {command}                        *SnatchStartPost*
+:autocmd User SnatchStartPost {command}                       *SnatchStartPost*
 
-:autocmd User SnatchStopPre {command}                            *SnatchStopPre*
+:autocmd User SnatchStopPre {command}                           *SnatchStopPre*
 
-:autocmd User SnatchStopPost {command}                          *SnatchStopPost*
+:autocmd User SnatchStopPost {command}                         *SnatchStopPost*
 
 
-:autocmd User SnatchAbortedPre {command}                      *SnatchAbortedPre*
-
-        Triggered in |snatch#abort()|.
-
-:autocmd User SnatchAbortedPost {command}                    *SnatchAbortedPost*
+:autocmd User SnatchAbortedPre {command}                     *SnatchAbortedPre*
 
         Triggered in |snatch#abort()|.
 
-:autocmd User SnatchCancelledPre {command}                  *SnatchCancelledPre*
+:autocmd User SnatchAbortedPost {command}                   *SnatchAbortedPost*
+
+        Triggered in |snatch#abort()|.
+
+:autocmd User SnatchCancelledPre {command}                 *SnatchCancelledPre*
 
         Triggered in |snatch#cancel()|.
 
-:autocmd User SnatchCancelledPost {command}                *SnatchCancelledPost*
+:autocmd User SnatchCancelledPost {command}               *SnatchCancelledPost*
 
         Triggered in |snatch#cancel()|.
 
