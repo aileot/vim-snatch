@@ -161,6 +161,27 @@ AUTOCMD                                                         *snatch-autocmd*
 
         Triggered in |snatch#cancel()|.
 
+------------------------------------------------------------------------------
+HIGHLIGHT                                                     *snatch-highlight*
+
+SnatchCursor                                                  *hl-SnatchCursor*
+
+        Default:
+>
+        hi def SnatchCursor cterm=bold gui=bold
+                        \ ctermfg=white guifg=white
+                        \ ctermbg=magenta guibg=magenta
+<
+        Used to replace "Cursor" highlight while |sneaking|.
+
+SnatchPrevPos                                                *hl-SnatchPrevPos*
+
+        Default:
+>
+        hi def SnatchPrevPos cterm=bold,reverse gui=bold,reverse
+<
+        Used to make current inserting position stand out while |sneaking|.
+
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
 
