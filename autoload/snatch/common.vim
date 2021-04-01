@@ -25,6 +25,7 @@ endfunction
 
 function! snatch#common#prepare(config) abort
   doautocmd User SnatchStartPre
+  noautocmd stopinsert
 
   call s:save_state(a:config)
 
@@ -32,6 +33,8 @@ function! snatch#common#prepare(config) abort
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
+
+  call s:wait()
 endfunction
 
 function! s:parse_snatch_events() abort
@@ -42,7 +45,7 @@ function! s:parse_snatch_events() abort
         \ : 'any'
 endfunction
 
-function! snatch#common#wait() abort
+function! s:wait() abort
   call s:parse_snatch_events()
 
   if s:recursive_motion !=# 'any'

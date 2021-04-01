@@ -34,8 +34,6 @@ endfunction
 function! snatch#ins#start(config) abort
   const config = extend(deepcopy(a:config), {'prev_mode': 'insert'})
   call s:prepare(config)
-  noautocmd stopinsert
-  call snatch#common#wait()
 endfunction
 
 function! snatch#ins#insert(chars) abort
