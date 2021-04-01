@@ -2,6 +2,8 @@ let g:loaded_snatch = 1
 
 let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
 let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 8000)
+let g:snatch#cancellation_policy =
+      \ get(g:, 'snatch#cancellation_policy', 'cancel')
 
 xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#insert()<CR>
 
