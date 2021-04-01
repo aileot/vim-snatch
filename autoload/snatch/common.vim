@@ -67,10 +67,14 @@ function! snatch#common#stop() abort
 endfunction
 
 function! snatch#common#cancel(...) abort
-  if !s:stat.is_sneaking.get() | return | endif
+  if !s:stat.is_sneaking.get()
+    return v:false
+  endif
+
   doautocmd User SnatchCancelledPre
   call snatch#common#stop()
   doautocmd User SnatchCancelledPost
+  return v:true
 endfunction
 
 function! snatch#common#insert(chars) abort
