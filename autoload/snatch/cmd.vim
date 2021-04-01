@@ -24,10 +24,6 @@ function! snatch#cmd#insert(...) abort
   call s:insert_to_cmdline(chars)
 endfunction
 
-function! s:abort(msg) abort
-  throw 'Snatch: '. a:msg
-endfunction
-
 function! s:save_cmdline() abort
   let s:save_line = getcmdline()
   let s:save_col = getcmdpos() - 1
@@ -40,12 +36,12 @@ function! s:save_cmdline() abort
 
   " TODO: Modify the behavior for each cmdtype.
   if s:save_cmdtype ==# '@'
-    call s:abort("input() is not supported")
+    call snatch#utils#throw("input() is not supported")
   elseif s:save_cmdtype ==# '-'
-    call s:abort("either `:insert` or `:append` is not supported")
+    call snatch#utils#throw("either `:insert` or `:append` is not supported")
   elseif s:save_cmdtype ==# '='
     " TODO: If possible, save both lines of ':' and '=' and restore then later.
-    call s:abort("expression register is not supported")
+    call snatch#utils#throw("expression register is not supported")
     return ''
   endif
 
