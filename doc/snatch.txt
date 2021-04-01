@@ -50,7 +50,7 @@ snatch#abort()                                                 *snatch#abort()*
         Forcibly stop |Sneaking| mode (practically, |Normal| mode), staying in
         |Normal| mode, and return |v:true|; besides, instead of |SnatchStopPre| and
         |SnatchStopPost|, this function triggers two special |snatch-autocmd|s:
-        |SnatchCancelledPre| and |SnatchCancelledPost|. On the other hand, when
+        |SnatchAbortedPre| and |SnatchAbortedPost|. On the other hand, when
         |sneaking| is NOT in progress, do nothing but return |v:false|.
         See also |snatch#cancel()|.
 
@@ -144,13 +144,22 @@ AUTOCMD                                                         *snatch-autocmd*
 
 :autocmd User SnatchStopPost {command}                          *SnatchStopPost*
 
+
+:autocmd User SnatchAbortedPre {command}                      *SnatchAbortedPre*
+
+        Triggered in |snatch#abort()|.
+
+:autocmd User SnatchAbortedPost {command}                    *SnatchAbortedPost*
+
+        Triggered in |snatch#abort()|.
+
 :autocmd User SnatchCancelledPre {command}                  *SnatchCancelledPre*
 
-        Triggered by |snatch#cancel()|.
+        Triggered in |snatch#cancel()|.
 
 :autocmd User SnatchCancelledPost {command}                *SnatchCancelledPost*
 
-        Triggered by |snatch#cancel()|.
+        Triggered in |snatch#cancel()|.
 
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
