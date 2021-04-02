@@ -8,7 +8,7 @@ let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 8000)
 let g:snatch#cancellation_policy =
       \ get(g:, 'snatch#cancellation_policy', 'cancel')
 
-xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#insert()<CR>
+xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#op()<CR>
 
 cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 

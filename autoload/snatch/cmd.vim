@@ -44,7 +44,11 @@ function! s:insert_to_cmdline(chars) abort
   call feedkeys(keys, 'n')
 endfunction
 
-function! snatch#cmd#insert(...) abort
+function! snatch#cmd#insert(chars) abort
+  call s:insert_to_cmdline(a:chars)
+endfunction
+
+function! snatch#cmd#op(...) abort
   if a:0
     const LEFT =  col("'[") - 1
     const RIGHT =  col("']") - 1
@@ -55,12 +59,12 @@ function! snatch#cmd#insert(...) abort
   endif
   const line = getline('.')
   const chars = line[ LEFT : RIGHT ]
-  call s:insert_to_cmdline(chars)
+  call snatch#common#insert(chars)
 endfunction
 
 function! snatch#cmd#operator() abort
   call s:prepare()
-  set operatorfunc=snatch#cmd#insert
+  set operatorfunc=snatch#cmd#op
   call feedkeys("\<Esc>g@", 'n')
   return ''
 endfunction
