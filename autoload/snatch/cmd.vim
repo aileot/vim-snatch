@@ -22,6 +22,16 @@ function! s:save_cmdline() abort
   return ''
 endfunction
 
+function! s:prepare() abort
+  call s:save_cmdline()
+
+  const config = {
+        \ 'snatch_by': ['operator'],
+        \ 'prev_mode': s:save_cmdtype,
+        \ }
+  call snatch#common#prepare(config)
+endfunction
+
 function! s:insert_to_cmdline(chars) abort
   const line = s:save_line
   const col = s:save_col
@@ -49,7 +59,7 @@ function! snatch#cmd#insert(...) abort
 endfunction
 
 function! snatch#cmd#operator() abort
-  call s:save_cmdline()
+  call s:prepare()
   set operatorfunc=snatch#cmd#insert
   call feedkeys("\<Esc>g@", 'n')
   return ''

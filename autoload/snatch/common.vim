@@ -5,6 +5,8 @@ let s:stat.prev_mode = snatch#status#new('NONE')
 let s:stat.snatch_by = snatch#status#new([])
 let s:stat.is_sneaking = snatch#status#new(v:false)
 
+let s:is_cmdline_mode = '^[-:>/?@=]$'
+
 augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
@@ -85,7 +87,7 @@ function! snatch#common#cancel(...) abort
     doautocmd User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#ins#restore_pos()
-  elseif s:stat.prev_mode ==# 'cmdline'
+  elseif s:stat.prev_mode =~# s:is_cmdline_mode
     doautocmd User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#cmd#restore_pos()
@@ -103,7 +105,7 @@ function! snatch#common#insert(chars) abort
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'insert'
     call snatch#ins#insert(a:chars)
-  elseif prev_mode ==? 'cmdline'
+  elseif prev_mode =~? s:is_cmdline_mode
     call snatch#cmd#insert(a:chars)
   else
     call snatch#utils#throw('unexpected usage')
