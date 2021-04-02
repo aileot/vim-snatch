@@ -50,7 +50,13 @@ function! snatch#common#wait() abort
   if s:use_register
     call snatch#register#wait()
   endif
-  call snatch#augroup#end()
+
+  if g:snatch#timeoutlen > -1
+    const callback = 'snatch#common#cancel'
+    call timer_start(g:snatch#timeoutlen, callback)
+  endif
+
+  doautocmd User SnatchStartPost
 endfunction
 
 function! snatch#common#stop() abort
@@ -60,7 +66,7 @@ function! snatch#common#stop() abort
   call snatch#augroup#clear()
 endfunction
 
-function! snatch#common#cancel() abort
+function! snatch#common#cancel(...) abort
   if !s:stat.is_sneaking.get() | return | endif
   doautocmd User SnatchCancelledPre
   call snatch#common#stop()
