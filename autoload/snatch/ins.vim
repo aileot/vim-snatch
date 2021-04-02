@@ -1,3 +1,4 @@
+let s:win_id = snatch#status#new(0)
 let s:insert_pos = snatch#status#new([])
 
 augroup snatch/ins/highlight-insert_pos
@@ -28,6 +29,7 @@ endfunction
 
 function! s:prepare(config) abort
   call s:insert_pos.set(getpos('.'))
+  call s:win_id.set(win_getid())
   call s:highlight_insert_pos()
   call snatch#common#prepare(a:config)
 endfunction
@@ -39,6 +41,9 @@ endfunction
 
 function! snatch#ins#insert(chars) abort
   if s:insert_pos.is_reset() | return | endif
+  const id = s:win_id.get()
+  call win_gotoid(id)
+
   const insert_pos = s:insert_pos.get()
   const old_lnum = insert_pos[1]
   const old_col = insert_pos[2]
@@ -61,6 +66,9 @@ function! snatch#ins#insert(chars) abort
 endfunction
 
 function! snatch#ins#restore_pos() abort
+  const id = s:win_id.get()
+  call win_gotoid(id)
+
   const insert_pos = s:insert_pos.get()
   const [lnum, col] = insert_pos[1:2]
   call setpos('.', [0, lnum, col])
