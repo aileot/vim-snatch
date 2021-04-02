@@ -55,7 +55,6 @@ function! snatch#common#wait() abort
     const callback = 'snatch#common#cancel'
     call timer_start(g:snatch#timeoutlen, callback)
   endif
-
   doautocmd User SnatchStartPost
 endfunction
 
@@ -66,13 +65,34 @@ function! snatch#common#stop() abort
   call snatch#augroup#clear()
 endfunction
 
-function! snatch#common#cancel(...) abort
+function! snatch#common#abort(...) abort
   if !s:stat.is_sneaking.get()
     return v:false
   endif
 
   doautocmd User SnatchCancelledPre
   call snatch#common#stop()
+  doautocmd User SnatchCancelledPost
+  return v:true
+endfunction
+
+function! snatch#common#cancel(...) abort
+  if !s:stat.is_sneaking.get()
+    return v:false
+  endif
+
+  if s:stat.prev_mode ==# 'insert'
+    doautocmd User SnatchCancelledPre
+    call snatch#common#stop()
+    call snatch#ins#restore_pos()
+  elseif s:stat.prev_mode ==# 'cmdline'
+    doautocmd User SnatchCancelledPre
+    call snatch#common#stop()
+    call snatch#cmd#restore_pos()
+  else
+    call snatch#utils#throw('the previous mode cannot be identified')
+  endif
+
   doautocmd User SnatchCancelledPost
   return v:true
 endfunction
