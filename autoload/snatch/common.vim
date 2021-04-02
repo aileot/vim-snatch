@@ -79,6 +79,13 @@ endfunction
 function! s:wait() abort
   call s:parse_snatch_strategies()
 
+  augroup snatch/abort_on_some_events
+    autocmd!
+    " Note: CmdlineEnter can be triggered up to user's mappings. Typically,
+    " vim-camelcasemotion triggers the event immediately on each motion.
+    autocmd InsertEnter * ++once call snatch#common#abort()
+  augroup END
+
   if s:recursive_motion !=# 'any'
     call snatch#motion#wait()
   endif
