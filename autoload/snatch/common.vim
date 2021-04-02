@@ -121,7 +121,7 @@ function! snatch#common#cancel(...) abort
   endif
 
   const prev_mode = s:stat.prev_mode.get()
-  if prev_mode ==# 'insert'
+  if prev_mode ==? 'i'
     doautocmd User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#ins#restore_pos()
@@ -141,7 +141,7 @@ function! snatch#common#insert(chars) abort
   doautocmd User SnatchInsertPre
 
   const prev_mode = s:stat.prev_mode.get()
-  if prev_mode ==? 'insert'
+  if prev_mode ==? 'i'
     call snatch#ins#insert(a:chars)
   elseif prev_mode =~? s:is_cmdline_mode
     call snatch#cmd#insert(a:chars)

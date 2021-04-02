@@ -35,7 +35,7 @@ function! s:prepare(config) abort
 endfunction
 
 function! snatch#ins#start(config) abort
-  const config = extend(deepcopy(a:config), {'prev_mode': 'insert'})
+  const config = extend(deepcopy(a:config), {'prev_mode': 'i'})
   call s:prepare(config)
 endfunction
 
