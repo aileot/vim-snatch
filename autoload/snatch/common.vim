@@ -16,8 +16,8 @@ augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
   autocmd!
-  autocmd User SnatchStartPost call s:stat.is_sneaking.set(v:true)
-  autocmd User SnatchStopPost  call s:stat.is_sneaking.set(v:false)
+  autocmd User SnatchStartPost  call s:stat.is_sneaking.set(v:true)
+  autocmd User SnatchInsertPost call s:stat.is_sneaking.set(v:false)
 
   autocmd User SnatchCancelledPost  call s:stat.is_sneaking.set(v:false)
 augroup END
@@ -135,7 +135,7 @@ function! snatch#common#cancel(...) abort
 endfunction
 
 function! snatch#common#insert(chars) abort
-  doautocmd User SnatchStopPre
+  doautocmd User SnatchInsertPre
 
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'insert'
@@ -147,7 +147,7 @@ function! snatch#common#insert(chars) abort
   endif
 
   call snatch#common#stop()
-  doautocmd User SnatchStopPost
+  doautocmd User SnatchInsertPost
 endfunction
 
 function! snatch#common#status() abort

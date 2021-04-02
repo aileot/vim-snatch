@@ -15,7 +15,7 @@ function! s:highlight_insert_pos() abort
   endif
   const m = matchaddpos('SnatchPrevPos', [[l, c]])
   augroup snatch/ins/highlight-insert_pos
-    exe 'autocmd User SnatchStopPost ++once call s:highlight_clear(' m ')'
+    exe 'autocmd User SnatchInsertPost ++once call s:highlight_clear(' m ')'
     exe 'autocmd User SnatchAbortedPost ++once call s:highlight_clear(' m ')'
     exe 'autocmd User SnatchCancelledPost ++once call s:highlight_clear(' m ')'
   augroup END
