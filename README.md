@@ -47,6 +47,12 @@ on_event = ['CmdlineEnter', 'InsertEnter']
 
 ## Usage
 
+(The options, mappings, and so on, are not all the features this plugin
+provides.
+Type `:h snatch`,
+[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
+will tell you more features and their details.)
+
 ### Options
 
 ```vim
@@ -96,7 +102,3 @@ inoremap <SID>y y
 imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-sensitive-ctrl-y)
 ```
-
-Read
-[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
-for more details.
