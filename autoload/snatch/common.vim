@@ -11,6 +11,8 @@ function! s:save_state(config) abort
 endfunction
 
 function! snatch#common#prepare(config) abort
+  doautocmd User SnatchStartPre
+
   call s:save_state(a:config)
 
   const pre_keys = a:config.pre_keys
@@ -45,9 +47,12 @@ function! s:stop_snatching() abort
   "   call s:stat[key].reset()
   " endfor
   call snatch#augroup#clear()
+  doautocmd User SnatchStopPost
 endfunction
 
 function! snatch#common#insert(chars) abort
+  doautocmd User SnatchStopPre
+
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'insert'
     call snatch#ins#insert(a:chars)
