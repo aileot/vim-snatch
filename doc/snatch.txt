@@ -48,8 +48,8 @@ snatch#status()                                               *snatch#status()*
 snatch#abort()                                                 *snatch#abort()*
 
         Forcibly stop |Sneaking| mode (practically, |Normal| mode), staying in
-        |Normal| mode, and return |v:true|; besides, instead of |SnatchStopPre| and
-        |SnatchStopPost|, this function triggers two special |snatch-autocmd|s:
+        |Normal| mode, and return |v:true|; besides, instead of |SnatchInsertPre| and
+        |SnatchInsertPost|, this function triggers two special |snatch-autocmd|s:
         |SnatchAbortedPre| and |SnatchAbortedPost|. On the other hand, when
         |sneaking| is NOT in progress, do nothing but return |v:false|.
         See also |snatch#cancel()|.
@@ -58,8 +58,8 @@ snatch#cancel()                                               *snatch#cancel()*
 
         Forcibly stop |Sneaking| mode, go back to the starting position in the
         previous mode (|Insert| mode or |Cmdline| mode), and return |v:true|;
-        besides, instead of |SnatchStopPre| and |SnatchStopPost|, this function
-        triggers two special |snatch-autocmd|s: |SnatchCancelledPre| and
+        besides, instead of |SnatchInsertPre| and |SnatchInsertPost|, this
+        function triggers two special |snatch-autocmd|s: |SnatchCancelledPre| and
         |SnatchCancelledPost|. On the other hand, when |sneaking| is NOT in
         progress, do nothing but return |v:false|.
         See also |snatch#abort()|.
@@ -140,10 +140,9 @@ AUTOCMD                                                         *snatch-autocmd*
 
 :autocmd User SnatchStartPost {command}                       *SnatchStartPost*
 
-:autocmd User SnatchStopPre {command}                           *SnatchStopPre*
+:autocmd User SnatchInsertPre {command}                       *SnatchInsertPre*
 
-:autocmd User SnatchStopPost {command}                         *SnatchStopPost*
-
+:autocmd User SnatchInsertPost {command}                     *SnatchInsertPost*
 
 :autocmd User SnatchAbortedPre {command}                     *SnatchAbortedPre*
 
