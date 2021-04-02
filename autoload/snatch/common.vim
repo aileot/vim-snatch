@@ -68,7 +68,7 @@ function! snatch#common#prepare(config) abort
   call s:wait()
 endfunction
 
-function! s:parse_snatch_events() abort
+function! s:parse_snatch_strategies() abort
   const snatch_by = deepcopy(s:stat.snatch_by.get())
   let s:use_register = index(snatch_by, 'register') >= 0
   let s:recursive_motion = index(snatch_by, 'any_motion') >= 0 ? 'none'
@@ -77,7 +77,7 @@ function! s:parse_snatch_events() abort
 endfunction
 
 function! s:wait() abort
-  call s:parse_snatch_events()
+  call s:parse_snatch_strategies()
 
   if s:recursive_motion !=# 'any'
     call snatch#motion#wait()
