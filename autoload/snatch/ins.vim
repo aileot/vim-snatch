@@ -13,7 +13,7 @@ function! s:highlight_insert_pos() abort
     " of in rectangle, substitute it.
     let c -= 1
   endif
-  const m = matchaddpos('SnatchPrevPos', [[l, c]])
+  const m = matchaddpos('SnatchInsertPos', [[l, c]])
   augroup snatch/ins/highlight-insert_pos
     exe 'autocmd User SnatchInsertPost ++once call s:highlight_clear(' m ')'
     exe 'autocmd User SnatchAbortedPost ++once call s:highlight_clear(' m ')'

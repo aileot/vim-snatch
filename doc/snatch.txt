@@ -173,11 +173,11 @@ SnatchCursor                                                  *hl-SnatchCursor*
 <
         Used to replace "Cursor" highlight while |sneaking|.
 
-SnatchPrevPos                                                *hl-SnatchPrevPos*
+SnatchInsertPos                                            *hl-SnatchInsertPos*
 
         Default:
 >
-        hi def SnatchPrevPos cterm=bold,reverse gui=bold,reverse
+        hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
 <
         Used to make current inserting position stand out while |sneaking|.
 
