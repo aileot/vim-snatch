@@ -25,7 +25,7 @@ OVERVIEW                                                       *snatch-overview*
 
 1. Saving current position, leave current mode.
 
-        Trigger |SnatchStartPre| and |SnatchStopPost|.
+        Trigger |SnatchReadyPre| and |SnatchReadyPost|.
 
 2. Enter |sneaking| mode.                                        *snatch-sneaking*
 
@@ -134,11 +134,11 @@ i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
 ------------------------------------------------------------------------------
 AUTOCMD                                                         *snatch-autocmd*
 
-:autocmd User SnatchStartPre {command}                         *SnatchStartPre*
+:autocmd User SnatchReadyPre {command}                         *SnatchReadyPre*
 
         Triggered before any process start.
 
-:autocmd User SnatchStartPost {command}                       *SnatchStartPost*
+:autocmd User SnatchReadyPost {command}                       *SnatchReadyPost*
 
 :autocmd User SnatchInsertPre {command}                       *SnatchInsertPre*
 
