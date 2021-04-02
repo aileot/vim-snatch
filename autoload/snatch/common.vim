@@ -117,11 +117,12 @@ function! snatch#common#cancel(...) abort
     return v:false
   endif
 
-  if s:stat.prev_mode ==# 'insert'
+  const prev_mode = s:stat.prev_mode.get()
+  if prev_mode ==# 'insert'
     doautocmd User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#ins#restore_pos()
-  elseif s:stat.prev_mode =~# s:is_cmdline_mode
+  elseif prev_mode =~# s:is_cmdline_mode
     doautocmd User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#cmd#restore_pos()
