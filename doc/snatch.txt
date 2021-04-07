@@ -8,10 +8,16 @@ License: MIT license
 CONTENTS                                                       *snatch-contents*
 
 Introduction            |snatch-introduction|
+Overview                |snatch-overview|
+  Process                 |snatch-process|
+  Strategies              |snatch-strategies|
 Usage                   |snatch-usage|
   Function                |snatch-function|
   Variable                |snatch-variable|
   Mapping                 |snatch-mapping|
+  Autocmd                 |snatch-autocmd|
+  Highlight               |snatch-highlight|
+FAQ                     |snatch-faq|
 Compatibility           |snatch-compatibility|
 
 ==============================================================================
