@@ -3,6 +3,7 @@ let s:stat.win_id = snatch#status#new(0)
 let s:stat.insert_pos = snatch#status#new([])
 let s:stat.prev_mode = snatch#status#new('NONE')
 let s:stat.snatch_by = snatch#status#new([])
+let s:stat.once_by = snatch#status#new([])
 let s:stat.is_sneaking = snatch#status#new(v:false)
 
 let s:is_cmdline_mode = '^[-:>/?@=]$'
@@ -26,7 +27,8 @@ augroup END
 function! s:save_state(config) abort
   call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
-  call s:stat.snatch_by.set(a:config.snatch_by)
+  call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
+  call s:stat.once_by.set(get(a:config, 'once_by', []))
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -80,10 +82,12 @@ function! s:wait() abort
     autocmd BufWinLeave <buffer> call snatch#common#abort()
   augroup END
 
-  const snatch_by = deepcopy(s:stat.snatch_by.get())
+  const once_by = deepcopy(s:stat.once_by.get())
+  const oneshot_hor = index(once_by, 'horizontal_motion') >= 0
 
-  if index(snatch_by, 'horizontal_motion') >= 0
-    call snatch#motion#wait()
+  const snatch_by = deepcopy(s:stat.snatch_by.get())
+  if oneshot_hor || index(snatch_by, 'horizontal_motion') >= 0
+    call snatch#motion#wait(oneshot_hor)
   endif
 
   if index(snatch_by, 'register') >= 0
