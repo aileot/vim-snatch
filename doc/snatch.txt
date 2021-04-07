@@ -74,7 +74,7 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
         (default: '0')
 
         Set in |String|.
-        Using the provided mappings like |<Plug>(snatch-reg-horizontal-ctrl-y)|,
+        Using the provided mappings like |<Plug>(snatch-hor-or-reg-ctrl-y)|,
         |vim-snatch| will snatch texts but won't override the |registers| set
         in this option, as if to intercept it. (Actually, save & restore the
         |registers|.) The rest of |registers| works as usual, snatching texts.
@@ -123,9 +123,9 @@ i_<Plug>(snatch-reg-here)                           *i_<Plug>(snatch-reg-here)*
         Snatch the text to be registered. Any {motion} won't stop snatching.
         See |g:snatch#clean_registers|.
 
-i_<Plug>(snatch-reg-horizontal-ctrl-y) *i_<Plug>(snatch-reg-horizontal-ctrl-y)*
-i_<Plug>(snatch-reg-horizontal-ctrl-e) *i_<Plug>(snatch-reg-horizontal-ctrl-e)*
-i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
+i_<Plug>(snatch-hor-or-reg-ctrl-y)         *i_<Plug>(snatch-hor-or-reg-ctrl-y)*
+i_<Plug>(snatch-hor-or-reg-ctrl-e)         *i_<Plug>(snatch-hor-or-reg-ctrl-e)*
+i_<Plug>(snatch-hor-or-reg-here)             *i_<Plug>(snatch-hor-or-reg-here)*
 
         Mixed mapping of |<Plug>(snatch-horizontal-ctrl-y)| and
         |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
@@ -138,7 +138,7 @@ i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
                                      *i_<Plug>(snatch-oneshot-hor-or-reg-here)*
 i_<Plug>(snatch-oneshot-hor-or-reg-here)
 
-        Almost same as |i_<Plug>(snatch-reg-horizontal-ctrl-y)| but the
+        Almost same as |i_<Plug>(snatch-hor-or-reg-ctrl-y)| but the
         detection for horizontal motion is one-shot: once cursor moves
         vertically, you have to use |registers| to |snatch| text.
 

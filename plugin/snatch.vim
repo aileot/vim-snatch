@@ -51,17 +51,17 @@ inoremap <silent> <Plug>(snatch-reg-here)
       \   'snatch_by': ['register'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-y)
+inoremap <silent> <Plug>(snatch-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-horizontal-ctrl-e)
+inoremap <silent> <Plug>(snatch-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-horizontal-here)
+inoremap <silent> <Plug>(snatch-hor-or-reg-here)
       \ <Cmd>call snatch#ins#start({
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
