@@ -80,7 +80,7 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
         |registers|.) The rest of |registers| works as usual, snatching texts.
 
 g:snatch#timeoutlen                                       *g:snatch#timeoutlen*
-        (default: 8000)
+        (default: 60000)
 
         Time in milliseconds to cancel |sneaking| process. Set to `-1` to disable
         timeout. Also read |g:snatch#cancellation_policy|.

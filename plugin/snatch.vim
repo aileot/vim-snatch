@@ -4,7 +4,7 @@ hi def SnatchCursor ctermfg=white guifg=white ctermbg=magenta guibg=magenta cter
 hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
 
 let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
-let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 8000)
+let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 60000)
 let g:snatch#cancellation_policy =
       \ get(g:, 'snatch#cancellation_policy', 'cancel')
 
