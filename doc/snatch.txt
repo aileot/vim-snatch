@@ -131,6 +131,17 @@ i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
         |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
         details, follow the respective tags.
 
+                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)*
+i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)*
+i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+                                     *i_<Plug>(snatch-oneshot-hor-or-reg-here)*
+i_<Plug>(snatch-oneshot-hor-or-reg-here)
+
+        Almost same as |i_<Plug>(snatch-reg-horizontal-ctrl-y)| but the
+        detection for horizontal motion is one-shot: once cursor moves
+        vertically, you have to use |registers| to |snatch| text.
+
 ------------------------------------------------------------------------------
 AUTOCMD                                                         *snatch-autocmd*
 
