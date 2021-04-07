@@ -21,21 +21,45 @@ INTRODUCTION                                               *snatch-introduction*
 ==============================================================================
 OVERVIEW                                                       *snatch-overview*
 
-|Snatch| works as the following process:
+------------------------------------------------------------------------------
+PROCESS                                                         *snatch-process*
 
-1. Saving current position, leave current mode.
+                                                             *snatch-snatching*
+For conciseness, a series of process provided by this plugin is referred to
+in this documentation as |snatching|. Briefly, |snatching| is composed of the
+actions in the order:
 
-        Trigger |SnatchReadyPre| and |SnatchReadyPost|.
+                                                              *snatch-readying*
+1. |Readying|: save current position, and leave current mode.
 
-2. Enter |sneaking| mode.                                        *snatch-sneaking*
+        1. Trigger |SnatchReadyPre|.
+        2. Save current position as insert position.
+        3. Leaving current mode (|Insert| or |Cmdline| mode), enter |Normal| mode.
+        4. Adjust initial |sneaking| position esp. for |horizontal_motion|.
+        5. Trigger |SnatchReadyPost|.
 
-        Currently, we have three snatch-strategies:
+                                                              *snatch-sneaking*
+2. |Sneaking|: wait for your action.
 
-                - register
-                - operator
-                - horizontal_motion
+        1. As soon as the preset |snatch-strategies| is fulfilled, shift to
+           |inserting| process.
 
-3. Get back to saved position, and insert |snatch|ed text.
+        Note:
+        The cancellation functions are all supposed to be used in this
+        |sneaking| process. For detail, look up the following helptags:
+                - |snatch#cancel()|
+                - |snatch#abort()|
+
+                                                             *snatch-inserting*
+3. |Inserting|: get back to saved position, and insert text.
+
+        1. Trigger |SnatchInsertPre|.
+        2. Insert |snatch|ed text.
+        3. Trigger |SnatchInsertPost|.
+
+        Note:
+        This |inserting| process won't be reached if |snatching| process has
+        been cancelled at |sneaking| process.
 
 ==============================================================================
 USAGE                                                             *snatch-usage*
