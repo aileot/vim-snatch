@@ -66,6 +66,24 @@ inoremap <silent> <Plug>(snatch-reg-horizontal-here)
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
 
+inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+      \ <Cmd>call snatch#ins#start({
+      \   'pre_keys': 'kl',
+      \   'once_by': ['horizontal_motion'],
+      \   'snatch_by': ['register'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+      \ <Cmd>call snatch#ins#start({
+      \   'pre_keys': 'jl',
+      \   'once_by': ['horizontal_motion'],
+      \   'snatch_by': ['register'],
+      \ })<CR>
+inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-here)
+     \ <Cmd>call snatch#ins#start({
+     \   'once_by': ['horizontal_motion'],
+     \   'snatch_by': ['register'],
+     \ })<CR>
+
 if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
   cmap <C-o> <Plug>(snatch-operator)
