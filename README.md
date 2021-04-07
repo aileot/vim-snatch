@@ -96,9 +96,10 @@ imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
 
 " Suggestion:
 " You might enjoy the trick to snatch texts as soon as cursor has moved.
+" Make sure g:snatch#clean_registers contains '0'.
 imap <C-y> <Plug>(snatch-reg-ctrl-y)y
-" Or name the mapping, using <SID>:
+" Or use <SID> if your `y` could be mapped:
 inoremap <SID>y y
-imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
-imap <C-y> <SID>(snatch-sensitive-ctrl-y)
+imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+imap <C-y> <SID>(snatch-operator-ctrl-y)
 ```
