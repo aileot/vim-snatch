@@ -224,6 +224,19 @@ SnatchInsertPos                                            *hl-SnatchInsertPos*
         Used to make current inserting position stand out while |sneaking|.
 
 ==============================================================================
+FAQ                                                                 *snatch-faq*
+
+Q. How to use |operator| even in |Normal| mode?
+A. Add the following snippet in your vimrc.
+>
+        " Make sure g:snatch#clean_registers contains '0'.
+        imap <C-y> <Plug>(snatch-reg-ctrl-y)y
+        " Or use <SID> if your `y` could be mapped:
+        inoremap <SID>y y
+        imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+        imap <C-y> <SID>(snatch-operator-ctrl-y)
+<
+==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
 
 
