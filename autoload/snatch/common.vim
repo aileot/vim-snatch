@@ -83,7 +83,11 @@ function! s:wait() abort
     autocmd!
     " Note: CmdlineEnter can be triggered up to user's mappings. Typically,
     " vim-camelcasemotion triggers the event immediately on each motion.
+    " FIXME: It throws E523.
     autocmd InsertEnter * ++once call snatch#common#abort()
+
+    autocmd! * <buffer>
+    autocmd BufWinLeave <buffer> call snatch#common#abort()
   augroup END
 
   if s:recursive_motion !=# 'any'
