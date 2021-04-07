@@ -56,7 +56,7 @@ function! s:restore_cursorhl() abort
 endfunction
 
 function! snatch#common#prepare(config) abort
-  doautocmd User SnatchReadyPre
+  doautocmd <nomodeline> User SnatchReadyPre
   noautocmd stopinsert
 
   call s:save_state(a:config)
@@ -100,7 +100,7 @@ function! s:wait() abort
           \ : 'snatch#common#abort'
     call timer_start(g:snatch#timeoutlen, callback)
   endif
-  doautocmd User SnatchReadyPost
+  doautocmd <nomodeline> User SnatchReadyPost
 endfunction
 
 function! snatch#common#stop() abort
@@ -116,9 +116,9 @@ function! snatch#common#abort(...) abort
     return v:false
   endif
 
-  doautocmd User SnatchAbortedPre
+  doautocmd <nomodeline> User SnatchAbortedPre
   call snatch#common#stop()
-  doautocmd User SnatchAbortedPost
+  doautocmd <nomodeline> User SnatchAbortedPost
   return v:true
 endfunction
 
@@ -129,23 +129,23 @@ function! snatch#common#cancel(...) abort
 
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'i'
-    doautocmd User SnatchCancelledPre
+    doautocmd <nomodeline> User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#ins#restore_pos()
   elseif prev_mode =~# s:is_cmdline_mode
-    doautocmd User SnatchCancelledPre
+    doautocmd <nomodeline> User SnatchCancelledPre
     call snatch#common#stop()
     call snatch#cmd#restore_pos()
   else
     call snatch#utils#throw('the previous mode cannot be identified')
   endif
 
-  doautocmd User SnatchCancelledPost
+  doautocmd <nomodeline> User SnatchCancelledPost
   return v:true
 endfunction
 
 function! snatch#common#insert(chars) abort
-  doautocmd User SnatchInsertPre
+  doautocmd <nomodeline> User SnatchInsertPre
 
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'i'
@@ -157,7 +157,7 @@ function! snatch#common#insert(chars) abort
   endif
 
   call snatch#common#stop()
-  doautocmd User SnatchInsertPost
+  doautocmd <nomodeline> User SnatchInsertPost
 endfunction
 
 function! snatch#common#status() abort
