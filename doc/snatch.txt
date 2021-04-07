@@ -61,6 +61,27 @@ actions in the order:
         This |inserting| process won't be reached if |snatching| process has
         been cancelled at |sneaking| process.
 
+Note:
+|Snatching| would also mean the range detection in |sneaking| process, or even the
+entire series of actions from the range detection to the text insertion in
+|inserting| process. Probably, this polysemantic usage is hardly confusing.
+
+------------------------------------------------------------------------------
+STRATEGIES                                                   *snatch-strategies*
+
+We have three strategy options for |snatching| in |sneaking| process.
+
+        register                Using |TextYankPost|, intercept the text being
+                                about to fill a register.
+                                See also |g:snatch#clean_registers|.
+
+        horizontal_motion       As soon as cursor has moved in the same line,
+                                The text being |snatch|ed must be within a line.
+
+        operator                Get into |Operator-pending| mode. Only available
+                                in |Cmdline| mode. See |snatch-faq| below if you
+                                want to do |snatch|ing via |operator-pending| mode.
+
 ==============================================================================
 USAGE                                                             *snatch-usage*
 
