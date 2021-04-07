@@ -147,13 +147,20 @@ AUTOCMD                                                         *snatch-autocmd*
 
 :autocmd User SnatchReadyPre {command}                         *SnatchReadyPre*
 
-        Triggered before any process start.
+        Triggered before any process starts.
 
 :autocmd User SnatchReadyPost {command}                       *SnatchReadyPost*
 
+        Triggered just after |readying| process has done.
+
 :autocmd User SnatchInsertPre {command}                       *SnatchInsertPre*
 
+        Triggered just before |inserting| process starts.
+
 :autocmd User SnatchInsertPost {command}                     *SnatchInsertPost*
+
+        Triggered just after |inserting| process has been done. It also means
+        that the current |sneaking| process has been done.
 
 :autocmd User SnatchAbortedPre {command}                     *SnatchAbortedPre*
 
