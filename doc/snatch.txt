@@ -234,7 +234,7 @@ SnatchCursor                                                  *hl-SnatchCursor*
                         \ ctermfg=white guifg=white
                         \ ctermbg=magenta guibg=magenta
 <
-        Used to replace "Cursor" highlight while |sneaking|.
+        Used to replace "Cursor" highlight in |sneaking| process.
 
 SnatchInsertPos                                            *hl-SnatchInsertPos*
 
@@ -242,7 +242,7 @@ SnatchInsertPos                                            *hl-SnatchInsertPos*
 >
         hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
 <
-        Used to make current inserting position stand out while |sneaking|.
+        Used to make current inserting position stand out in |sneaking| process.
 
 ==============================================================================
 FAQ                                                                 *snatch-faq*
