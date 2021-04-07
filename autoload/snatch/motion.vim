@@ -1,6 +1,6 @@
 let s:std_pos = snatch#status#new([])
 
-function! snatch#motion#insert() abort
+function! s:insert_on_horizontal_motion() abort
   if s:std_pos.is_reset()
     call s:std_pos.set(getpos('.'))
     call snatch#motion#wait()
@@ -32,6 +32,6 @@ endfunction
 
 function! snatch#motion#wait() abort
   call snatch#augroup#begin('motion')
-  autocmd CursorMoved * ++once call snatch#motion#insert()
+  autocmd CursorMoved * ++once call s:insert_on_horizontal_motion()
   call snatch#augroup#end()
 endfunction
