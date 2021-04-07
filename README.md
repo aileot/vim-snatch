@@ -95,8 +95,8 @@ imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
 imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-here)<Plug>(easymotion-s)
 
 " Suggestion:
-" You might enjoy the trick to snatch texts as soon as cursor has moved.
-" Make sure g:snatch#clean_registers contains '0'.
+" You might enjoy the trick to experience snatch-operator from Insert mode.
+let g:snatch#clean_registers = '0' " (default)
 imap <C-y> <Plug>(snatch-reg-ctrl-y)y
 " Or use <SID> if your `y` could be mapped:
 inoremap <SID>y y
