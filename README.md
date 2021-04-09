@@ -47,8 +47,8 @@ on_event = ['CmdlineEnter', 'InsertEnter']
 
 ## Usage
 
-(The options, mappings, and so on, are not all the features this plugin
-provides.
+(The following options, mappings, and so on, are not all the features this
+plugin provides.
 Type `:h snatch`,
 [doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
 will tell you more features and their details.)
