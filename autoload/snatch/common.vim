@@ -68,17 +68,7 @@ function! snatch#common#prepare(config) abort
   call s:wait()
 endfunction
 
-function! s:parse_snatch_strategies() abort
-  const snatch_by = deepcopy(s:stat.snatch_by.get())
-  let s:use_register = index(snatch_by, 'register') >= 0
-  let s:recursive_motion = index(snatch_by, 'any_motion') >= 0 ? 'none'
-        \ : index(snatch_by, 'horizontal_motion') >= 0 ? 'vertical'
-        \ : 'any'
-endfunction
-
 function! s:wait() abort
-  call s:parse_snatch_strategies()
-
   augroup snatch/abort_on_some_events
     autocmd!
     " Note: CmdlineEnter can be triggered up to user's mappings. Typically,
@@ -90,11 +80,13 @@ function! s:wait() abort
     autocmd BufWinLeave <buffer> call snatch#common#abort()
   augroup END
 
-  if s:recursive_motion !=# 'any'
+  const snatch_by = deepcopy(s:stat.snatch_by.get())
+
+  if index(snatch_by, 'horizontal_motion') >= 0
     call snatch#motion#wait()
   endif
 
-  if s:use_register
+  if index(snatch_by, 'register') >= 0
     call snatch#register#wait()
   endif
 

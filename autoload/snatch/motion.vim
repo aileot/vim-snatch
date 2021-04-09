@@ -8,13 +8,13 @@ function! snatch#motion#insert() abort
   endif
 
   const pos = getpos('.')
-  const std_pos = s:std_pos.get()
+  let std_pos = s:std_pos.get()
   const old_lnum = std_pos[1]
   const new_lnum = pos[1]
 
-  if s:recursive_motion ==# 'vertical'
-        \ && (new_lnum != old_lnum || pos == std_pos)
-    let std_pos = pos
+  const is_horizontal_motion = new_lnum != old_lnum || pos == std_pos
+  if !is_horizontal_motion
+    call s:std_pos.set(pos)
     call snatch#motion#wait()
     return
   endif
