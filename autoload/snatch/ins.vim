@@ -14,15 +14,16 @@ function! s:highlight_insert_pos() abort
     let c -= 1
   endif
   const m = matchaddpos('SnatchInsertPos', [[l, c]])
+  const id = s:win_id.get()
   augroup snatch/ins/highlight-insert_pos
-    exe 'autocmd User SnatchInsertPost ++once call s:highlight_clear(' m ')'
-    exe 'autocmd User SnatchAbortedPost ++once call s:highlight_clear(' m ')'
-    exe 'autocmd User SnatchCancelledPost ++once call s:highlight_clear(' m ')'
+    exe 'autocmd User SnatchInsertPre ++once call s:highlight_clear(' m ',' id ')'
+    exe 'autocmd User SnatchAbortedPre ++once call s:highlight_clear(' m ',' id ')'
+    exe 'autocmd User SnatchCancelledPre ++once call s:highlight_clear(' m ',' id ')'
   augroup END
 endfunction
 
-function! s:highlight_clear(m) abort
-  call matchdelete(a:m)
+function! s:highlight_clear(m, winid) abort
+  call matchdelete(a:m, a:winid)
   silent! autocmd! snatch/ins/highlight-insert_pos
 endfunction
 
