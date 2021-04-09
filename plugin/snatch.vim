@@ -88,7 +88,7 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
   cmap <C-o> <Plug>(snatch-operator)
 
-  imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
-  imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
+  imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+  imap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 endif
 
