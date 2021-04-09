@@ -263,6 +263,20 @@ A. Add the following snippet in your vimrc.
         imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
         imap <C-y> <SID>(snatch-operator-ctrl-y)
 <
+Q. Notify me when snatching is aborted/cancelled.
+A. Add the following snippet in your vimrc.
+>
+        augroup snatch-notifications
+          autocmd!
+          autocmd User SnatchAbortedPost echohl ErrorMsg
+          autocmd User SnatchAbortedPost echo '[snatch] abort'
+          autocmd User SnatchAbortedPost echohl Normal
+
+          autocmd User SnatchCancelledPost echohl ErrorMsg
+          autocmd User SnatchCancelledPost echo '[snatch] cancel'
+          autocmd User SnatchCancelledPost echohl Normal
+        augroup END
+<
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
 
