@@ -47,6 +47,12 @@ on_event = ['CmdlineEnter', 'InsertEnter']
 
 ## Usage
 
+(The following options, mappings, and so on, are not all the features this
+plugin provides.
+Type `:h snatch`,
+[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
+will tell you more features and their details.)
+
 ### Options
 
 ```vim
@@ -66,8 +72,8 @@ register.
 xmap z: <Plug>(snatch-into-cmdline)
 cmap <C-o> <Plug>(snatch-operator)
 
-imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)
-imap <C-e> <Plug>(snatch-reg-horizontal-ctrl-e)
+imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+imap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 ```
 
 Or define mappings as your preference.
@@ -76,7 +82,7 @@ Or define mappings as your preference.
 let g:snatch#no_default_mappings = 1
 
 " Or you can predefine the first {motion}.
-imap <C-y> <Plug>(snatch-reg-horizontal-ctrl-y)<Plug>(easymotion-f)
+imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)<Plug>(easymotion-f)
 imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
 
 " Use some tricks for non-recursive {motion}.
@@ -86,17 +92,14 @@ imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
 " We have another kind of mappings to start sneaking right at the spot.
 " It may be useful with the motions that assumes twice a {motion} or more.
 imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
-imap <C-y> <Plug>(snatch-reg-horizontal-here)<Plug>(easymotion-s)
+imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-here)<Plug>(easymotion-s)
 
 " Suggestion:
-" You might enjoy the trick to snatch texts as soon as cursor has moved.
+" You might enjoy the trick to experience snatch-operator from Insert mode.
+let g:snatch#clean_registers = '0' " (default)
 imap <C-y> <Plug>(snatch-reg-ctrl-y)y
-" Or name the mapping, using <SID>:
+" Or use <SID> if your `y` could be mapped:
 inoremap <SID>y y
-imap <SID>(snatch-sensitive-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
-imap <C-y> <SID>(snatch-sensitive-ctrl-y)
+imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+imap <C-y> <SID>(snatch-operator-ctrl-y)
 ```
-
-Read
-[doc/snatch.txt](https://github.com/kaile256/vim-snatch/blob/main/doc/snatch.txt)
-for more details.

@@ -8,9 +8,16 @@ License: MIT license
 CONTENTS                                                       *snatch-contents*
 
 Introduction            |snatch-introduction|
+Overview                |snatch-overview|
+  Process                 |snatch-process|
+  Strategies              |snatch-strategies|
 Usage                   |snatch-usage|
+  Function                |snatch-function|
   Variable                |snatch-variable|
   Mapping                 |snatch-mapping|
+  Autocmd                 |snatch-autocmd|
+  Highlight               |snatch-highlight|
+FAQ                     |snatch-faq|
 Compatibility           |snatch-compatibility|
 
 ==============================================================================
@@ -18,7 +25,95 @@ INTRODUCTION                                               *snatch-introduction*
 
 
 ==============================================================================
+OVERVIEW                                                       *snatch-overview*
+
+------------------------------------------------------------------------------
+PROCESS                                                         *snatch-process*
+
+                                                             *snatch-snatching*
+For conciseness, a series of process provided by this plugin is referred to
+in this documentation as |snatching|. Briefly, |snatching| is composed of the
+actions in the order:
+
+                                                              *snatch-readying*
+1. |Readying|: save current position, and leave current mode.
+
+        1. Trigger |SnatchReadyPre|.
+        2. Save current position as insert position.
+        3. Leaving current mode (|Insert| or |Cmdline| mode), enter |Normal| mode.
+        4. Adjust initial |sneaking| position esp. for |horizontal_motion|.
+        5. Trigger |SnatchReadyPost|.
+
+                                                              *snatch-sneaking*
+2. |Sneaking|: wait for your action.
+
+        1. As soon as the preset |snatch-strategies| is fulfilled, shift to
+           |inserting| process.
+
+        Note:
+        The cancellation functions are all supposed to be used in this
+        |sneaking| process. For detail, look up the following helptags:
+                - |snatch#cancel()|
+                - |snatch#abort()|
+
+                                                             *snatch-inserting*
+3. |Inserting|: get back to saved position, and insert text.
+
+        1. Trigger |SnatchInsertPre|.
+        2. Insert |snatch|ed text.
+        3. Trigger |SnatchInsertPost|.
+
+        Note:
+        This |inserting| process won't be reached if |snatching| process has
+        been cancelled at |sneaking| process.
+
+Note:
+|Snatching| would also mean the range detection in |sneaking| process, or even the
+entire series of actions from the range detection to the text insertion in
+|inserting| process. Probably, this polysemantic usage is hardly confusing.
+
+------------------------------------------------------------------------------
+STRATEGIES                                                   *snatch-strategies*
+
+We have three strategy options for |snatching| in |sneaking| process.
+
+        register                Using |TextYankPost|, intercept the text being
+                                about to fill a register.
+                                See also |g:snatch#clean_registers|.
+
+        horizontal_motion       As soon as cursor has moved in the same line,
+                                The text being |snatch|ed must be within a line.
+
+        operator                Get into |Operator-pending| mode. Only available
+                                in |Cmdline| mode. See |snatch-faq| below if you
+                                want to do |snatch|ing via |operator-pending| mode.
+
+==============================================================================
 USAGE                                                             *snatch-usage*
+
+------------------------------------------------------------------------------
+FUNCTION                                                       *snatch-function*
+
+snatch#status()                                               *snatch#status()*
+
+snatch#abort()                                                 *snatch#abort()*
+
+        Forcibly stop |Sneaking| mode (practically, |Normal| mode), staying in
+        |Normal| mode, and return |v:true|; besides, instead of |SnatchInsertPre| and
+        |SnatchInsertPost|, this function triggers two special |snatch-autocmd|s:
+        |SnatchAbortedPre| and |SnatchAbortedPost|. On the other hand, when
+        |sneaking| is NOT in progress, do nothing but return |v:false|.
+        See also |snatch#cancel()|.
+
+snatch#cancel()                                               *snatch#cancel()*
+
+        Forcibly stop |Sneaking| mode, go back to the starting position in the
+        previous mode (|Insert| mode or |Cmdline| mode), and return |v:true|;
+        besides, instead of |SnatchInsertPre| and |SnatchInsertPost|, this
+        function triggers two special |snatch-autocmd|s: |SnatchCancelledPre| and
+        |SnatchCancelledPost|. On the other hand, when |sneaking| is NOT in
+        progress, do nothing but return |v:false|.
+        See also |snatch#abort()|.
 
 ------------------------------------------------------------------------------
 VARIABLE                                                       *snatch-variable*
@@ -30,10 +125,27 @@ g:snatch#clean_registers                             *g:snatch#clean_registers*
         (default: '0')
 
         Set in |String|.
-        Using the provided mappings like |<Plug>(snatch-reg-horizontal-ctrl-y)|,
+        Using the provided mappings like |<Plug>(snatch-hor-or-reg-ctrl-y)|,
         |vim-snatch| will snatch texts but won't override the |registers| set
         in this option, as if to intercept it. (Actually, save & restore the
         |registers|.) The rest of |registers| works as usual, snatching texts.
+
+g:snatch#timeoutlen                                       *g:snatch#timeoutlen*
+        (default: 60000)
+
+        Time in milliseconds to cancel |sneaking| process. Set to `-1` to disable
+        timeout. Also read |g:snatch#cancellation_policy|.
+
+g:snatch#cancellation_policy                     *g:snatch#cancellation_policy*
+        (default: "cancel")
+
+        Set the behavior when |sneaking| is cancelled by the timeout, as
+        |g:snatch#timeoutlen|.
+
+        Available: ["abort", "cancel"]
+
+        cancel          Call |snatch#cancel()|.
+        abort           Call |snatch#abort()|.
 
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
@@ -62,17 +174,112 @@ i_<Plug>(snatch-reg-here)                           *i_<Plug>(snatch-reg-here)*
         Snatch the text to be registered. Any {motion} won't stop snatching.
         See |g:snatch#clean_registers|.
 
-i_<Plug>(snatch-reg-horizontal-ctrl-y) *i_<Plug>(snatch-reg-horizontal-ctrl-y)*
-i_<Plug>(snatch-reg-horizontal-ctrl-e) *i_<Plug>(snatch-reg-horizontal-ctrl-e)*
-i_<Plug>(snatch-reg-horizontal-here)     *i_<Plug>(snatch-reg-horizontal-here)*
+i_<Plug>(snatch-hor-or-reg-ctrl-y)         *i_<Plug>(snatch-hor-or-reg-ctrl-y)*
+i_<Plug>(snatch-hor-or-reg-ctrl-e)         *i_<Plug>(snatch-hor-or-reg-ctrl-e)*
+i_<Plug>(snatch-hor-or-reg-here)             *i_<Plug>(snatch-hor-or-reg-here)*
 
         Mixed mapping of |<Plug>(snatch-horizontal-ctrl-y)| and
         |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
         details, follow the respective tags.
 
+                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)*
+i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)*
+i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+                                     *i_<Plug>(snatch-oneshot-hor-or-reg-here)*
+i_<Plug>(snatch-oneshot-hor-or-reg-here)
+
+        Almost same as |i_<Plug>(snatch-hor-or-reg-ctrl-y)| but the
+        detection for horizontal motion is one-shot: once cursor moves
+        vertically, you have to use |registers| to |snatch| text.
+
+------------------------------------------------------------------------------
+AUTOCMD                                                         *snatch-autocmd*
+
+:autocmd User SnatchReadyPre {command}                         *SnatchReadyPre*
+
+        Triggered before any process starts.
+
+:autocmd User SnatchReadyPost {command}                       *SnatchReadyPost*
+
+        Triggered just after |readying| process has done.
+
+:autocmd User SnatchInsertPre {command}                       *SnatchInsertPre*
+
+        Triggered just before |inserting| process starts.
+
+:autocmd User SnatchInsertPost {command}                     *SnatchInsertPost*
+
+        Triggered just after |inserting| process has been done. It also means
+        that the current |sneaking| process has been done.
+
+:autocmd User SnatchAbortedPre {command}                     *SnatchAbortedPre*
+
+        Triggered in |snatch#abort()|.
+
+:autocmd User SnatchAbortedPost {command}                   *SnatchAbortedPost*
+
+        Triggered in |snatch#abort()|.
+
+:autocmd User SnatchCancelledPre {command}                 *SnatchCancelledPre*
+
+        Triggered in |snatch#cancel()|.
+
+:autocmd User SnatchCancelledPost {command}               *SnatchCancelledPost*
+
+        Triggered in |snatch#cancel()|.
+
+------------------------------------------------------------------------------
+HIGHLIGHT                                                     *snatch-highlight*
+
+SnatchCursor                                                  *hl-SnatchCursor*
+
+        Default:
+>
+        hi def SnatchCursor cterm=bold gui=bold
+                        \ ctermfg=white guifg=white
+                        \ ctermbg=magenta guibg=magenta
+<
+        Used to replace "Cursor" highlight in |sneaking| process.
+
+SnatchInsertPos                                            *hl-SnatchInsertPos*
+
+        Default:
+>
+        hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
+<
+        Used to make current inserting position stand out in |sneaking| process.
+
+==============================================================================
+FAQ                                                                 *snatch-faq*
+
+Q. How to use |operator| even in |Normal| mode?
+A. Add the following snippet in your vimrc.
+>
+        " Make sure g:snatch#clean_registers contains '0'.
+        imap <C-y> <Plug>(snatch-reg-ctrl-y)y
+        " Or use <SID> if your `y` could be mapped:
+        inoremap <SID>y y
+        imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+        imap <C-y> <SID>(snatch-operator-ctrl-y)
+<
+Q. Notify me when snatching is aborted/cancelled.
+A. Add the following snippet in your vimrc.
+>
+        augroup snatch-notifications
+          autocmd!
+          autocmd User SnatchAbortedPost echohl ErrorMsg
+          autocmd User SnatchAbortedPost echo '[snatch] abort'
+          autocmd User SnatchAbortedPost echohl Normal
+
+          autocmd User SnatchCancelledPost echohl ErrorMsg
+          autocmd User SnatchCancelledPost echo '[snatch] cancel'
+          autocmd User SnatchCancelledPost echohl Normal
+        augroup END
+<
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
 
 
 ==============================================================================
-vim:ft=help:tw=78:ts=8:sts=8:sw=8:norl:fen
+vim:ft=help:tw=78:ts=8:sts=8:sw=8:norl:fen:nojs
