@@ -19,7 +19,7 @@ function! snatch#augroup#clear() abort
   let groups = s:groups
   call uniq(groups)
   for grp in groups
-    exe 'autocmd!' grp
+    exe 'silent! autocmd!' grp
   endfor
   let s:groups = []
 endfunction
