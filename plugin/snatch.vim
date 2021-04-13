@@ -2,11 +2,14 @@ let g:loaded_snatch = 1
 
 hi def SnatchCursor ctermfg=white guifg=white ctermbg=magenta guibg=magenta cterm=bold gui=bold
 hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
+hi def SnatchInsertChars ctermfg=black guifg=black ctermbg=lightgreen guibg=lightgreen
 
 let g:snatch#clean_registers = get(g:, 'snatch#clean_registers', '0')
 let g:snatch#timeoutlen = get(g:, 'snatch#timeoutlen', 60000)
 let g:snatch#cancellation_policy =
       \ get(g:, 'snatch#cancellation_policy', 'cancel')
+let g:snatch#flash_duration_for_insertchars =
+      \ get(g:, 'snatch#flash_duration_for_insertchars', 450)
 
 xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#op()<CR>
 

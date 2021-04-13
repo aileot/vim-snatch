@@ -60,14 +60,44 @@ function! s:restore_pos() abort
   return [lnum, col]
 endfunction
 
+function! s:flash_insertchars(lnum, col, new_chars) abort
+  " '\%#' isn't suitable because cursor moves when inserting chars.
+  const pat_cursor = '\%'. a:lnum .'l\%'. a:col .'c'
+
+  const lines = split(a:new_chars, "\n")
+  const pat_head = pat_cursor .'.\{'. len(lines[0]) .'}'
+  let pat_insertchars = pat_head
+
+  const len_lines = len(lines)
+  if len_lines > 2
+    const pat_body = '\(\n.*\)\{'. (len_lines - 2) .'}'
+    let pat_insertchars .= pat_body
+  endif
+  if len_lines > 1
+    const pat_tail = '\n.\{'. len(lines[-1]) .'}'
+    let pat_insertchars .= pat_tail
+  endif
+
+  const m = matchadd('SnatchInsertChars', pat_insertchars)
+  function! s:delete_highlight(timer) abort closure
+    call matchdelete(m)
+  endfunction
+
+  call timer_start(g:snatch#flash_duration_for_insertchars,
+        \ expand('<SID>') .'delete_highlight')
+endfunction
+
 function! s:restart_insertmode(lnum, col, new_chars) abort
   let chars = a:new_chars
+  let col = a:col
   if mode(1) !~# 'i'
     const old_width = strdisplaywidth(getline(a:lnum))
     const reinsert = old_width < a:col ? 'a' : 'i'
+    let col = reinsert ==# 'a' ? col + 1 : col
     let chars = reinsert . chars
   endif
   call feedkeys(chars, 'n')
+  call s:flash_insertchars(a:lnum, a:col, a:new_chars)
 endfunction
 
 function! snatch#ins#insert(chars) abort
