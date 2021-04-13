@@ -22,6 +22,7 @@ function! snatch#register#wait() abort
   call s:save_reg()
 
   call snatch#augroup#begin('register')
+  autocmd!
 
   " `TextYankPost` is not allowed to modify texts directly.
   autocmd TextYankPost * ++once

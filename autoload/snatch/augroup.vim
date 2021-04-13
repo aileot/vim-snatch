@@ -7,7 +7,6 @@ function! snatch#augroup#begin(name) abort
   const group = 'snatch/'. a:name
   let s:groups += [ group ]
   exe 'augroup' group
-  autocmd!
 endfunction
 
 function! snatch#augroup#end() abort

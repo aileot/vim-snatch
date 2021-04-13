@@ -38,6 +38,7 @@ endfunction
 
 function! snatch#motion#wait(oneshot) abort
   call snatch#augroup#begin('motion')
+  autocmd!
   " Creating a new window triggers CursorMoved, which often makes unexpected
   " snatching. WinNew did not fix this problem.
   autocmd WinEnter * ++once call snatch#common#abort()
