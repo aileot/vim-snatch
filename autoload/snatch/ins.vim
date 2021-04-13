@@ -31,6 +31,15 @@ function! s:prepare(config) abort
   call s:win_id.set(win_getid())
   call s:highlight_insert_pos()
   call snatch#common#prepare(a:config)
+
+  augroup snatch/ins/reset_insert_pos
+    " Note: Because snatch#augroup#clear() is called before `User-Snatch.*Post`,
+    " this augroup must be managed by itself.
+    autocmd!
+    autocmd User SnatchInsertPost    ++once call s:insert_pos.reset()
+    autocmd User SnatchAbortedPost   ++once call s:insert_pos.reset()
+    autocmd User SnatchCancelledPost ++once call s:insert_pos.reset()
+  augroup END
 endfunction
 
 function! snatch#ins#start(config) abort
@@ -38,44 +47,34 @@ function! snatch#ins#start(config) abort
   call s:prepare(config)
 endfunction
 
-function! snatch#ins#insert(chars) abort
-  if s:insert_pos.is_reset() | return | endif
-  const id = s:win_id.get()
-  call win_gotoid(id)
+function! s:restore_pos() abort
+  if s:insert_pos.is_reset()
+    snatch#utils#throw('invalid usage')
+  endif
 
-  const insert_pos = s:insert_pos.get()
-  const old_lnum = insert_pos[1]
-  const old_col = insert_pos[2]
+  call win_gotoid(s:win_id.get())
+  const [lnum, col] = s:insert_pos.get()[1:2]
   call s:insert_pos.reset()
 
-  const chars = a:chars
+  call setpos('.', [0, lnum, col])
+  return [lnum, col]
+endfunction
 
-  const old_line = getline(old_lnum)
-  const preceding = old_col == 1 ? '' : old_line[ : old_col - 2 ]
-  const new_line = preceding . chars . old_line[ old_col - 1 : ]
-  call setline(old_lnum, new_line)
-
-  call setpos('.', [0, old_lnum, old_col + strdisplaywidth(chars), 0])
-
-  if strdisplaywidth(old_line) < old_col
-    call feedkeys('a', 'n')
-  else
-    call feedkeys('i', 'n')
+function! s:restart_insertmode(lnum, col, new_chars) abort
+  let chars = a:new_chars
+  if mode(1) !~# 'i'
+    const old_width = strdisplaywidth(getline(a:lnum))
+    const reinsert = old_width < a:col ? 'a' : 'i'
+    let chars = reinsert . chars
   endif
+  call feedkeys(chars, 'n')
+endfunction
+
+function! snatch#ins#insert(chars) abort
+  const [lnum, col] = s:restore_pos()
+  call s:restart_insertmode(lnum, col, a:chars)
 endfunction
 
 function! snatch#ins#restore_pos() abort
-  const id = s:win_id.get()
-  call win_gotoid(id)
-
-  const insert_pos = s:insert_pos.get()
-  const [lnum, col] = insert_pos[1:2]
-  call setpos('.', [0, lnum, col])
-
-  const line = getline(lnum)
-  if strdisplaywidth(line) < col
-    call feedkeys('a', 'n')
-  else
-    call feedkeys('i', 'n')
-  endif
+  call s:restore_pos()
 endfunction
