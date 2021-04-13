@@ -79,7 +79,7 @@ function! s:wait() abort
     autocmd InsertEnter * ++once call snatch#common#abort()
 
     autocmd! * <buffer>
-    autocmd BufWinLeave <buffer> call snatch#common#abort()
+    autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
   augroup END
 
   const once_by = deepcopy(s:stat.once_by.get())
