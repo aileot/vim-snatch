@@ -1,10 +1,6 @@
 let s:win_id = snatch#status#new(0)
 let s:insert_pos = snatch#status#new([])
 
-augroup snatch/ins/highlight-insert_pos
-  autocmd!
-augroup END
-
 function! s:highlight_insert_pos() abort
   let [l, c] = s:insert_pos.get()[1 : 2]
   if c == col('$')
@@ -15,11 +11,13 @@ function! s:highlight_insert_pos() abort
   endif
   const m = matchaddpos('SnatchInsertPos', [[l, c]])
   const id = s:win_id.get()
-  augroup snatch/ins/highlight-insert_pos
-    exe 'autocmd User SnatchInsertPre ++once call s:highlight_clear(' m ',' id ')'
-    exe 'autocmd User SnatchAbortedPre ++once call s:highlight_clear(' m ',' id ')'
-    exe 'autocmd User SnatchCancelledPre ++once call s:highlight_clear(' m ',' id ')'
-  augroup END
+
+  call snatch#augroup#begin('ins/highlight-insert_pos')
+  autocmd!
+  exe 'autocmd User SnatchInsertPre    ++once call s:highlight_clear(' m ',' id ')'
+  exe 'autocmd User SnatchAbortedPre   ++once call s:highlight_clear(' m ',' id ')'
+  exe 'autocmd User SnatchCancelledPre ++once call s:highlight_clear(' m ',' id ')'
+  call snatch#augroup#end()
 endfunction
 
 function! s:highlight_clear(m, winid) abort
