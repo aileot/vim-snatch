@@ -7,7 +7,6 @@ function! snatch#augroup#begin(name) abort
   const group = 'snatch/'. a:name
   let s:groups += [ group ]
   exe 'augroup' group
-  autocmd!
 endfunction
 
 function! snatch#augroup#end() abort
@@ -16,6 +15,8 @@ function! snatch#augroup#end() abort
 endfunction
 
 function! snatch#augroup#clear() abort
+  " Note: This function is supposed to be called before Snatch.*Post.
+
   let groups = s:groups
   call uniq(groups)
   for grp in groups
