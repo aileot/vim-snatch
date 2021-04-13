@@ -31,6 +31,15 @@ function! s:prepare(config) abort
   call s:win_id.set(win_getid())
   call s:highlight_insert_pos()
   call snatch#common#prepare(a:config)
+
+  augroup snatch/ins/reset_insert_pos
+    " Note: Because snatch#augroup#clear() is called before `User-Snatch.*Post`,
+    " this augroup must be managed by itself.
+    autocmd!
+    autocmd User SnatchInsertPost    ++once call s:insert_pos.reset()
+    autocmd User SnatchAbortedPost   ++once call s:insert_pos.reset()
+    autocmd User SnatchCancelledPost ++once call s:insert_pos.reset()
+  augroup END
 endfunction
 
 function! snatch#ins#start(config) abort
