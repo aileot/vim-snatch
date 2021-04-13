@@ -147,6 +147,12 @@ g:snatch#cancellation_policy                     *g:snatch#cancellation_policy*
         cancel          Call |snatch#cancel()|.
         abort           Call |snatch#abort()|.
 
+                                      *g:snatch#flash_duration_for_insertchars*
+g:snatch#flash_duration_for_insertchars
+        (default: 450)
+
+        Time in milliseconds to flash snatched characters.
+
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
 
@@ -249,6 +255,16 @@ SnatchInsertPos                                            *hl-SnatchInsertPos*
         hi def SnatchInsertPos cterm=bold,reverse gui=bold,reverse
 <
         Used to make current inserting position stand out in |sneaking| process.
+
+SnatchInsertChars                                        *hl-SnatchInsertChars*
+
+        Default:
+>
+        hi def SnatchInsertChars ctermfg=black guifg=black
+                        \ ctermbg=lightgreen guibg=lightgreen
+<
+
+        Used to make the |snatch|ed characters stand out after |sneaking| process.
 
 ==============================================================================
 FAQ                                                                 *snatch-faq*
