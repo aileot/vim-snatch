@@ -1,5 +1,11 @@
 let s:old_pos = snatch#status#new([])
 
+function! s:abort_horizontal_detection(au_name) abort
+  " Note: FileType invokes after WinNew or WinEnter does so that it's hard to
+  " abort just on specific filetypes.
+  call snatch#augroup#clear(a:au_name)
+endfunction
+
 function! s:insert_on_horizontal_motion(oneshot) abort
   if s:old_pos.is_reset()
     call s:old_pos.set(getcurpos())
@@ -37,11 +43,12 @@ function! s:insert_on_horizontal_motion(oneshot) abort
 endfunction
 
 function! snatch#motion#wait(oneshot) abort
-  call snatch#augroup#begin('motion')
+  const au_name = snatch#augroup#begin('motion')
   autocmd!
   " Creating a new window triggers CursorMoved, which often makes unexpected
   " snatching. WinNew did not fix this problem.
-  autocmd WinEnter * ++once call snatch#common#abort()
+  exe 'autocmd WinNew,WinEnter * ++once'
+        \  'call s:abort_horizontal_detection(' string(au_name) ')'
   exe 'autocmd CursorMoved * ++once'
         \ 'call s:insert_on_horizontal_motion(' a:oneshot ')'
   call snatch#augroup#end()
