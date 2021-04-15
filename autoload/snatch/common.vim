@@ -8,7 +8,7 @@ let s:stat.is_sneaking = snatch#status#new(v:false)
 
 let s:is_cmdline_mode = '^[-:>/?@=]$'
 
-let s:use_guicursor = exists('&guicursor')
+let s:use_guicursor = exists('+guicursor')
 if s:use_guicursor
   let s:hl_cursor_config = 'n-o:block-SnatchCursor'
 endif
