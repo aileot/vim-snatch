@@ -6,11 +6,11 @@ let s:stat.snatch_by = snatch#status#new([])
 let s:stat.once_by = snatch#status#new([])
 let s:stat.is_sneaking = snatch#status#new(v:false)
 
-let s:is_cmdline_mode = '^[-:>/?@=]$'
+const s:is_cmdline_mode = '^[-:>/?@=]$'
 
-let s:use_guicursor = exists('&guicursor')
+const s:use_guicursor = exists('+guicursor')
 if s:use_guicursor
-  let s:hl_cursor_config = 'n-o:SnatchCursor'
+  const s:hl_cursor_config = 'n-o:block-SnatchCursor'
 endif
 
 augroup snatch/watch
