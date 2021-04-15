@@ -36,8 +36,13 @@ endfunction
 function! s:save_state(config) abort
   call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
+
+  const once_by = get(a:config, 'once_by', [])
+  call s:stat.once_by.set(once_by)
   call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
-  call s:stat.once_by.set(get(a:config, 'once_by', []))
+  for ob in once_by
+    call s:stat.snatch_by.add(ob)
+  endfor
 endfunction
 
 function! s:set_another_cursorhl() abort
