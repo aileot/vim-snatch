@@ -20,6 +20,20 @@ function! s:stat__is_reset() abort dict
 endfunction
 let s:stat.is_reset = funcref('s:stat__is_reset')
 
+function! s:stat__add(item) abort dict
+  " Keep the item unique in list.
+  if index(self.val, a:item) >= 0 | return | endif
+  call add(self.val, a:item)
+endfunction
+let s:stat.add = funcref('s:stat__add')
+
+function! s:stat__remove(item) abort dict
+  const idx = index(self.val, a:item)
+  if idx == -1 | return | endif
+  call remove(self.val, idx)
+endfunction
+let s:stat.remove = funcref('s:stat__remove')
+
 function! snatch#status#new(default) abort
   let stat = deepcopy(s:stat)
   let stat.default = a:default

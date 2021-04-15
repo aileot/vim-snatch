@@ -1,0 +1,12 @@
+Describe augroup#clear()
+  It can remove just a specified augroup
+    let au_name = snatch#augroup#begin('bar')
+    autocmd BufRead * echo 'foo'
+    call snatch#augroup#end()
+    let au_contents = execute('autocmd '. au_name)
+    Assert NotEmpty(au_contents)
+    call snatch#augroup#clear(au_name)
+    let au_contents = execute('autocmd '. au_name)
+    Assert Same(au_contents, "\n--- Autocommands ---")
+  End
+End

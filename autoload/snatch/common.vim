@@ -13,6 +13,11 @@ if s:use_guicursor
   const s:hl_cursor_config = 'n-o:block-SnatchCursor'
 endif
 
+function! s:abort_if_no_strategies_are_available() abort
+  if !empty(s:stat.snatch_by.get()) | return | endif
+  call snatch#common#abort()
+endfunction
+
 augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
@@ -22,13 +27,32 @@ augroup snatch/watch
 
   autocmd User SnatchAbortedPost   call s:stat.is_sneaking.set(v:false)
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
+
+  autocmd User SnatchAbortedInPart-horizontal_motion
+        \ call s:stat.snatch_by.remove('horizontal_motion')
+  autocmd User SnatchAbortedInPart-horizontal_motion
+        \ call s:abort_if_no_strategies_are_available()
 augroup END
+
+function! s:wait_if_surely_in_normal_mode(...) abort
+  if mode() !=# 'n'
+    call timer_start(50, expand('<SID>') .'wait_if_surely_in_normal_mode')
+    return
+  endif
+
+  call s:wait()
+endfunction
 
 function! s:save_state(config) abort
   call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
+
+  const once_by = get(a:config, 'once_by', [])
+  call s:stat.once_by.set(once_by)
   call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
-  call s:stat.once_by.set(get(a:config, 'once_by', []))
+  for ob in once_by
+    call s:stat.snatch_by.add(ob)
+  endfor
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -67,7 +91,9 @@ function! snatch#common#prepare(config) abort
     exe 'norm!' pre_keys
   endif
 
-  call s:wait()
+  " Note: Although `:stopinsert` above, and even the success of command,
+  " `execute 'normal!' prekeys`, we're NOT in normal mode yet.
+  call s:wait_if_surely_in_normal_mode()
 endfunction
 
 function! s:wait() abort
