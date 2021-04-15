@@ -7,6 +7,7 @@ function! snatch#augroup#begin(name) abort
   const group = 'snatch/'. a:name
   let s:groups += [ group ]
   exe 'augroup' group
+  return group
 endfunction
 
 function! snatch#augroup#end() abort
@@ -14,13 +15,14 @@ function! snatch#augroup#end() abort
   exe 'augroup END'
 endfunction
 
-function! snatch#augroup#clear() abort
+function! snatch#augroup#clear(...) abort
   " Note: This function is supposed to be called before Snatch.*Post.
 
-  let groups = s:groups
+  let groups = a:0 ? deepcopy(a:000) : s:groups
   call uniq(groups)
   for grp in groups
     exe 'silent! autocmd!' grp
+    let idx = index(s:groups, grp)
+    call remove(s:groups, idx)
   endfor
-  let s:groups = []
 endfunction
