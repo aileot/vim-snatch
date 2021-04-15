@@ -24,6 +24,15 @@ augroup snatch/watch
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
 augroup END
 
+function! s:wait_if_surely_in_normal_mode(...) abort
+  if mode() !=# 'n'
+    call timer_start(50, expand('<SID>') .'wait_if_surely_in_normal_mode')
+    return
+  endif
+
+  call s:wait()
+endfunction
+
 function! s:save_state(config) abort
   call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
@@ -67,7 +76,9 @@ function! snatch#common#prepare(config) abort
     exe 'norm!' pre_keys
   endif
 
-  call s:wait()
+  " Note: Although `:stopinsert` above, and even the success of command,
+  " `execute 'normal!' prekeys`, we're NOT in normal mode yet.
+  call s:wait_if_surely_in_normal_mode()
 endfunction
 
 function! s:wait() abort
