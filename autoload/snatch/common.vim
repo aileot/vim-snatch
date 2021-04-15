@@ -13,6 +13,11 @@ if s:use_guicursor
   const s:hl_cursor_config = 'n-o:block-SnatchCursor'
 endif
 
+function! s:abort_if_no_strategies_are_available() abort
+  if !empty(s:stat.snatch_by.get()) | return | endif
+  call snatch#common#abort()
+endfunction
+
 augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
@@ -25,6 +30,8 @@ augroup snatch/watch
 
   autocmd User SnatchAbortedInPart-horizontal_motion
         \ call s:stat.snatch_by.remove('horizontal_motion')
+  autocmd User SnatchAbortedInPart-horizontal_motion
+        \ call s:abort_if_no_strategies_are_available()
 augroup END
 
 function! s:wait_if_surely_in_normal_mode(...) abort
