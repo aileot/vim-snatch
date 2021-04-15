@@ -28,7 +28,12 @@ endfunction
 let s:stat.is_reset = funcref('s:stat__is_reset')
 
 function! s:stat__extend(item) abort dict
-  call self.validate_type(a:item)
+  const t_item = type(a:item)
+  if t_item != type([]) && t_item != type({})
+    const msg = 'Invalid type: '
+          \ . string(a:item) .' must be a List or Dictionary'
+    call snatch#utils#throw(msg)
+  endif
   " Keep the item unique in list.
   if index(self.val, a:item) >= 0 | return | endif
   call extend(self.val, a:item)
