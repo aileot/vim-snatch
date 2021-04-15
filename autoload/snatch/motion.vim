@@ -1,15 +1,16 @@
 let s:old_pos = snatch#status#new([])
+let s:win_id = snatch#status#new(0)
 
 function! s:abort_horizontal_detection(au_name) abort
+  call s:old_pos.reset()
   " Note: FileType invokes after WinNew or WinEnter does so that it's hard to
   " abort just on specific filetypes.
   call snatch#augroup#clear(a:au_name)
 endfunction
 
-function! s:insert_on_horizontal_motion(oneshot) abort
-  if s:old_pos.is_reset()
-    call s:old_pos.set(getcurpos())
-    call snatch#motion#wait(a:oneshot)
+function! s:insert_on_horizontal_motion(au_name, oneshot) abort
+  if win_getid() != s:win_id.get()
+    call s:abort_horizontal_detection(a:au_name)
     return
   endif
 
@@ -21,12 +22,11 @@ function! s:insert_on_horizontal_motion(oneshot) abort
   const is_horizontal_motion = new_lnum == old_lnum
   if !is_horizontal_motion
     if a:oneshot
-      call s:old_pos.reset()
+      call s:abort_horizontal_detection(a:au_name)
       return
     endif
 
     call s:old_pos.set(new_pos)
-    call snatch#motion#wait(a:oneshot)
     return
   endif
 
@@ -38,18 +38,17 @@ function! s:insert_on_horizontal_motion(oneshot) abort
   const chars = target_line[ LEFT - 1 : RIGHT - 1 ]
 
   call snatch#common#insert(chars)
-
-  call s:old_pos.reset()
+  " In common.vim, clear the autocmds on CursorMoved.
 endfunction
 
 function! snatch#motion#wait(oneshot) abort
   const au_name = snatch#augroup#begin('motion')
   autocmd!
+  call s:old_pos.set(getcurpos())
+  call s:win_id.set(win_getid())
   " Creating a new window triggers CursorMoved, which often makes unexpected
   " snatching. WinNew did not fix this problem.
-  execute 'autocmd WinNew,WinEnter * ++once'
-        \  'call s:abort_horizontal_detection(' string(au_name) ')'
-  execute 'autocmd CursorMoved * ++once'
-        \ 'call s:insert_on_horizontal_motion(' a:oneshot ')'
+  execute 'autocmd CursorMoved *'
+        \ 'call s:insert_on_horizontal_motion(' string(au_name) ',' a:oneshot ')'
   call snatch#augroup#end()
 endfunction
