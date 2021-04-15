@@ -20,12 +20,13 @@ function! s:stat__is_reset() abort dict
 endfunction
 let s:stat.is_reset = funcref('s:stat__is_reset')
 
-function! s:stat__add(item) abort dict
+function! s:stat__extend(item) abort dict
+  call self.validate_type(a:item)
   " Keep the item unique in list.
   if index(self.val, a:item) >= 0 | return | endif
-  call add(self.val, a:item)
+  call extend(self.val, a:item)
 endfunction
-let s:stat.add = funcref('s:stat__add')
+let s:stat.extend = funcref('s:stat__extend')
 
 function! s:stat__remove(item) abort dict
   const idx = index(self.val, a:item)

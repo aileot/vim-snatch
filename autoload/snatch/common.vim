@@ -50,9 +50,7 @@ function! s:save_state(config) abort
   const once_by = get(a:config, 'once_by', [])
   call s:stat.once_by.set(once_by)
   call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
-  for ob in once_by
-    call s:stat.snatch_by.add(ob)
-  endfor
+  call s:stat.snatch_by.extend(once_by)
 endfunction
 
 function! s:set_another_cursorhl() abort
