@@ -47,9 +47,9 @@ function! snatch#motion#wait(oneshot) abort
   autocmd!
   " Creating a new window triggers CursorMoved, which often makes unexpected
   " snatching. WinNew did not fix this problem.
-  exe 'autocmd WinNew,WinEnter * ++once'
+  execute 'autocmd WinNew,WinEnter * ++once'
         \  'call s:abort_horizontal_detection(' string(au_name) ')'
-  exe 'autocmd CursorMoved * ++once'
+  execute 'autocmd CursorMoved * ++once'
         \ 'call s:insert_on_horizontal_motion(' a:oneshot ')'
   call snatch#augroup#end()
 endfunction
