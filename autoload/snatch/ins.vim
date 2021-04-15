@@ -49,7 +49,7 @@ endfunction
 
 function! s:restore_pos() abort
   if s:insert_pos.is_reset()
-    snatch#utils#throw('invalid usage')
+    call  snatch#utils#throw('invalid usage')
   endif
 
   call win_gotoid(s:win_id.get())
