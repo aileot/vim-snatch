@@ -6,6 +6,7 @@ function! s:abort_horizontal_detection(au_name) abort
   " Note: FileType invokes after WinNew or WinEnter does so that it's hard to
   " abort just on specific filetypes.
   call snatch#augroup#clear(a:au_name)
+  doautocmd <nomodeline> User SnatchAbortedInPart-horizontal_motion
 endfunction
 
 function! s:insert_on_horizontal_motion(au_name, oneshot) abort

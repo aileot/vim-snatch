@@ -22,6 +22,9 @@ augroup snatch/watch
 
   autocmd User SnatchAbortedPost   call s:stat.is_sneaking.set(v:false)
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
+
+  autocmd User SnatchAbortedInPart-horizontal_motion
+        \ call s:stat.snatch_by.remove('horizontal_motion')
 augroup END
 
 function! s:wait_if_surely_in_normal_mode(...) abort
