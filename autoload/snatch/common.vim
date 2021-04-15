@@ -10,7 +10,7 @@ let s:is_cmdline_mode = '^[-:>/?@=]$'
 
 let s:use_guicursor = exists('&guicursor')
 if s:use_guicursor
-  let s:hl_cursor_config = 'n-o:SnatchCursor'
+  let s:hl_cursor_config = 'n-o:block-SnatchCursor'
 endif
 
 augroup snatch/watch
