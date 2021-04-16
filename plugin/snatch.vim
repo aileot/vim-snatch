@@ -24,68 +24,96 @@ cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 "   inoremap <C-y> <Cmd>call s:foo("\<Plug>(bar)")<CR>
 "   ```
 "   throws the error E5522.
-inoremap <silent> <Plug>(snatch-horizontal-ctrl-y)
+inoremap <silent> <SID>(snatch-horizontal-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-horizontal-ctrl-e)
+inoremap <silent> <SID>(snatch-horizontal-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-horizontal-here)
+inoremap <silent> <SID>(snatch-horizontal-here)
       \ <Cmd>call snatch#ins#start({
       \   'snatch_by': ['horizontal_motion'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-reg-ctrl-y)
+inoremap <silent> <SID>(snatch-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-ctrl-e)
+inoremap <silent> <SID>(snatch-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-reg-here)
+inoremap <silent> <SID>(snatch-reg-here)
       \ <Cmd>call snatch#ins#start({
       \   'snatch_by': ['register'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-hor-or-reg-ctrl-y)
+inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-hor-or-reg-ctrl-e)
+inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-hor-or-reg-here)
+inoremap <silent> <SID>(snatch-hor-or-reg-here)
       \ <Cmd>call snatch#ins#start({
       \   'snatch_by': ['register', 'horizontal_motion'],
       \ })<CR>
 
-inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
       \   'once_by': ['horizontal_motion'],
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
       \   'once_by': ['horizontal_motion'],
       \   'snatch_by': ['register'],
       \ })<CR>
-inoremap <silent> <Plug>(snatch-oneshot-hor-or-reg-here)
+inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-here)
      \ <Cmd>call snatch#ins#start({
      \   'once_by': ['horizontal_motion'],
      \   'snatch_by': ['register'],
      \ })<CR>
+
+imap <Plug>(snatch-horizontal-ctrl-y)         <SID>(snatch-horizontal-ctrl-y)
+imap <Plug>(snatch-horizontal-ctrl-e)         <SID>(snatch-horizontal-ctrl-e)
+imap <Plug>(snatch-horizontal-here)           <SID>(snatch-horizontal-here)
+imap <Plug>(snatch-reg-ctrl-y)                <SID>(snatch-reg-ctrl-y)
+imap <Plug>(snatch-reg-ctrl-e)                <SID>(snatch-reg-ctrl-e)
+imap <Plug>(snatch-reg-here)                  <SID>(snatch-reg-here)
+imap <Plug>(snatch-hor-or-reg-ctrl-y)         <SID>(snatch-hor-or-reg-ctrl-y)
+imap <Plug>(snatch-hor-or-reg-ctrl-e)         <SID>(snatch-hor-or-reg-ctrl-e)
+imap <Plug>(snatch-hor-or-reg-here)           <SID>(snatch-hor-or-reg-here)
+imap <Plug>(snatch-oneshot-hor-or-reg-ctrl-y) <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
+imap <Plug>(snatch-oneshot-hor-or-reg-ctrl-e) <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
+imap <Plug>(snatch-oneshot-hor-or-reg-here)   <SID>(snatch-oneshot-hor-or-reg-here)
+
+snoremap <SID>(erase) <space><BS>
+
+smap <Plug>(snatch-horizontal-ctrl-y)         <SID>(erase)<SID>(snatch-horizontal-ctrl-y)
+smap <Plug>(snatch-horizontal-ctrl-e)         <SID>(erase)<SID>(snatch-horizontal-ctrl-e)
+smap <Plug>(snatch-horizontal-here)           <SID>(erase)<SID>(snatch-horizontal-here)
+smap <Plug>(snatch-reg-ctrl-y)                <SID>(erase)<SID>(snatch-reg-ctrl-y)
+smap <Plug>(snatch-reg-ctrl-e)                <SID>(erase)<SID>(snatch-reg-ctrl-e)
+smap <Plug>(snatch-reg-here)                  <SID>(erase)<SID>(snatch-reg-here)
+smap <Plug>(snatch-hor-or-reg-ctrl-y)         <SID>(erase)<SID>(snatch-hor-or-reg-ctrl-y)
+smap <Plug>(snatch-hor-or-reg-ctrl-e)         <SID>(erase)<SID>(snatch-hor-or-reg-ctrl-e)
+smap <Plug>(snatch-hor-or-reg-here)           <SID>(erase)<SID>(snatch-hor-or-reg-here)
+smap <Plug>(snatch-oneshot-hor-or-reg-ctrl-y) <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-ctrl-y)
+smap <Plug>(snatch-oneshot-hor-or-reg-ctrl-e) <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-ctrl-e)
+smap <Plug>(snatch-oneshot-hor-or-reg-here)   <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-here)
 
 if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
