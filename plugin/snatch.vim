@@ -82,10 +82,10 @@ inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
       \   'snatch_by': ['register'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-here)
-     \ <Cmd>call snatch#ins#start({
-     \   'once_by': ['horizontal_motion'],
-     \   'snatch_by': ['register'],
-     \ })<CR>
+      \ <Cmd>call snatch#ins#start({
+      \   'once_by': ['horizontal_motion'],
+      \   'snatch_by': ['register'],
+      \ })<CR>
 
 imap <Plug>(snatch-horizontal-ctrl-y)         <SID>(snatch-horizontal-ctrl-y)
 imap <Plug>(snatch-horizontal-ctrl-e)         <SID>(snatch-horizontal-ctrl-e)
