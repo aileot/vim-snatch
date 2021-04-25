@@ -77,6 +77,14 @@ cmap <C-o> <Plug>(snatch-operator)
 smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
 smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
+" **Notice**
+" * When pumvisible() returns 1, <C-y> and <C-e> should behave as you read at
+"   each CTRL-Y and CTRL-E in `:h popupmenu-keys`; thus, <expr> will be needed.
+" * The mapping examples after the default ones below will be written without
+"   this <expr>-workaround for pumvisible as the workaround is understood.
+" * `<SID>` lets you map both <C-y>/<C-e> non-recursively and
+"   <Plug>(snatch-mapping) recursively to the same {rhs}. (Practically, you can
+"   omit this <SID>-workaround here as {lhs} is the very same key of {rhs}.)
 inoremap <SID>(C-y) <C-y>
 inoremap <SID>(C-e) <C-e>
 imap <expr> <C-y> pumvisible() ? '<SID>(C-y)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
