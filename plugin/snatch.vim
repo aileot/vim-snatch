@@ -119,8 +119,10 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
   cmap <C-o> <Plug>(snatch-operator)
 
-  imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-  imap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+  inoremap <SID>(C-y) <C-y>
+  inoremap <SID>(C-e) <C-y>
+  imap <expr> <C-y> pumvisible() ? '<SID>(C-y)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
+  imap <expr> <C-e> pumvisible() ? '<SID>(C-e)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
   smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
   smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 endif
