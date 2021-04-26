@@ -84,6 +84,15 @@ We have three strategy options for |snatching| in |sneaking| process.
         horizontal_motion       As soon as cursor has moved in the same line,
                                 The text being |snatch|ed must be within a line.
 
+        oneshot_horizontal      Almost the same as "horizontal_motion", but,
+                                once cursor moved vertically, this strategy
+                                will be dropped in current |sneaking|. When
+                                the strategy is the last one, current
+                                |snatching| process is aborted; otherwise, keep
+                                |sneaking| with the rest strategies. Besides,
+                                adopting "horizontal_motion" together causes
+                                undefined behavior.
+
         operator                Get into |Operator-pending| mode. Only available
                                 in |Cmdline| mode. See |snatch-faq| below if you
                                 want to do |snatch|ing via |operator-pending| mode.
