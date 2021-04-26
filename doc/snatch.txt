@@ -135,10 +135,14 @@ g:snatch_status                                               *g:snatch_status*
         strategies      Return a |List| of the last available |snatch-strategies|.
         prev_mode       Return a character, either 'i' as |Insert| mode or one
                         of the value you see in |getcmdtype()| as |Cmdline| mode.
-        insert_pos      Return the |List| in the format that |getcurpos()|
-                        returns.
         win_id          Return the |window-ID| for the window where current
-                        |sneaking| has started.
+                        |sneaking| has started. It only matters if "prev_mode"
+                        returns 'i'.
+        insert_pos      Return the |List| in the format that |getcurpos()|
+                        returns. It only matters if "prev_mode" returns 'i'.
+        pre_keys        Returns the predefined key sequence to adjust cursor
+                        to expected position in |snatch-readying| process. It
+                        only matters if "prev_mode" returns 'i'.
 
 g:snatch#no_default_mappings                     *g:snatch#no_default_mappings*
         (default: 0)
