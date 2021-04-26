@@ -153,6 +153,12 @@ g:snatch#flash_duration_for_insertchars
 
         Time in milliseconds to flash snatched characters.
 
+g:snatch#cmd#position_marker                     *g:snatch#cmd#position_marker*
+        (default: '┃')
+
+        A |String| as a marker to be inserted in imitated pending |cmdline| text
+        in |sneaking| when the previous mode was |cmdline| mode.
+
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
 
