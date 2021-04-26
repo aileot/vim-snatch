@@ -1,6 +1,13 @@
 let g:snatch_status = {}
+lockvar g:snatch_status
 
 let s:stat = {}
+
+function! s:update_status(name, val) abort
+  unlockvar g:snatch_status
+  let g:snatch_status[a:name] = deepcopy(a:val)
+  lockvar g:snatch_status
+endfunction
 
 function! s:stat__get() abort dict
   return self.val
@@ -17,7 +24,7 @@ function! s:stat__set(val) abort dict
   call self.validate_type(a:val)
   let self.val = a:val
   if !has_key(self, 'name') | return | endif
-  let g:snatch_status[self.name] = a:val
+  call s:update_status(self.name, a:val)
 endfunction
 let s:stat.set = funcref('s:stat__set')
 
@@ -48,12 +55,13 @@ function! s:stat__remove(item) abort dict
   const idx = index(self.val, a:item)
   if idx == -1 | return | endif
   call remove(self.val, idx)
+  call s:update_status(self.name, self.val)
 endfunction
 let s:stat.remove = funcref('s:stat__remove')
 
 function! s:stat__register(name) abort dict
   let self.name = a:name
-  let g:snatch_status[a:name] = self.default
+  call s:update_status(a:name, self.default)
   " Expect method chaining, following #new() at once.
   return self
 endfunction
