@@ -1,10 +1,10 @@
 let s:stat = {}
-let s:stat.win_id = snatch#status#new(0)
-let s:stat.insert_pos = snatch#status#new([])
-let s:stat.prev_mode = snatch#status#new('NONE')
-let s:stat.snatch_by = snatch#status#new([])
-let s:stat.once_by = snatch#status#new([])
-let s:stat.is_sneaking = snatch#status#new(v:false)
+let s:stat.win_id = snatch#status#new(0).register('win_id')
+let s:stat.insert_pos = snatch#status#new([]).register('insert_pos')
+let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
+let s:stat.snatch_by = snatch#status#new([]).register('snatch_by')
+let s:stat.once_by = snatch#status#new([]).register('once_by')
+let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
 
