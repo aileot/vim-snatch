@@ -4,6 +4,7 @@ let s:stat.insert_pos = snatch#status#new([]).register('insert_pos')
 let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
 let s:stat.strategies = snatch#status#new([]).register('strategies')
 let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
+let s:stat.pre_keys = snatch#status#new('').register('pre_keys')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
 
@@ -83,6 +84,7 @@ function! snatch#common#prepare(config) abort
   call s:set_another_cursorhl()
 
   const pre_keys = get(a:config, 'pre_keys', '')
+  call s:stat.pre_keys.set(pre_keys)
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
