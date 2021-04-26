@@ -74,19 +74,17 @@ inoremap <silent> <SID>(snatch-hor-or-reg-here)
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
-      \   'once_by': ['horizontal_motion'],
-      \   'strategies': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
-      \   'once_by': ['horizontal_motion'],
-      \   'strategies': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-here)
       \ <Cmd>call snatch#ins#start({
       \   'once_by': ['horizontal_motion'],
-      \   'strategies': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 
 imap <Plug>(snatch-horizontal-ctrl-y)         <SID>(snatch-horizontal-ctrl-y)
