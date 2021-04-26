@@ -1,6 +1,4 @@
 let s:stat = {}
-let s:stat.win_id = snatch#status#new(0).register('win_id')
-let s:stat.insert_pos = snatch#status#new([]).register('insert_pos')
 let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
 let s:stat.strategies = snatch#status#new([]).register('strategies')
 let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
@@ -47,7 +45,6 @@ function! s:wait_if_surely_in_normal_mode(...) abort
 endfunction
 
 function! s:save_state(config) abort
-  call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
   call s:stat.strategies.set(get(a:config, 'strategies', []))
 endfunction
