@@ -28,7 +28,10 @@ augroup snatch/watch
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
 
   autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:stat.strategies.remove('horizontal_motion')
+        \ call s:stat.strategies.remove(
+        \ s:oneshot_hor
+        \ ? 'oneshot_horizontal'
+        \ : 'horizontal_motion')
   autocmd User SnatchAbortedInPart-horizontal_motion
         \ call s:abort_if_no_strategies_are_available()
 augroup END
@@ -102,9 +105,9 @@ function! s:wait() abort
   call snatch#augroup#end()
 
   const strategies = deepcopy(s:stat.strategies.get())
-  const oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
-  if oneshot_hor || index(strategies, 'horizontal_motion') >= 0
-    call snatch#motion#wait(oneshot_hor)
+  let s:oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
+  if s:oneshot_hor || index(strategies, 'horizontal_motion') >= 0
+    call snatch#motion#wait(s:oneshot_hor)
   endif
 
   if index(strategies, 'register') >= 0
