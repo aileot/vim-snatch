@@ -2,7 +2,7 @@ let s:stat = {}
 let s:stat.win_id = snatch#status#new(0).register('win_id')
 let s:stat.insert_pos = snatch#status#new([]).register('insert_pos')
 let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
-let s:stat.snatch_by = snatch#status#new([]).register('snatch_by')
+let s:stat.strategies = snatch#status#new([]).register('strategies')
 let s:stat.once_by = snatch#status#new([]).register('once_by')
 let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
 
@@ -14,7 +14,7 @@ if s:use_guicursor
 endif
 
 function! s:abort_if_no_strategies_are_available() abort
-  if !empty(s:stat.snatch_by.get()) | return | endif
+  if !empty(s:stat.strategies.get()) | return | endif
   call snatch#common#abort()
 endfunction
 
@@ -29,7 +29,7 @@ augroup snatch/watch
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
 
   autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:stat.snatch_by.remove('horizontal_motion')
+        \ call s:stat.strategies.remove('horizontal_motion')
   autocmd User SnatchAbortedInPart-horizontal_motion
         \ call s:abort_if_no_strategies_are_available()
 augroup END
@@ -49,8 +49,8 @@ function! s:save_state(config) abort
 
   const once_by = get(a:config, 'once_by', [])
   call s:stat.once_by.set(once_by)
-  call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
-  call s:stat.snatch_by.extend(once_by)
+  call s:stat.strategies.set(get(a:config, 'strategies', []))
+  call s:stat.strategies.extend(once_by)
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -109,12 +109,12 @@ function! s:wait() abort
   const once_by = deepcopy(s:stat.once_by.get())
   const oneshot_hor = index(once_by, 'horizontal_motion') >= 0
 
-  const snatch_by = deepcopy(s:stat.snatch_by.get())
-  if oneshot_hor || index(snatch_by, 'horizontal_motion') >= 0
+  const strategies = deepcopy(s:stat.strategies.get())
+  if oneshot_hor || index(strategies, 'horizontal_motion') >= 0
     call snatch#motion#wait(oneshot_hor)
   endif
 
-  if index(snatch_by, 'register') >= 0
+  if index(strategies, 'register') >= 0
     call snatch#register#wait()
   endif
 

@@ -26,7 +26,7 @@ function! s:prepare() abort
   call s:save_cmdline()
 
   const config = {
-        \ 'snatch_by': ['operator'],
+        \ 'strategies': ['operator'],
         \ 'prev_mode': s:save_cmdtype,
         \ }
   call snatch#common#prepare(config)
