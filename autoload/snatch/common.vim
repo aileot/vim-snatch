@@ -183,12 +183,3 @@ function! snatch#common#insert(chars) abort
   call snatch#common#stop()
   doautocmd <nomodeline> User SnatchInsertPost
 endfunction
-
-function! snatch#common#status() abort
-  let stat = {}
-  for key in keys(s:stat)
-    let val = s:stat[key].get()
-    let stat[key] = val
-  endfor
-  return stat
-endfunction
