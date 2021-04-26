@@ -1,3 +1,5 @@
+let g:snatch_status = {}
+
 let s:stat = {}
 
 function! s:stat__get() abort dict
@@ -14,6 +16,8 @@ let s:stat.validate_type = funcref('s:stat__validate_type')
 function! s:stat__set(val) abort dict
   call self.validate_type(a:val)
   let self.val = a:val
+  if !has_key(self, 'name') | return | endif
+  let g:snatch_status[self.name] = a:val
 endfunction
 let s:stat.set = funcref('s:stat__set')
 
@@ -46,6 +50,14 @@ function! s:stat__remove(item) abort dict
   call remove(self.val, idx)
 endfunction
 let s:stat.remove = funcref('s:stat__remove')
+
+function! s:stat__register(name) abort dict
+  let self.name = a:name
+  let g:snatch_status[a:name] = self.default
+  " Expect method chaining, following #new() at once.
+  return self
+endfunction
+let s:stat.register = funcref('s:stat__register')
 
 function! snatch#status#new(default) abort
   let stat = deepcopy(s:stat)
