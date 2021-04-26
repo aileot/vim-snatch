@@ -61,6 +61,9 @@ will tell you more features and their details.)
 " As long as the registers are used to snatch, this plugin will never override the register.
 " Default: '0'
 let g:snatch#clean_registers = '0"abc'
+
+" default
+let g:snatch#cmd#position_marker = '┃'
 ```
 
 ### Mappings
