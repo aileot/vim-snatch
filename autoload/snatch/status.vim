@@ -18,7 +18,7 @@ endfunction
 let s:stat.set = funcref('s:stat__set')
 
 function! s:stat__reset() abort dict
-  let self.val = self.default
+  call self.set(self.default)
 endfunction
 let s:stat.reset = funcref('s:stat__reset')
 
