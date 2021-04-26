@@ -32,6 +32,12 @@ function! s:prepare() abort
   call snatch#common#prepare(config)
 endfunction
 
+function! s:imitate_pending_cmdline() abort
+  const sep = g:snatch#cmd#position_marker
+  const line = s:save_line[: s:save_col - 1] . sep . s:save_line[s:save_col :]
+  echo s:save_cmdtype . line
+endfunction
+
 function! s:insert_to_cmdline(chars) abort
   const line = s:save_line
   const col = s:save_col
@@ -65,7 +71,9 @@ endfunction
 function! snatch#cmd#operator() abort
   call s:prepare()
   set operatorfunc=snatch#cmd#op
-  call feedkeys("\<Esc>g@", 'n')
+  call feedkeys("\<Esc>", 'n')
+  call s:imitate_pending_cmdline()
+  call feedkeys('g@', 'n')
   return ''
 endfunction
 
