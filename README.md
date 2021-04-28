@@ -66,6 +66,30 @@ let g:snatch#clean_registers = '0"abc'
 let g:snatch#cmd#position_marker = '┃'
 ```
 
+### Status
+
+You can watch current snatch status by `g:snatch_status`.
+
+```vim
+" Add the snippet in your vimrc before any other scripts that use
+" g:snatch_status unless you're sure it's unnecessary.
+if !exists('g:snatch_status')
+  let g:snatch_status = {}
+endif
+```
+
+If you'd like to leave insert mode, add the snippets below in your vimrc.
+
+```vim
+augroup InsertLeaveAfterSnatching
+  autocmd!
+  " Note: `:stopinsert` instead is useless here.
+  autocmd User SnatchInsertPost if g:snatch_status.prev_mode ==# 'i' |
+        \   call feedkeys("\<Esc>")
+        \ | endif
+augroup END
+```
+
 ### Mappings
 
 This plugin provides several `<Plug>`-mappings.
