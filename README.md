@@ -62,6 +62,12 @@ will tell you more features and their details.)
 " Default: '0'
 let g:snatch#clean_registers = '0"abc'
 
+" Set an action for the case that cursor attempts to go out of current window.
+" Set an empty string to disable it. As default, sneaking process will start
+" after jumping to last accessed window in the case. It's useful in editing
+" git-commit message.
+let g:snatch#ins#attempt_to_escape_from_window = "\<C-w>p"
+
 " default
 let g:snatch#cmd#position_marker = '┃'
 ```
