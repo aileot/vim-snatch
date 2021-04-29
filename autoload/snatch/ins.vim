@@ -108,3 +108,16 @@ endfunction
 function! snatch#ins#restore_pos() abort
   call s:restore_pos()
 endfunction
+
+
+augroup snatch/jump_to_prev_window_if_out_of_buffer
+  autocmd!
+  autocmd User SnatchReadyPost ++nested
+        \ if g:snatch#ins#attempt_to_escape_from_window !=# ''
+        \ && g:snatch_status.pre_keys =~# '[kj]'
+        \ && g:snatch_status.prev_mode ==# 'i'
+        \ && index(g:snatch_status.strategies, 'register') >= 0
+        \ && line('.') == g:snatch_status.insert_pos[0]
+        \ | call execute('normal! '. g:snatch#ins#attempt_to_escape_from_window)
+        \ | endif
+augroup END

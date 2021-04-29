@@ -179,6 +179,22 @@ g:snatch#flash_duration_for_insertchars
 
         Time in milliseconds to flash snatched characters.
 
+                                   *g:snatch#ins#attempt_to_escape_from_window*
+g:snatch#ins#attempt_to_escape_from_window
+        (default: "\<C-w>p")
+
+        Set in |String|. If an empty string, do nothing; otherwise,
+        when cursor attempts to go out of current window, do as if keys are
+        typed as the given string, non-recursively, in |Normal| mode before
+        entering |sneaking| process. This option only works when the
+        |snatch-strategies| for current |snatching| process includes "register",
+        like |<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)|. This option is useful,
+        for example, in editing git-commit message.
+
+        Note:
+        Internally, it uses |:normal|!. Please also read its descriptions if you
+        have problems with this |vim-snatch| option.
+
 g:snatch#cmd#position_marker                     *g:snatch#cmd#position_marker*
         (default: '┃')
 

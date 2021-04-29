@@ -62,6 +62,12 @@ will tell you more features and their details.)
 " Default: '0'
 let g:snatch#clean_registers = '0"abc'
 
+" Set an action for the case that cursor attempts to go out of current window.
+" Set an empty string to disable it. As default, sneaking process will start
+" after jumping to last accessed window in the case. It's useful in editing
+" git-commit message.
+let g:snatch#ins#attempt_to_escape_from_window = "\<C-w>p"
+
 " default
 let g:snatch#cmd#position_marker = '┃'
 ```
@@ -86,23 +92,6 @@ augroup Snatch/InsertLeaveAfterSnatching
   " Note: `:stopinsert` instead is useless here.
   autocmd User SnatchInsertPost if g:snatch_status.prev_mode ==# 'i' |
         \   call feedkeys("\<Esc>")
-        \ | endif
-augroup END
-```
-
-This snippet reasonably moves cursor to last accessed window when you use
-`register` as the strategies, like `<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)`.
-It's useful, for example, in editing git-commit message.
-
-```vim
-augroup Snatch/JumpToPrevWindowIfOutOfFile
-  autocmd!
-  autocmd User SnatchReadyPost
-        \ if g:snatch_status.pre_keys =~# '[kj]'
-        \ && g:snatch_status.prev_mode ==# 'i'
-        \ && index(g:snatch_status.strategies, 'register') >= 0
-        \ && line('.') == g:snatch_status.insert_pos[0]
-        \ | wincmd p
         \ | endif
 augroup END
 ```
