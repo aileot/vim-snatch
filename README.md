@@ -81,7 +81,7 @@ endif
 If you'd like to leave insert mode, add the snippets below in your vimrc.
 
 ```vim
-augroup InsertLeaveAfterSnatching
+augroup Snatch/InsertLeaveAfterSnatching
   autocmd!
   " Note: `:stopinsert` instead is useless here.
   autocmd User SnatchInsertPost if g:snatch_status.prev_mode ==# 'i' |
