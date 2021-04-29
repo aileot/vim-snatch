@@ -1,10 +1,8 @@
 let s:stat = {}
-let s:stat.win_id = snatch#status#new(0)
-let s:stat.insert_pos = snatch#status#new([])
-let s:stat.prev_mode = snatch#status#new('NONE')
-let s:stat.snatch_by = snatch#status#new([])
-let s:stat.once_by = snatch#status#new([])
-let s:stat.is_sneaking = snatch#status#new(v:false)
+let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
+let s:stat.strategies = snatch#status#new([]).register('strategies')
+let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
+let s:stat.pre_keys = snatch#status#new('').register('pre_keys')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
 
@@ -14,7 +12,7 @@ if s:use_guicursor
 endif
 
 function! s:abort_if_no_strategies_are_available() abort
-  if !empty(s:stat.snatch_by.get()) | return | endif
+  if !empty(s:stat.strategies.get()) | return | endif
   call snatch#common#abort()
 endfunction
 
@@ -29,7 +27,10 @@ augroup snatch/watch
   autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
 
   autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:stat.snatch_by.remove('horizontal_motion')
+        \ call s:stat.strategies.remove(
+        \ s:oneshot_hor
+        \ ? 'oneshot_horizontal'
+        \ : 'horizontal_motion')
   autocmd User SnatchAbortedInPart-horizontal_motion
         \ call s:abort_if_no_strategies_are_available()
 augroup END
@@ -44,13 +45,8 @@ function! s:wait_if_surely_in_normal_mode(...) abort
 endfunction
 
 function! s:save_state(config) abort
-  call s:stat.win_id.set(win_getid())
   call s:stat.prev_mode.set(a:config.prev_mode)
-
-  const once_by = get(a:config, 'once_by', [])
-  call s:stat.once_by.set(once_by)
-  call s:stat.snatch_by.set(get(a:config, 'snatch_by', []))
-  call s:stat.snatch_by.extend(once_by)
+  call s:stat.strategies.set(get(a:config, 'strategies', []))
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -85,6 +81,7 @@ function! snatch#common#prepare(config) abort
   call s:set_another_cursorhl()
 
   const pre_keys = get(a:config, 'pre_keys', '')
+  call s:stat.pre_keys.set(pre_keys)
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
@@ -106,15 +103,13 @@ function! s:wait() abort
   autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
   call snatch#augroup#end()
 
-  const once_by = deepcopy(s:stat.once_by.get())
-  const oneshot_hor = index(once_by, 'horizontal_motion') >= 0
-
-  const snatch_by = deepcopy(s:stat.snatch_by.get())
-  if oneshot_hor || index(snatch_by, 'horizontal_motion') >= 0
-    call snatch#motion#wait(oneshot_hor)
+  const strategies = deepcopy(s:stat.strategies.get())
+  let s:oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
+  if s:oneshot_hor || index(strategies, 'horizontal_motion') >= 0
+    call snatch#motion#wait(s:oneshot_hor)
   endif
 
-  if index(snatch_by, 'register') >= 0
+  if index(strategies, 'register') >= 0
     call snatch#register#wait()
   endif
 
@@ -182,13 +177,4 @@ function! snatch#common#insert(chars) abort
 
   call snatch#common#stop()
   doautocmd <nomodeline> User SnatchInsertPost
-endfunction
-
-function! snatch#common#status() abort
-  let stat = {}
-  for key in keys(s:stat)
-    let val = s:stat[key].get()
-    let stat[key] = val
-  endfor
-  return stat
 endfunction

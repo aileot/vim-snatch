@@ -1,5 +1,5 @@
-let s:win_id = snatch#status#new(0)
-let s:insert_pos = snatch#status#new([])
+let s:win_id = snatch#status#new(0).register('win_id')
+let s:insert_pos = snatch#status#new([]).register('insert_pos')
 
 function! s:highlight_insert_pos() abort
   let [l, c] = s:insert_pos.get()[1 : 2]

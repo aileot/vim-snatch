@@ -84,6 +84,15 @@ We have three strategy options for |snatching| in |sneaking| process.
         horizontal_motion       As soon as cursor has moved in the same line,
                                 The text being |snatch|ed must be within a line.
 
+        oneshot_horizontal      Almost the same as "horizontal_motion", but,
+                                once cursor moved vertically, this strategy
+                                will be dropped in current |sneaking|. When
+                                the strategy is the last one, current
+                                |snatching| process is aborted; otherwise, keep
+                                |sneaking| with the rest strategies. Besides,
+                                adopting "horizontal_motion" together causes
+                                undefined behavior.
+
         operator                Get into |Operator-pending| mode. Only available
                                 in |Cmdline| mode. See |snatch-faq| below if you
                                 want to do |snatch|ing via |operator-pending| mode.
@@ -93,8 +102,6 @@ USAGE                                                             *snatch-usage*
 
 ------------------------------------------------------------------------------
 FUNCTION                                                       *snatch-function*
-
-snatch#status()                                               *snatch#status()*
 
 snatch#abort()                                                 *snatch#abort()*
 
@@ -117,6 +124,25 @@ snatch#cancel()                                               *snatch#cancel()*
 
 ------------------------------------------------------------------------------
 VARIABLE                                                       *snatch-variable*
+
+g:snatch_status                                               *g:snatch_status*
+
+        Readonly |Dictionary| to represent the last |snatching| status.
+
+        Keys:
+
+        is_sneaking     Return `v:true` if |sneaking|; otherwise, `v:false`.
+        strategies      Return a |List| of the last available |snatch-strategies|.
+        prev_mode       Return a character, either 'i' as |Insert| mode or one
+                        of the value you see in |getcmdtype()| as |Cmdline| mode.
+        win_id          Return the |window-ID| for the window where current
+                        |sneaking| has started. It only matters if "prev_mode"
+                        returns 'i'.
+        insert_pos      Return the |List| in the format that |getcurpos()|
+                        returns. It only matters if "prev_mode" returns 'i'.
+        pre_keys        Returns the predefined key sequence to adjust cursor
+                        to expected position in |snatch-readying| process. It
+                        only matters if "prev_mode" returns 'i'.
 
 g:snatch#no_default_mappings                     *g:snatch#no_default_mappings*
         (default: 0)
@@ -317,6 +343,8 @@ A. Add the following snippet in your vimrc.
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
 
+2021-04-26
+* Remove snatch#status() in favor of g:snatch_status.
 
 ==============================================================================
 vim:ft=help:tw=78:ts=8:sts=8:sw=8:norl:fen:nojs

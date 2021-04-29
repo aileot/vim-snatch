@@ -29,64 +29,62 @@ cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 inoremap <silent> <SID>(snatch-horizontal-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
-      \   'snatch_by': ['horizontal_motion'],
+      \   'strategies': ['horizontal_motion'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-horizontal-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
-      \   'snatch_by': ['horizontal_motion'],
+      \   'strategies': ['horizontal_motion'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-horizontal-here)
       \ <Cmd>call snatch#ins#start({
-      \   'snatch_by': ['horizontal_motion'],
+      \   'strategies': ['horizontal_motion'],
       \ })<CR>
 
 inoremap <silent> <SID>(snatch-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-reg-here)
       \ <Cmd>call snatch#ins#start({
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register'],
       \ })<CR>
 
 inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
-      \   'snatch_by': ['register', 'horizontal_motion'],
+      \   'strategies': ['register', 'horizontal_motion'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
-      \   'snatch_by': ['register', 'horizontal_motion'],
+      \   'strategies': ['register', 'horizontal_motion'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-hor-or-reg-here)
       \ <Cmd>call snatch#ins#start({
-      \   'snatch_by': ['register', 'horizontal_motion'],
+      \   'strategies': ['register', 'horizontal_motion'],
       \ })<CR>
 
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'kl',
-      \   'once_by': ['horizontal_motion'],
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
       \ <Cmd>call snatch#ins#start({
       \   'pre_keys': 'jl',
-      \   'once_by': ['horizontal_motion'],
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-here)
       \ <Cmd>call snatch#ins#start({
       \   'once_by': ['horizontal_motion'],
-      \   'snatch_by': ['register'],
+      \   'strategies': ['register', 'oneshot_horizontal'],
       \ })<CR>
 
 imap <Plug>(snatch-horizontal-ctrl-y)         <SID>(snatch-horizontal-ctrl-y)
