@@ -2,7 +2,7 @@ let s:win_id = snatch#status#new(0).register('win_id')
 let s:insert_pos = snatch#status#new([]).register('insert_pos')
 
 function! s:highlight_insert_pos() abort
-  let [l, c] = s:insert_pos.get()[1 : 2]
+  let [l, c] = s:insert_pos.get()
   if c == col('$')
     " TODO: Distinguish the highlight for the last column from that for the one
     " just before the last. If we could set highlight in vertical line instead
@@ -27,7 +27,7 @@ endfunction
 
 
 function! s:prepare(config) abort
-  call s:insert_pos.set(getpos('.'))
+  call s:insert_pos.set([line('.'), col('.')])
   call s:win_id.set(win_getid())
   call s:highlight_insert_pos()
   call snatch#common#prepare(a:config)
@@ -53,7 +53,7 @@ function! s:restore_pos() abort
   endif
 
   call win_gotoid(s:win_id.get())
-  const [lnum, col] = s:insert_pos.get()[1:2]
+  const [lnum, col] = s:insert_pos.get()
   call s:insert_pos.reset()
 
   call setpos('.', [0, lnum, col])
