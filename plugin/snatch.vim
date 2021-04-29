@@ -12,6 +12,8 @@ let g:snatch#flash_duration_for_insertchars =
       \ get(g:, 'snatch#flash_duration_for_insertchars', 450)
 let g:snatch#cmd#position_marker =
       \ get(g:, 'snatch#cmd#position_marker', '┃')
+let g:snatch#ins#attempt_to_escape_from_window =
+      \ get(g:, 'snatch#ins#attempt_to_escape_from_window', "\<C-w>p")
 
 xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#op()<CR>
 
