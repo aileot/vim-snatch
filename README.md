@@ -90,23 +90,6 @@ augroup Snatch/InsertLeaveAfterSnatching
 augroup END
 ```
 
-This snippet reasonably moves cursor to last accessed window when you use
-`register` as the strategies, like `<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)`.
-It's useful, for example, in editing git-commit message.
-
-```vim
-augroup Snatch/JumpToPrevWindowIfOutOfFile
-  autocmd!
-  autocmd User SnatchReadyPost
-        \ if g:snatch_status.pre_keys =~# '[kj]'
-        \ && g:snatch_status.prev_mode ==# 'i'
-        \ && index(g:snatch_status.strategies, 'register') >= 0
-        \ && line('.') == g:snatch_status.insert_pos[0]
-        \ | wincmd p
-        \ | endif
-augroup END
-```
-
 ### Mappings
 
 This plugin provides several `<Plug>`-mappings.
