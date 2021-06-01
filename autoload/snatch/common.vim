@@ -9,6 +9,7 @@ const s:is_cmdline_mode = '^[-:>/?@=]$'
 const s:use_guicursor = exists('+guicursor')
 if s:use_guicursor
   const s:hl_cursor_config = 'n-o:block-SnatchCursor'
+  const s:default_hl_cursor = 'a:Cursor'
 endif
 
 function! s:abort_if_no_strategies_are_available() abort
@@ -52,6 +53,9 @@ endfunction
 function! s:set_another_cursorhl() abort
   if s:use_guicursor
     exe 'set guicursor+='. s:hl_cursor_config
+    if g:snatch#force_restore_cursor_highlight
+      exe 'set guicursor-='. s:default_hl_cursor
+    endif
     return
   endif
 
@@ -62,6 +66,10 @@ endfunction
 function! s:restore_cursorhl() abort
   if s:use_guicursor
     exe 'set guicursor-='. s:hl_cursor_config
+    if g:snatch#force_restore_cursor_highlight
+      exe 'set guicursor^='. s:default_hl_cursor
+    endif
+    return
   endif
 
   if s:save_hl =~# '^links'
