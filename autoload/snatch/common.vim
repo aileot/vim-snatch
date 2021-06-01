@@ -53,9 +53,6 @@ endfunction
 function! s:set_another_cursorhl() abort
   if s:use_guicursor
     exe 'set guicursor+='. s:hl_cursor_config
-    if g:snatch#force_restore_cursor_highlight
-      exe 'set guicursor-='. s:default_hl_cursor
-    endif
     return
   endif
 
