@@ -51,7 +51,7 @@ endfunction
 
 function! s:set_another_cursorhl() abort
   if s:use_guicursor
-    exe 'setlocal guicursor+='. s:hl_cursor_config
+    exe 'set guicursor+='. s:hl_cursor_config
     return
   endif
 
@@ -61,8 +61,7 @@ endfunction
 
 function! s:restore_cursorhl() abort
   if s:use_guicursor
-    exe 'setlocal guicursor-='. s:hl_cursor_config
-    return
+    exe 'set guicursor-='. s:hl_cursor_config
   endif
 
   if s:save_hl =~# '^links'
