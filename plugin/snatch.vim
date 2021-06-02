@@ -10,6 +10,8 @@ let g:snatch#cancellation_policy =
       \ get(g:, 'snatch#cancellation_policy', 'cancel')
 let g:snatch#flash_duration_for_insertchars =
       \ get(g:, 'snatch#flash_duration_for_insertchars', 450)
+let g:snatch#force_restore_cursor_highlight =
+      \ get(g:, 'snatch#force_restore_cursor_highlight', 1)
 let g:snatch#cmd#position_marker =
       \ get(g:, 'snatch#cmd#position_marker', '┃')
 let g:snatch#ins#attempt_to_escape_from_window =

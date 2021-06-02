@@ -70,6 +70,13 @@ let g:snatch#ins#attempt_to_escape_from_window = "\<C-w>p"
 
 " default
 let g:snatch#cmd#position_marker = '┃'
+
+" Set it to `0` to disable this option; otherwise, this option lets vim-snatch
+" make sure to restore cursor highlight after having snatched. If you have any
+" problem with this option, please reopen issue #46 or, referring to the issue,
+" open a new one, and report the problem.
+" default: 1
+let g:snatch#force_restore_cursor_highlight = 1
 ```
 
 ### Status
