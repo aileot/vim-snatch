@@ -149,11 +149,11 @@ g:snatch#no_default_mappings                     *g:snatch#no_default_mappings*
 
                                       *g:snatch#force_restore_cursor_highlight*
 g:snatch#force_restore_cursor_highlight
-        (default: 0)
+        (default: 1)
 
-        Set in |Number|. If non `0`, prepend "a:Cursor" to `&guicursor` (in the
-        lowest priority) after having snatched so that cursor highlight
-        reflects `hl-Cursor`.
+        Set in |Number|. Set it to `0` to disable this option; otherwise, prepend
+        "a:Cursor" to `&guicursor` (in the lowest priority) after having
+        snatched so that cursor highlight reflects `hl-Cursor`.
 
         (In theory, this workaround causes no problems, but if you have any
         issues with this option, please reopen issue #46 or, referring to the
