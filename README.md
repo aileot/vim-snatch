@@ -117,18 +117,10 @@ cmap <C-o> <Plug>(snatch-operator)
 smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
 smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
-" **Notice**
-" * When pumvisible() returns 1, <C-y> and <C-e> should behave as you read at
-"   each CTRL-Y and CTRL-E in `:h popupmenu-keys`; thus, <expr> will be needed.
-" * The mapping examples after the default ones below will be written without
-"   this <expr>-workaround for pumvisible as the workaround is understood.
-" * `<SID>` lets you map both <C-y>/<C-e> non-recursively and
-"   <Plug>(snatch-mapping) recursively to the same {rhs}. (Practically, you can
-"   omit this <SID>-workaround here as {lhs} is the very same key of {rhs}.)
-inoremap <SID>(C-y) <C-y>
-inoremap <SID>(C-e) <C-e>
-imap <expr> <C-y> pumvisible() ? '<SID>(C-y)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
-imap <expr> <C-e> pumvisible() ? '<SID>(C-e)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
+imap <C-g><C-y> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+imap <C-g><C-e> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
+imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
 ```
 
 Or define mappings as your preference.
@@ -157,4 +149,27 @@ imap <C-y> <Plug>(snatch-reg-ctrl-y)y
 inoremap <SID>y y
 imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-operator-ctrl-y)
+```
+
+#### Deal with popup menu
+
+We should set alternative key sequences in the case `pumvisible()` returns `1`
+(usually in completion);
+otherwise, we would let [vim-snatch](https://github.com/kaile256/vim-snatch)
+do unexpected behavior. You have options:
+
+- Just use default mappings. You don't have to care about the matter any
+  longer.
+- Map arbitrary keys to as many of the provided `<Plug>`-mappings as your
+  preference. See the example below:
+
+```vim
+let g:snatch#no_default_mappings = 1
+" This is mere a copy of the default mappings, but it's useful if you'd like
+" to use its mappings as a trigger for lazy load of some plugin manager such as
+" dein.vim.
+imap <C-g><C-y> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+imap <C-g><C-e> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
+imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
 ```
