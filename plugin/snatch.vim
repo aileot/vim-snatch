@@ -126,15 +126,15 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
   cmap <C-o> <Plug>(snatch-operator)
 
-  inoremap <SID>(completion-confirm) <C-y>
-  inoremap <SID>(completion-cancel) <C-e>
-  imap <expr> <C-y> pumvisible() ? '<SID>(completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
-  imap <expr> <C-e> pumvisible() ? '<SID>(completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
+  smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+  smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
   imap <C-g><C-y> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
   imap <C-g><C-e> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
-  smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-  smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+  inoremap <SID>(completion-confirm) <C-y>
+  inoremap <SID>(completion-cancel) <C-e>
+  imap <expr> <C-y> pumvisible() ? '<SID>(completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
+  imap <expr> <C-e> pumvisible() ? '<SID>(completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
 endif
 
