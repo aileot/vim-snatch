@@ -124,7 +124,7 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   cmap <C-o> <Plug>(snatch-operator)
 
   inoremap <SID>(C-y) <C-y>
-  inoremap <SID>(C-e) <C-y>
+  inoremap <SID>(C-e) <C-e>
   imap <expr> <C-y> pumvisible() ? '<SID>(C-y)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
   imap <expr> <C-e> pumvisible() ? '<SID>(C-e)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
   smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
