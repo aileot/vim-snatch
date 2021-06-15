@@ -1,8 +1,8 @@
 let s:stat = {}
-let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
-let s:stat.strategies = snatch#status#new([]).register('strategies')
-let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
-let s:stat.pre_keys = snatch#status#new('').register('pre_keys')
+let s:prev_mode = snatch#status#new('NONE').register('prev_mode')
+let s:strategies = snatch#status#new([]).register('strategies')
+let s:is_sneaking = snatch#status#new(v:false).register('is_sneaking')
+let s:pre_keys = snatch#status#new('').register('pre_keys')
 let s:last_strategy = snatch#status#new('').register('last_strategy')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
@@ -14,7 +14,7 @@ if s:use_guicursor
 endif
 
 function! s:abort_if_no_strategies_are_available() abort
-  if !empty(s:stat.strategies.get()) | return | endif
+  if !empty(s:strategies.get()) | return | endif
   call snatch#common#abort()
 endfunction
 
@@ -22,14 +22,14 @@ augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
 
   autocmd!
-  autocmd User SnatchReadyPost  call s:stat.is_sneaking.set(v:true)
-  autocmd User SnatchInsertPost call s:stat.is_sneaking.set(v:false)
+  autocmd User SnatchReadyPost  call s:is_sneaking.set(v:true)
+  autocmd User SnatchInsertPost call s:is_sneaking.set(v:false)
 
-  autocmd User SnatchAbortedPost   call s:stat.is_sneaking.set(v:false)
-  autocmd User SnatchCancelledPost call s:stat.is_sneaking.set(v:false)
+  autocmd User SnatchAbortedPost   call s:is_sneaking.set(v:false)
+  autocmd User SnatchCancelledPost call s:is_sneaking.set(v:false)
 
   autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:stat.strategies.remove(
+        \ call s:strategies.remove(
         \ s:oneshot_hor
         \ ? 'oneshot_horizontal'
         \ : 'horizontal_motion')
@@ -47,8 +47,8 @@ function! s:wait_if_surely_in_normal_mode(...) abort
 endfunction
 
 function! s:save_state(config) abort
-  call s:stat.prev_mode.set(a:config.prev_mode)
-  call s:stat.strategies.set(get(a:config, 'strategies', []))
+  call s:prev_mode.set(a:config.prev_mode)
+  call s:strategies.set(get(a:config, 'strategies', []))
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -86,7 +86,7 @@ function! snatch#common#prepare(config) abort
   call s:set_another_cursorhl()
 
   const pre_keys = get(a:config, 'pre_keys', '')
-  call s:stat.pre_keys.set(pre_keys)
+  call s:pre_keys.set(pre_keys)
   if pre_keys !=# ''
     exe 'norm!' pre_keys
   endif
@@ -110,7 +110,7 @@ function! s:wait() abort
   autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
   call snatch#augroup#end()
 
-  const strategies = deepcopy(s:stat.strategies.get())
+  const strategies = deepcopy(s:strategies.get())
   let s:oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
   if s:oneshot_hor || index(strategies, 'horizontal_motion') >= 0
     call snatch#motion#wait(s:oneshot_hor)
@@ -138,7 +138,7 @@ function! s:clean_up() abort
 endfunction
 
 function! snatch#common#abort(...) abort
-  if !s:stat.is_sneaking.get()
+  if !s:is_sneaking.get()
     return v:false
   endif
 
@@ -149,11 +149,11 @@ function! snatch#common#abort(...) abort
 endfunction
 
 function! snatch#common#cancel(...) abort
-  if !s:stat.is_sneaking.get()
+  if !s:is_sneaking.get()
     return v:false
   endif
 
-  const prev_mode = s:stat.prev_mode.get()
+  const prev_mode = s:prev_mode.get()
   if prev_mode ==? 'i'
     doautocmd <nomodeline> User SnatchCancelledPre
     call s:clean_up()
@@ -180,7 +180,7 @@ endfunction
 function! snatch#common#insert(chars) abort
   doautocmd <nomodeline> User SnatchInsertPre
 
-  const prev_mode = s:stat.prev_mode.get()
+  const prev_mode = s:prev_mode.get()
   if prev_mode ==? 'i'
     call snatch#ins#insert(a:chars)
   elseif prev_mode =~? s:is_cmdline_mode
