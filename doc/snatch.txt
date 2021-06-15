@@ -294,17 +294,6 @@ i_<Plug>(snatch-completion-cancel)         *i_<Plug>(snatch-completion-cancel)*
         \ ? '<Plug>(snatch-completion-cancel)'
         \ : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
 >
-i_<Plug>(snatch-by-force)                           *i_<Plug>(snatch-by-force)*
-
-        Whether or not popup menu is visible (usually in completion), make
-        sure it's ready to start |snatching| (or any other |Insert-mode| mapping
-        which forgets to deal with popup menu).
->
-        imap <C-g><C-y>
-        \ <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-        imap <C-g><C-e>
-        \ <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
->
 ------------------------------------------------------------------------------
 AUTOCMD                                                         *snatch-autocmd*
 
