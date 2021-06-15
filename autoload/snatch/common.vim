@@ -100,8 +100,10 @@ function! s:wait() abort
   autocmd!
   " Note: CmdlineEnter can be triggered up to user's mappings. Typically,
   " vim-camelcasemotion triggers the event immediately on each motion.
-  " FIXME: It throws E523.
-  autocmd InsertEnter * ++once call snatch#common#abort()
+  const after_TextYankPost_is_triggerd = 50
+  execute 'autocmd InsertEnter * ++once call timer_start('
+        \ after_TextYankPost_is_triggerd
+        \ ', {-> snatch#common#abort()})'
 
   autocmd! * <buffer>
   autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
@@ -126,7 +128,7 @@ function! s:wait() abort
   doautocmd <nomodeline> User SnatchReadyPost
 endfunction
 
-function! snatch#common#stop() abort
+function! s:clean_up() abort
   " for key in keys(s:stat)
   "   call s:stat[key].reset()
   " endfor
@@ -140,7 +142,7 @@ function! snatch#common#abort(...) abort
   endif
 
   doautocmd <nomodeline> User SnatchAbortedPre
-  call snatch#common#stop()
+  call s:clean_up()
   doautocmd <nomodeline> User SnatchAbortedPost
   return v:true
 endfunction
@@ -153,11 +155,11 @@ function! snatch#common#cancel(...) abort
   const prev_mode = s:stat.prev_mode.get()
   if prev_mode ==? 'i'
     doautocmd <nomodeline> User SnatchCancelledPre
-    call snatch#common#stop()
+    call s:clean_up()
     call snatch#ins#restore_pos()
   elseif prev_mode =~# s:is_cmdline_mode
     doautocmd <nomodeline> User SnatchCancelledPre
-    call snatch#common#stop()
+    call s:clean_up()
     call snatch#cmd#restore_pos()
   else
     call snatch#utils#throw('the previous mode cannot be identified')
@@ -165,6 +167,12 @@ function! snatch#common#cancel(...) abort
 
   doautocmd <nomodeline> User SnatchCancelledPost
   return v:true
+endfunction
+
+function! snatch#common#exit() abort
+  " Terminate snatching successfully.
+  call s:clean_up()
+  doautocmd <nomodeline> User SnatchInsertPost
 endfunction
 
 function! snatch#common#insert(chars) abort
@@ -178,7 +186,4 @@ function! snatch#common#insert(chars) abort
   else
     call snatch#utils#throw('unexpected usage')
   endif
-
-  call snatch#common#stop()
-  doautocmd <nomodeline> User SnatchInsertPost
 endfunction

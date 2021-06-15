@@ -15,7 +15,21 @@ endfunction
 
 function! s:insert_as_reg(...) abort
   const chars = getreg(v:register)
+  const is_c_operating = v:operator ==# 'c'
+  if is_c_operating
+    const [c_lnum, c_col] = [line('.'), col('.')]
+    const c_win_id = win_getid()
+  endif
   call snatch#common#insert(chars)
+  if is_c_operating
+    function! s:restore_pos(...) abort closure
+      call win_gotoid(c_win_id)
+      call setpos('.', [0, c_lnum, c_col])
+    endfunction
+    const until_feedkeys_has_done = 50
+    call timer_start(until_feedkeys_has_done, expand('<SID>') .'restore_pos')
+  endif
+  call snatch#common#exit()
 endfunction
 
 function! snatch#register#wait() abort

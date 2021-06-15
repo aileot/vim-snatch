@@ -87,22 +87,24 @@ function! s:flash_insertchars(lnum, col, new_chars) abort
         \ expand('<SID>') .'delete_highlight')
 endfunction
 
-function! s:restart_insertmode(lnum, col, new_chars) abort
-  let chars = a:new_chars
-  let col = a:col
-  if mode(1) !~# 'i'
-    const old_width = strdisplaywidth(getline(a:lnum))
-    const reinsert = old_width < a:col ? 'a' : 'i'
-    let col = reinsert ==# 'a' ? col + 1 : col
-    let chars = reinsert . chars
-  endif
-  call feedkeys(chars, 'n')
-  call s:flash_insertchars(a:lnum, a:col, a:new_chars)
+function! s:start_insertmode_at(lnum, col) abort
+  const old_width = strdisplaywidth(getline(a:lnum))
+  const reinsert = old_width < a:col ? 'a' : 'i'
+  const new_col = reinsert ==# 'a' ? a:col + 1 : a:col
+  call feedkeys(reinsert, 'n')
+  return new_col
+endfunction
+
+function! s:paste_chars_in_insertmode(chars) abort
+  call feedkeys(a:chars, 'n')
 endfunction
 
 function! snatch#ins#insert(chars) abort
   const [lnum, col] = s:restore_pos()
-  call s:restart_insertmode(lnum, col, a:chars)
+  const new_col = mode() ==# 'i' ? col
+        \ : s:start_insertmode_at(lnum, col)
+  call s:paste_chars_in_insertmode(a:chars)
+  call s:flash_insertchars(lnum, new_col, a:chars)
 endfunction
 
 function! snatch#ins#restore_pos() abort
