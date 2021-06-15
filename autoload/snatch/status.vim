@@ -59,10 +59,11 @@ function! s:stat__remove(item) abort dict
 endfunction
 let s:stat.remove = funcref('s:stat__remove')
 
+" (Optional) Register to `g:snatch_status` tagged as the name.
+" This method is supposed to be called in a chain to #new().
 function! s:stat__register(name) abort dict
   let self.name = a:name
   call s:update_status(a:name, self.default)
-  " Expect method chaining, following #new() at once.
   return self
 endfunction
 let s:stat.register = funcref('s:stat__register')
