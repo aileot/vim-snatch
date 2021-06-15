@@ -29,7 +29,7 @@ function! s:insert_as_reg(...) abort
     const until_feedkeys_has_done = 50
     call timer_start(until_feedkeys_has_done, expand('<SID>') .'restore_pos')
   endif
-  call snatch#common#exit()
+  call snatch#common#exit('register')
 endfunction
 
 function! snatch#register#wait() abort

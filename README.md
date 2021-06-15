@@ -101,6 +101,15 @@ augroup Snatch/InsertLeaveAfterSnatching
         \   call feedkeys("\<Esc>")
         \ | endif
 augroup END
+" Or
+augroup Snatch/InsertLeaveAfterSnatchingButOperatorC
+  autocmd!
+  autocmd User SnatchInsertPost if g:snatch_status.prev_mode ==# 'i'
+        \ && (g:snatch_status.last_strategy !=# 'register'
+        \     || v:operator !=# 'c') |
+        \   call feedkeys("\<Esc>l")
+        \ | endif
+augroup END
 ```
 
 ### Mappings
