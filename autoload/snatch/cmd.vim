@@ -66,6 +66,7 @@ function! snatch#cmd#op(...) abort
   const line = getline('.')
   const chars = line[ LEFT : RIGHT ]
   call snatch#common#insert(chars)
+  call snatch#common#exit('operator')
 endfunction
 
 function! snatch#cmd#operator() abort
