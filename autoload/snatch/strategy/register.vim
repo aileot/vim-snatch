@@ -32,7 +32,7 @@ function! s:insert_as_reg(...) abort
   call snatch#common#exit('register')
 endfunction
 
-function! snatch#register#wait() abort
+function! snatch#strategy#register#wait() abort
   call s:save_reg()
 
   call snatch#augroup#begin('register')

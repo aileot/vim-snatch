@@ -42,7 +42,7 @@ function! s:prepare(config) abort
   augroup END
 endfunction
 
-function! snatch#ins#start(config) abort
+function! snatch#mode#ins#start(config) abort
   const config = extend(deepcopy(a:config), {'prev_mode': 'i'})
   call s:prepare(config)
 endfunction
@@ -99,7 +99,7 @@ function! s:paste_chars_in_insertmode(chars) abort
   call feedkeys(a:chars, 'n')
 endfunction
 
-function! snatch#ins#insert(chars) abort
+function! snatch#mode#ins#insert(chars) abort
   const [lnum, col] = s:restore_pos()
   const new_col = mode() ==# 'i' ? col
         \ : s:start_insertmode_at(lnum, col)
@@ -107,7 +107,7 @@ function! snatch#ins#insert(chars) abort
   call s:flash_insertchars(lnum, new_col, a:chars)
 endfunction
 
-function! snatch#ins#restore_pos() abort
+function! snatch#mode#ins#restore_pos() abort
   call s:restore_pos()
 endfunction
 

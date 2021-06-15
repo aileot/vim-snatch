@@ -113,11 +113,11 @@ function! s:wait() abort
   const strategies = deepcopy(s:strategies.get())
   let s:oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
   if s:oneshot_hor || index(strategies, 'horizontal_motion') >= 0
-    call snatch#motion#wait(s:oneshot_hor)
+    call snatch#strategy#motion#wait(s:oneshot_hor)
   endif
 
   if index(strategies, 'register') >= 0
-    call snatch#register#wait()
+    call snatch#strategy#register#wait()
   endif
 
   if g:snatch#timeoutlen > -1
@@ -157,11 +157,11 @@ function! snatch#common#cancel(...) abort
   if prev_mode ==? 'i'
     doautocmd <nomodeline> User SnatchCancelledPre
     call s:clean_up()
-    call snatch#ins#restore_pos()
+    call snatch#mode#ins#restore_pos()
   elseif prev_mode =~# s:is_cmdline_mode
     doautocmd <nomodeline> User SnatchCancelledPre
     call s:clean_up()
-    call snatch#cmd#restore_pos()
+    call snatch#mode#cmd#restore_pos()
   else
     call snatch#utils#throw('the previous mode cannot be identified')
   endif
@@ -182,9 +182,9 @@ function! snatch#common#insert(chars) abort
 
   const prev_mode = s:prev_mode.get()
   if prev_mode ==? 'i'
-    call snatch#ins#insert(a:chars)
+    call snatch#mode#ins#insert(a:chars)
   elseif prev_mode =~? s:is_cmdline_mode
-    call snatch#cmd#insert(a:chars)
+    call snatch#mode#cmd#insert(a:chars)
   else
     call snatch#utils#throw('unexpected usage')
   endif

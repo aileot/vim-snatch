@@ -43,7 +43,7 @@ function! s:insert_on_horizontal_motion(au_name, oneshot) abort
   call snatch#common#exit('horizontal_motion')
 endfunction
 
-function! snatch#motion#wait(oneshot) abort
+function! snatch#strategy#motion#wait(oneshot) abort
   const au_name = snatch#augroup#begin('motion')
   autocmd!
   call s:old_pos.set(getcurpos())

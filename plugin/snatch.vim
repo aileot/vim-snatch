@@ -17,9 +17,9 @@ let g:snatch#cmd#position_marker =
 let g:snatch#ins#attempt_to_escape_from_window =
       \ get(g:, 'snatch#ins#attempt_to_escape_from_window', "\<C-w>p")
 
-xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#cmd#op()<CR>
+xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#mode#cmd#op()<CR>
 
-cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
+cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#mode#cmd#operator()<CR>
 
 " Note: Use <Cmd> for the first hand mappings.
 " - <Esc> invokes `InsertLeave`.
@@ -53,7 +53,7 @@ function! s:generate_imaps() abort
     for suffix in keys(pre_keys)
       let name = '(snatch-'. prefix .'-'. suffix .')'
       let plug = '<Plug>'. name
-      let rhs = printf('<Cmd>call snatch#ins#start({
+      let rhs = printf('<Cmd>call snatch#mode#ins#start({
             \ "pre_keys": %s,
             \ "strategies": %s,
             \ })<CR>', string(pre_keys[suffix]), string(strategies[prefix]))
