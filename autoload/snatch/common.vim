@@ -3,6 +3,7 @@ let s:stat.prev_mode = snatch#status#new('NONE').register('prev_mode')
 let s:stat.strategies = snatch#status#new([]).register('strategies')
 let s:stat.is_sneaking = snatch#status#new(v:false).register('is_sneaking')
 let s:stat.pre_keys = snatch#status#new('').register('pre_keys')
+let s:last_strategy = snatch#status#new('').register('last_strategy')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
 
@@ -169,8 +170,9 @@ function! snatch#common#cancel(...) abort
   return v:true
 endfunction
 
-function! snatch#common#exit() abort
-  " Terminate snatching successfully.
+" Terminate snatching successfully.
+function! snatch#common#exit(strategy) abort
+  call s:last_strategy.set(a:strategy)
   call s:clean_up()
   doautocmd <nomodeline> User SnatchInsertPost
 endfunction

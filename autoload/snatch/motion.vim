@@ -40,7 +40,7 @@ function! s:insert_on_horizontal_motion(au_name, oneshot) abort
 
   call snatch#common#insert(chars)
   " In common.vim, clear the autocmds on CursorMoved.
-  call snatch#common#exit()
+  call snatch#common#exit('horizontal_motion')
 endfunction
 
 function! snatch#motion#wait(oneshot) abort
