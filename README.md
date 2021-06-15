@@ -117,6 +117,8 @@ cmap <C-o> <Plug>(snatch-operator)
 smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
 smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
+" Note: Without a check on pumvisible() in mapping, vim-snatch will interrupt
+" current completion to start sneaking.
 imap <C-g><C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
 imap <C-g><C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
