@@ -100,8 +100,10 @@ function! s:wait() abort
   autocmd!
   " Note: CmdlineEnter can be triggered up to user's mappings. Typically,
   " vim-camelcasemotion triggers the event immediately on each motion.
-  " FIXME: It throws E523.
-  autocmd InsertEnter * ++once call snatch#common#abort()
+  const after_TextYankPost_is_triggerd = 50
+  execute 'autocmd InsertEnter * ++once call timer_start('
+        \ after_TextYankPost_is_triggerd
+        \ ', {-> snatch#common#abort()})'
 
   autocmd! * <buffer>
   autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
