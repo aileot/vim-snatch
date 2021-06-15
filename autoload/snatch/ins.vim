@@ -70,7 +70,7 @@ function! s:flash_insertchars(lnum, col, new_chars) abort
 
   const len_lines = len(lines)
   if len_lines > 2
-    const pat_body = '\(\n.*\)\{'. (len_lines - 2) .'}'
+    const pat_body = '\%(\n.*\)\{'. (len_lines - 2) .'}'
     let pat_insertchars .= pat_body
   endif
   if len_lines > 1
