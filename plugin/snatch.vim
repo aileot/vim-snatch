@@ -30,99 +30,45 @@ cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#cmd#operator()<CR>
 "   inoremap <C-y> <Cmd>call s:foo("\<Plug>(bar)")<CR>
 "   ```
 "   throws the error E5522.
-inoremap <silent> <SID>(snatch-horizontal-ctrl-y)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'kl',
-      \   'strategies': ['horizontal_motion'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-horizontal-ctrl-e)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'jl',
-      \   'strategies': ['horizontal_motion'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-horizontal-here)
-      \ <Cmd>call snatch#ins#start({
-      \   'strategies': ['horizontal_motion'],
-      \ })<CR>
+function! s:generate_imaps() abort
+  " For example, `<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)` is genearated.
+  " Also generate `smaps`.
+  inoremap <SID>(completion-keep-match) <space><BS>
+  imap <expr> <SID>(by-force) pumvisible() ? '<SID>(completion-keep-match)' : ''
+  snoremap <SID>(erase-placeholder) <space><BS>
 
-inoremap <silent> <SID>(snatch-reg-ctrl-y)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'kl',
-      \   'strategies': ['register'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-reg-ctrl-e)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'jl',
-      \   'strategies': ['register'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-reg-here)
-      \ <Cmd>call snatch#ins#start({
-      \   'strategies': ['register'],
-      \ })<CR>
+  const strategies = {
+        \ 'horizontal': ['horizontal_motion'],
+        \ 'reg': ['register'],
+        \ 'hor-or-reg': ['horizontal_motion', 'register'],
+        \ 'oneshot-hor-or-reg': ['oneshot_horizontal', 'register'],
+        \ }
+  const pre_keys = {
+        \ 'ctrl-y': 'kl',
+        \ 'ctrl-e': 'jl',
+        \ 'here': '',
+        \ }
 
-inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-y)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'kl',
-      \   'strategies': ['register', 'horizontal_motion'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-hor-or-reg-ctrl-e)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'jl',
-      \   'strategies': ['register', 'horizontal_motion'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-hor-or-reg-here)
-      \ <Cmd>call snatch#ins#start({
-      \   'strategies': ['register', 'horizontal_motion'],
-      \ })<CR>
-
-inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'kl',
-      \   'strategies': ['register', 'oneshot_horizontal'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
-      \ <Cmd>call snatch#ins#start({
-      \   'pre_keys': 'jl',
-      \   'strategies': ['register', 'oneshot_horizontal'],
-      \ })<CR>
-inoremap <silent> <SID>(snatch-oneshot-hor-or-reg-here)
-      \ <Cmd>call snatch#ins#start({
-      \   'once_by': ['horizontal_motion'],
-      \   'strategies': ['register', 'oneshot_horizontal'],
-      \ })<CR>
-
-imap <Plug>(snatch-horizontal-ctrl-y)         <SID>(snatch-horizontal-ctrl-y)
-imap <Plug>(snatch-horizontal-ctrl-e)         <SID>(snatch-horizontal-ctrl-e)
-imap <Plug>(snatch-horizontal-here)           <SID>(snatch-horizontal-here)
-imap <Plug>(snatch-reg-ctrl-y)                <SID>(snatch-reg-ctrl-y)
-imap <Plug>(snatch-reg-ctrl-e)                <SID>(snatch-reg-ctrl-e)
-imap <Plug>(snatch-reg-here)                  <SID>(snatch-reg-here)
-imap <Plug>(snatch-hor-or-reg-ctrl-y)         <SID>(snatch-hor-or-reg-ctrl-y)
-imap <Plug>(snatch-hor-or-reg-ctrl-e)         <SID>(snatch-hor-or-reg-ctrl-e)
-imap <Plug>(snatch-hor-or-reg-here)           <SID>(snatch-hor-or-reg-here)
-imap <Plug>(snatch-oneshot-hor-or-reg-ctrl-y) <SID>(snatch-oneshot-hor-or-reg-ctrl-y)
-imap <Plug>(snatch-oneshot-hor-or-reg-ctrl-e) <SID>(snatch-oneshot-hor-or-reg-ctrl-e)
-imap <Plug>(snatch-oneshot-hor-or-reg-here)   <SID>(snatch-oneshot-hor-or-reg-here)
+  for prefix in keys(strategies)
+    for suffix in keys(pre_keys)
+      let name = '(snatch-'. prefix .'-'. suffix .')'
+      let plug = '<Plug>'. name
+      let rhs = printf('<Cmd>call snatch#ins#start({
+            \ "pre_keys": %s,
+            \ "strategies": %s,
+            \ })<CR>', string(pre_keys[suffix]), string(strategies[prefix]))
+      let i_rhs = '<SID>(by-force)'. rhs
+      let s_rhs = '<SID>(erase-placeholder)'. rhs
+      execute 'imap' plug i_rhs
+      execute 'smap' plug s_rhs
+    endfor
+  endfor
+endfunction
+call s:generate_imaps()
+delfunction s:generate_imaps
 
 inoremap <Plug>(snatch-completion-confirm) <C-y>
 inoremap <Plug>(snatch-completion-cancel) <C-e>
-inoremap <SID>(completion-keep-match) <space><BS>
-imap <expr> <Plug>(snatch-by-force) pumvisible() ? '<SID>(completion-keep-match)' : ''
-
-snoremap <SID>(erase) <space><BS>
-
-smap <Plug>(snatch-horizontal-ctrl-y)         <SID>(erase)<SID>(snatch-horizontal-ctrl-y)
-smap <Plug>(snatch-horizontal-ctrl-e)         <SID>(erase)<SID>(snatch-horizontal-ctrl-e)
-smap <Plug>(snatch-horizontal-here)           <SID>(erase)<SID>(snatch-horizontal-here)
-smap <Plug>(snatch-reg-ctrl-y)                <SID>(erase)<SID>(snatch-reg-ctrl-y)
-smap <Plug>(snatch-reg-ctrl-e)                <SID>(erase)<SID>(snatch-reg-ctrl-e)
-smap <Plug>(snatch-reg-here)                  <SID>(erase)<SID>(snatch-reg-here)
-smap <Plug>(snatch-hor-or-reg-ctrl-y)         <SID>(erase)<SID>(snatch-hor-or-reg-ctrl-y)
-smap <Plug>(snatch-hor-or-reg-ctrl-e)         <SID>(erase)<SID>(snatch-hor-or-reg-ctrl-e)
-smap <Plug>(snatch-hor-or-reg-here)           <SID>(erase)<SID>(snatch-hor-or-reg-here)
-smap <Plug>(snatch-oneshot-hor-or-reg-ctrl-y) <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-ctrl-y)
-smap <Plug>(snatch-oneshot-hor-or-reg-ctrl-e) <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-ctrl-e)
-smap <Plug>(snatch-oneshot-hor-or-reg-here)   <SID>(erase)<SID>(snatch-oneshot-hor-or-reg-here)
 
 if !get(g:, 'snatch#no_default_mappings', 0)
   xmap z: <Plug>(snatch-into-cmdline)
@@ -131,8 +77,8 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
   smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
-  imap <C-g><C-y> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-  imap <C-g><C-e> <Plug>(snatch-by-force)<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+  imap <C-g><C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
+  imap <C-g><C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
 
   imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
   imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
