@@ -16,6 +16,7 @@ endfunction
 function! s:insert_as_reg(...) abort
   const chars = getreg(v:register)
   call snatch#common#insert(chars)
+  call snatch#common#exit()
 endfunction
 
 function! snatch#register#wait() abort
