@@ -120,8 +120,7 @@ register.
 
 ```vim
 " Default mappings
-xmap z: <Plug>(snatch-into-cmdline)
-cmap <C-o> <Plug>(snatch-operator)
+cmap <C-o> <Plug>(snatch-by-register)
 
 smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
 smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
