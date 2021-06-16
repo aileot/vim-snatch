@@ -26,7 +26,7 @@ function! s:prepare() abort
   call s:save_cmdline()
 
   const config = {
-        \ 'strategies': ['operator'],
+        \ 'strategies': ['register'],
         \ 'prev_mode': s:save_cmdtype,
         \ }
   call snatch#common#prepare(config)
@@ -54,31 +54,9 @@ function! snatch#mode#cmd#insert(chars) abort
   call s:insert_to_cmdline(a:chars)
 endfunction
 
-function! snatch#mode#cmd#op(...) abort
-  if a:0
-    const LEFT =  col("'[") - 1
-    const RIGHT =  col("']") - 1
-  else
-    const text = getline('.')[ col("'<") - 1 : col("'>") - 1]
-    call feedkeys(':'. text, 'n')
-    return
-  endif
-  const line = getline('.')
-  const chars = line[ LEFT : RIGHT ]
-  call snatch#common#insert(chars)
-  call snatch#common#exit('operator')
-endfunction
-
-function! snatch#mode#cmd#operator() abort
+function! snatch#mode#cmd#start() abort
   call s:prepare()
-  set operatorfunc=snatch#mode#cmd#op
-  call feedkeys("\<Esc>", 'n')
+  call feedkeys("\<Esc>", 'ni')
   call s:imitate_pending_cmdline()
-  call feedkeys('g@', 'n')
   return ''
 endfunction
-
-function! snatch#mode#cmd#restore_pos() abort
-  call s:insert_to_cmdline('')
-endfunction
-

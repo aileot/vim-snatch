@@ -17,9 +17,7 @@ let g:snatch#cmd#position_marker =
 let g:snatch#ins#attempt_to_escape_from_window =
       \ get(g:, 'snatch#ins#attempt_to_escape_from_window', "\<C-w>p")
 
-xnoremap <silent> <Plug>(snatch-into-cmdline) :call snatch#mode#cmd#op()<CR>
-
-cnoremap <silent> <Plug>(snatch-operator) <C-\>e snatch#mode#cmd#operator()<CR>
+cnoremap <silent> <Plug>(snatch-by-register) <C-\>e snatch#mode#cmd#start()<CR>
 
 " Note: Use <Cmd> for the first hand mappings.
 " - <Esc> invokes `InsertLeave`.
@@ -71,8 +69,7 @@ inoremap <Plug>(snatch-completion-confirm) <C-y>
 inoremap <Plug>(snatch-completion-cancel) <C-e>
 
 if !get(g:, 'snatch#no_default_mappings', 0)
-  xmap z: <Plug>(snatch-into-cmdline)
-  cmap <C-o> <Plug>(snatch-operator)
+  cmap <C-o> <Plug>(snatch-by-register)
 
   smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
   smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
