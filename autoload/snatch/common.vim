@@ -88,7 +88,7 @@ function! snatch#common#prepare(config) abort
   const pre_keys = get(a:config, 'pre_keys', '')
   call s:pre_keys.set(pre_keys)
   if pre_keys !=# ''
-    exe 'norm!' pre_keys
+    call feedkeys(pre_keys, 'ni')
   endif
 
   " Note: Although `:stopinsert` above, and even the success of command,
