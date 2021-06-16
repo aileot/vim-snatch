@@ -31,20 +31,6 @@ for [Dein](https://github.com/Shougo/dein.vim) users:
 repo = 'kaile256/vim-snatch'
 lazy = 1
 on_event = ['CmdlineEnter', 'InsertEnter']
-# Or uncomment below.
-# on_map = {civ = ['<Plug>(snatch-']}
-# hook_add = '''
-#   xmap z: <Plug>(snatch-into-cmdline)
-#   cmap <C-o> <Plug>(snatch-operator)
-#
-#   imap <C-y> <Plug>(snatch-reg-ctrl-y)
-#   imap <C-e> <Plug>(snatch-reg-ctrl-e)
-#   smap <C-y> <Plug>(snatch-reg-ctrl-y)
-#   smap <C-e> <Plug>(snatch-reg-ctrl-e)
-# '''
-# hook_source = '''
-#   let g:snatch#no_default_mappings = 1
-# '''
 ```
 
 ## Usage
