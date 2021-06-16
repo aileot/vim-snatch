@@ -50,11 +50,11 @@ function! s:insert_to_cmdline(chars) abort
   call feedkeys(keys, 'n')
 endfunction
 
-function! snatch#cmd#insert(chars) abort
+function! snatch#mode#cmd#insert(chars) abort
   call s:insert_to_cmdline(a:chars)
 endfunction
 
-function! snatch#cmd#op(...) abort
+function! snatch#mode#cmd#op(...) abort
   if a:0
     const LEFT =  col("'[") - 1
     const RIGHT =  col("']") - 1
@@ -69,16 +69,16 @@ function! snatch#cmd#op(...) abort
   call snatch#common#exit('operator')
 endfunction
 
-function! snatch#cmd#operator() abort
+function! snatch#mode#cmd#operator() abort
   call s:prepare()
-  set operatorfunc=snatch#cmd#op
+  set operatorfunc=snatch#mode#cmd#op
   call feedkeys("\<Esc>", 'n')
   call s:imitate_pending_cmdline()
   call feedkeys('g@', 'n')
   return ''
 endfunction
 
-function! snatch#cmd#restore_pos() abort
+function! snatch#mode#cmd#restore_pos() abort
   call s:insert_to_cmdline('')
 endfunction
 
