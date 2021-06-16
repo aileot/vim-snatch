@@ -1,5 +1,6 @@
 let s:win_id = snatch#status#new(0).register('win_id')
 let s:insert_pos = snatch#status#new([]).register('insert_pos')
+let s:pre_keys = snatch#status#new('').register('pre_keys')
 
 function! s:highlight_insert_pos() abort
   let [l, c] = s:insert_pos.get()
@@ -42,9 +43,13 @@ function! s:prepare(config) abort
   augroup END
 endfunction
 
-function! snatch#mode#ins#start(config) abort
-  const config = extend(deepcopy(a:config), {'prev_mode': 'i'})
+function! snatch#mode#ins#start(...) abort
+  let pre_keys = "\<Esc>"
+  let pre_keys .= a:0 ? a:1 : ''
+  call s:pre_keys.set(pre_keys)
+  const config = {'prev_mode': 'i'}
   call s:prepare(config)
+  return pre_keys
 endfunction
 
 function! s:restore_pos() abort
@@ -118,8 +123,7 @@ augroup snatch/jump_to_prev_window_if_out_of_buffer
         \ if g:snatch#ins#attempt_to_escape_from_window !=# ''
         \ && g:snatch_status.pre_keys =~# '[kj]'
         \ && g:snatch_status.prev_mode ==# 'i'
-        \ && index(g:snatch_status.strategies, 'register') >= 0
         \ && line('.') == g:snatch_status.insert_pos[0]
-        \ | call execute('normal! '. g:snatch#ins#attempt_to_escape_from_window)
+        \ | call feedkeys(g:snatch#ins#attempt_to_escape_from_window, 'n')
         \ | endif
 augroup END

@@ -15,7 +15,7 @@ let g:snatch#force_restore_cursor_highlight =
 let g:snatch#cmd#position_marker =
       \ get(g:, 'snatch#cmd#position_marker', '┃')
 let g:snatch#ins#attempt_to_escape_from_window =
-      \ get(g:, 'snatch#ins#attempt_to_escape_from_window', "\<C-w>p")
+      \ get(g:, 'snatch#ins#attempt_to_escape_from_window', "\<C-c>\<C-w>p")
 
 cnoremap <silent> <Plug>(snatch-by-register) <C-\>e snatch#mode#cmd#start()<CR>
 
@@ -28,56 +28,28 @@ cnoremap <silent> <Plug>(snatch-by-register) <C-\>e snatch#mode#cmd#start()<CR>
 "   inoremap <C-y> <Cmd>call s:foo("\<Plug>(bar)")<CR>
 "   ```
 "   throws the error E5522.
-function! s:generate_imaps() abort
-  " For example, `<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)` is genearated.
-  " Also generate `smaps`.
-  inoremap <SID>(completion-keep-match) <space><BS>
-  imap <expr> <SID>(by-force) pumvisible() ? '<SID>(completion-keep-match)' : ''
-  snoremap <SID>(erase-placeholder) <space><BS>
-
-  const strategies = {
-        \ 'horizontal': ['horizontal_motion'],
-        \ 'reg': ['register'],
-        \ 'hor-or-reg': ['horizontal_motion', 'register'],
-        \ 'oneshot-hor-or-reg': ['oneshot_horizontal', 'register'],
-        \ }
-  const pre_keys = {
-        \ 'ctrl-y': 'kl',
-        \ 'ctrl-e': 'jl',
-        \ 'here': '',
-        \ }
-
-  for prefix in keys(strategies)
-    for suffix in keys(pre_keys)
-      let name = '(snatch-'. prefix .'-'. suffix .')'
-      let plug = '<Plug>'. name
-      let rhs = printf('<Cmd>call snatch#mode#ins#start({
-            \ "pre_keys": %s,
-            \ "strategies": %s,
-            \ })<CR>', string(pre_keys[suffix]), string(strategies[prefix]))
-      let i_rhs = '<SID>(by-force)'. rhs
-      let s_rhs = '<SID>(erase-placeholder)'. rhs
-      execute 'imap' plug i_rhs
-      execute 'smap' plug s_rhs
-    endfor
-  endfor
-endfunction
-call s:generate_imaps()
-delfunction s:generate_imaps
-
 inoremap <Plug>(snatch-completion-confirm) <C-y>
-inoremap <Plug>(snatch-completion-cancel) <C-e>
+inoremap <Plug>(snatch-completion-cancel)  <C-e>
+
+inoremap <expr> <Plug>(snatch-by-register)        snatch#mode#ins#start()
+inoremap <expr> <Plug>(snatch-by-register-ctrl-y) snatch#mode#ins#start(col('.') == 1 ? 'k' : 'kl')
+inoremap <expr> <Plug>(snatch-by-register-ctrl-e) snatch#mode#ins#start(col('.') == 1 ? 'j' : 'jl')
+
+snoremap <SID>(erase-placeholder) <Space><BS>
+smap <Plug>(snatch-by-register)        <SID>(erase-placeholder)<Plug>(snatch-by-register)
+smap <Plug>(snatch-by-register-ctrl-y) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-y)
+smap <Plug>(snatch-by-register-ctrl-e) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-e)
 
 if !get(g:, 'snatch#no_default_mappings', 0)
   cmap <C-o> <Plug>(snatch-by-register)
 
-  smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-  smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+  smap <C-y> <Plug>(snatch-by-register-ctrl-y)
+  smap <C-e> <Plug>(snatch-by-register-ctrl-e)
 
-  imap <C-g><C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-  imap <C-g><C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+  imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-by-register-ctrl-y)'
+  imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)'  : '<Plug>(snatch-by-register-ctrl-e)'
 
-  imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
-  imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
+  imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
+  imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
+  imap <C-g><C-o> <Plug>(snatch-by-register)
 endif
-
