@@ -216,15 +216,9 @@ g:snatch#cmd#position_marker                     *g:snatch#cmd#position_marker*
 ------------------------------------------------------------------------------
 MAPPING                                                         *snatch-mapping*
 
-c_<Plug>(snatch-operator)                           *c_<Plug>(snatch-operator)*
+c_<Plug>(snatch-by-register)                     *c_<Plug>(snatch-by-register)*
 
-        Via |operator-pending-mode|, snatch {motion} text into pending cmdline.
-        It might replace such mappings as |c_CTRL-R_CTRL-A|.
-
-x_<Plug>(snatch-into-cmdline)                   *x_<Plug>(snatch-into-cmdline)*
-
-        This is a by-product of |c_<Plug>(snatch-operator)|. Enter |cmdline| mode
-        with Visually selected text.
+        Snatch {motion} text into pending cmdline via |register|.
 
 i_<Plug>(snatch-horizontal-ctrl-y)         *i_<Plug>(snatch-horizontal-ctrl-y)*
 i_<Plug>(snatch-horizontal-ctrl-e)         *i_<Plug>(snatch-horizontal-ctrl-e)*
@@ -364,7 +358,7 @@ SnatchInsertChars                                        *hl-SnatchInsertChars*
 ==============================================================================
 FAQ                                                                 *snatch-faq*
 
-Q. How to use |operator| even in |Normal| mode?
+Q. Can we use |operator| directly?
 A. Add the following snippet in your vimrc.
 >
         " Make sure g:snatch#clean_registers contains '0'.
@@ -373,6 +367,9 @@ A. Add the following snippet in your vimrc.
         inoremap <SID>y y
         imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
         imap <C-y> <SID>(snatch-operator-ctrl-y)
+
+        " It's also applied to `cmap`.
+        cmap <C-o> <Plug>(snatch-by-register)y
 <
 Q. Notify me when snatching is aborted/cancelled.
 A. Add the following snippet in your vimrc.
@@ -395,6 +392,10 @@ A. Set |g:snatch#force_restore_cursor_highlight| to 1.
 <
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
+
+2021-06-16
+* Remove c_<Plug>(snatch-operator) and x_<Plug>(snatch-into-cmdline) in favor
+  of c_<Plug>(snatch-by-register).
 
 2021-04-26
 * Remove snatch#status() in favor of g:snatch_status.
