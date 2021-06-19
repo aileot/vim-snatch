@@ -7,7 +7,8 @@ function! s:save_reg() abort
 endfunction
 
 function! s:restore_reg(...) abort
-  const regname = v:operator ==# 'y' ? '0' : v:register
+  let regname = v:register
+  let regname = regname ==# '"' && v:operator ==# 'y' ? '0' : regname
   if matchstr(g:snatch#clean_registers, regname) is# '' | return | endif
   call setreg(regname, s:save_regcontents[regname])
   unlet s:save_regcontents
