@@ -52,7 +52,7 @@ let g:snatch#clean_registers = '0"abc'
 " Set an empty string to disable it. As default, sneaking process will start
 " after jumping to last accessed window in the case. It's useful in editing
 " git-commit message.
-let g:snatch#ins#attempt_to_escape_from_window = "\<C-w>p"
+let g:snatch#ins#attempt_to_escape_from_window = "\<C-c>\<C-w>p"
 
 " default
 let g:snatch#cmd#position_marker = '┃'
@@ -91,8 +91,7 @@ augroup END
 augroup Snatch/InsertLeaveAfterSnatchingButOperatorC
   autocmd!
   autocmd User SnatchInsertPost if g:snatch_status.prev_mode ==# 'i'
-        \ && (g:snatch_status.last_strategy !=# 'register'
-        \     || v:operator !=# 'c') |
+        \ && v:operator !=# 'c' |
         \   call feedkeys("\<Esc>l")
         \ | endif
 augroup END
@@ -108,42 +107,36 @@ register.
 " Default mappings
 cmap <C-o> <Plug>(snatch-by-register)
 
-smap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-smap <C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
+smap <C-y> <Plug>(snatch-by-register-ctrl-y)
+smap <C-e> <Plug>(snatch-by-register-ctrl-e)
 
-" Note: Without a check on pumvisible() in mapping, vim-snatch will interrupt
+" Note: Without the check on pumvisible() in mapping, vim-snatch will interrupt
 " current completion to start sneaking.
-imap <C-g><C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-imap <C-g><C-e> <Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
-imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)'
-imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)' : '<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)'
+imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-by-register-ctrl-y)'
+imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)'  : '<Plug>(snatch-by-register-ctrl-e)'
+
+imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
+imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
+imap <C-g><C-o> <Plug>(snatch-by-register)
 ```
 
-Or define mappings as your preference.
+You can disable the default mappings with the script below.
 
 ```vim
 let g:snatch#no_default_mappings = 1
+```
 
-" Or you can predefine the first {motion}.
-imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-ctrl-y)<Plug>(easymotion-f)
-imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<Plug>(shot-f)
+#### Use as Operator
 
-" Use some tricks for non-recursive {motion}.
-onoremap <SID>f f
-imap <C-y> <Plug>(snatch-horizontal-ctrl-y)<SID>f
+This plugin doesn't provide operator mappings directly, but we have a simple
+solution to start snatching in Operator-pending mode at a breath.
 
-" We have another kind of mappings to start sneaking right at the spot.
-" It may be useful with the motions that assumes twice a {motion} or more.
-imap <C-y> <Plug>(snatch-reg-here)<Plug>(easymotion-s)
-imap <C-y> <Plug>(snatch-oneshot-hor-or-reg-here)<Plug>(easymotion-s)
-
-" Suggestion:
-" You might enjoy the trick to experience snatch-operator from Insert mode.
+```vim
 let g:snatch#clean_registers = '0' " (default)
-imap <C-y> <Plug>(snatch-reg-ctrl-y)y
-" Or use <SID> if your `y` could be mapped:
+imap <C-y> <Plug>(snatch-by-register-ctrl-y)y
+" Or use <SID> if your `y` is mapped:
 inoremap <SID>y y
-imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-by-register-ctrl-y)<SID>y
 imap <C-y> <SID>(snatch-operator-ctrl-y)
 ```
 
