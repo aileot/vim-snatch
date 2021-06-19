@@ -110,14 +110,14 @@ cmap <C-o> <Plug>(snatch-by-register)
 smap <C-y> <Plug>(snatch-by-register-ctrl-y)
 smap <C-e> <Plug>(snatch-by-register-ctrl-e)
 
+imap <C-g><C-o> <Plug>(snatch-by-register)
+imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
+imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
+
 " Note: Without the check on pumvisible() in mapping, vim-snatch will interrupt
 " current completion to start sneaking.
 imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-by-register-ctrl-y)'
 imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)'  : '<Plug>(snatch-by-register-ctrl-e)'
-
-imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
-imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
-imap <C-g><C-o> <Plug>(snatch-by-register)
 ```
 
 You can disable the default mappings with the script below.
