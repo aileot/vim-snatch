@@ -41,6 +41,7 @@ snoremap <SID>(erase-placeholder) <Space><BS>
 smap <Plug>(snatch-by-register)        <SID>(erase-placeholder)<Plug>(snatch-by-register)
 smap <Plug>(snatch-by-register-ctrl-y) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-y)
 smap <Plug>(snatch-by-register-ctrl-e) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-e)
+smap <Plug>(snatch-by-register-wincmd-p) <SID>(erase-placeholder)<Plug>(snatch-by-register-wincmd-p)
 
 if !get(g:, 'snatch#no_default_mappings', 0)
   cmap <C-o> <Plug>(snatch-by-register)
