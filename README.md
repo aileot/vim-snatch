@@ -113,6 +113,7 @@ smap <C-e> <Plug>(snatch-by-register-ctrl-e)
 imap <C-g><C-o> <Plug>(snatch-by-register)
 imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
 imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
+imap <C-g><C-p> <Plug>(snatch-by-register-wincmd-p)
 
 " Note: Without the check on pumvisible() in mapping, vim-snatch will interrupt
 " current completion to start sneaking.
