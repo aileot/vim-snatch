@@ -10,7 +10,6 @@ CONTENTS                                                       *snatch-contents*
 Introduction            |snatch-introduction|
 Overview                |snatch-overview|
   Process                 |snatch-process|
-  Strategies              |snatch-strategies|
 Usage                   |snatch-usage|
   Function                |snatch-function|
   Variable                |snatch-variable|
@@ -41,14 +40,13 @@ actions in the order:
         1. Trigger |SnatchReadyPre|.
         2. Save current position as insert position.
         3. Leaving current mode (|Insert| or |Cmdline| mode), enter |Normal| mode.
-        4. Adjust initial |sneaking| position esp. for |horizontal_motion|.
+        4. Adjust initial |sneaking| position.
         5. Trigger |SnatchReadyPost|.
 
                                                               *snatch-sneaking*
 2. |Sneaking|: wait for your action.
 
-        1. As soon as the preset |snatch-strategies| is fulfilled, shift to
-           |inserting| process.
+        1. As soon as |TextYankPost| is triggered, shift into |inserting| process.
 
         Note:
         The cancellation functions are all supposed to be used in this
@@ -75,27 +73,12 @@ entire series of actions from the range detection to the text insertion in
 ------------------------------------------------------------------------------
 STRATEGIES                                                   *snatch-strategies*
 
-We have three strategy options for |snatching| in |sneaking| process.
+Currently, we only have "register" as the option for |snatching| in |sneaking|
+process.
 
         register                Using |TextYankPost|, intercept the text being
                                 about to fill a register.
                                 See also |g:snatch#clean_registers|.
-
-        horizontal_motion       As soon as cursor has moved in the same line,
-                                The text being |snatch|ed must be within a line.
-
-        oneshot_horizontal      Almost the same as "horizontal_motion", but,
-                                once cursor moved vertically, this strategy
-                                will be dropped in current |sneaking|. When
-                                the strategy is the last one, current
-                                |snatching| process is aborted; otherwise, keep
-                                |sneaking| with the rest strategies. Besides,
-                                adopting "horizontal_motion" together causes
-                                undefined behavior.
-
-        operator                Get into |Operator-pending| mode. Only available
-                                in |Cmdline| mode. See |snatch-faq| below if you
-                                want to do |snatch|ing via |operator-pending| mode.
 
 ==============================================================================
 USAGE                                                             *snatch-usage*
@@ -133,6 +116,7 @@ g:snatch_status                                               *g:snatch_status*
 
         is_sneaking     Return `v:true` if |sneaking|; otherwise, `v:false`.
         strategies      Return a |List| of the last available |snatch-strategies|.
+                        Currently it's just reserved by "register".
         prev_mode       Return a character, either 'i' as |Insert| mode or one
                         of the value you see in |getcmdtype()| as |Cmdline| mode.
         win_id          Return the |window-ID| for the window where current
@@ -193,15 +177,13 @@ g:snatch#flash_duration_for_insertchars
 
                                    *g:snatch#ins#attempt_to_escape_from_window*
 g:snatch#ins#attempt_to_escape_from_window
-        (default: "\<C-w>p")
+        (default: "\<C-c>\<C-w>p")
 
-        Set in |String|. If an empty string, do nothing; otherwise,
-        when cursor attempts to go out of current window, do as if keys are
-        typed as the given string, non-recursively, in |Normal| mode before
-        entering |sneaking| process. This option only works when the
-        |snatch-strategies| for current |snatching| process includes "register",
-        like |<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)|. This option is useful,
-        for example, in editing git-commit message.
+        Set in |String|. If an empty string, do nothing; otherwise, when cursor
+        attempts to go out of current window, do as if keys are typed as the
+        given string, non-recursively, in |Normal| mode before entering |sneaking|
+        process. This option is useful, for example, in editing git-commit
+        message.
 
         Note:
         Internally, it uses |:normal|!. Please also read its descriptions if you
@@ -218,55 +200,34 @@ MAPPING                                                         *snatch-mapping*
 
 c_<Plug>(snatch-by-register)                     *c_<Plug>(snatch-by-register)*
 
-        Snatch {motion} text into pending cmdline via |register|.
+        Leaving |Cmdline-mode|, |vim-snatch| waits for |TextYankPost| to be
+        triggered; then, snatch the text to be registered into pending
+        cmdline. See also |snatch-process|.
 
-i_<Plug>(snatch-horizontal-ctrl-y)         *i_<Plug>(snatch-horizontal-ctrl-y)*
-i_<Plug>(snatch-horizontal-ctrl-e)         *i_<Plug>(snatch-horizontal-ctrl-e)*
-i_<Plug>(snatch-horizontal-here)             *i_<Plug>(snatch-horizontal-here)*
-s_<Plug>(snatch-horizontal-ctrl-y)         *s_<Plug>(snatch-horizontal-ctrl-y)*
-s_<Plug>(snatch-horizontal-ctrl-e)         *s_<Plug>(snatch-horizontal-ctrl-e)*
-s_<Plug>(snatch-horizontal-here)             *s_<Plug>(snatch-horizontal-here)*
+        Set arbitrary |registers| in |g:snatch#clean_registers| to restore the
+        old value after |snatch-process|.
 
-        As soon as cursor moves horizontally, it'll snatch {motion} text; as
-        long as vertically, it waits for {motion}.
+i_<Plug>(snatch-by-register)                     *i_<Plug>(snatch-by-register)*
+s_<Plug>(snatch-by-register)                     *s_<Plug>(snatch-by-register)*
 
-i_<Plug>(snatch-reg-ctrl-y)                       *i_<Plug>(snatch-reg-ctrl-y)*
-i_<Plug>(snatch-reg-ctrl-e)                       *i_<Plug>(snatch-reg-ctrl-e)*
-i_<Plug>(snatch-reg-here)                           *i_<Plug>(snatch-reg-here)*
-s_<Plug>(snatch-reg-ctrl-y)                       *s_<Plug>(snatch-reg-ctrl-y)*
-s_<Plug>(snatch-reg-ctrl-e)                       *s_<Plug>(snatch-reg-ctrl-e)*
-s_<Plug>(snatch-reg-here)                           *s_<Plug>(snatch-reg-here)*
+        Leaving |Insert-mode|, |vim-snatch| waits for |TextYankPost| to be
+        triggered; then, snatch the text to be registered into the leaving
+        position. See also |snatch-process|.
 
-        Snatch the text to be registered. Any {motion} won't stop snatching.
-        See |g:snatch#clean_registers|.
+        Set arbitrary |registers| in |g:snatch#clean_registers| to restore the
+        old value after |snatch-process|.
 
-i_<Plug>(snatch-hor-or-reg-ctrl-y)         *i_<Plug>(snatch-hor-or-reg-ctrl-y)*
-i_<Plug>(snatch-hor-or-reg-ctrl-e)         *i_<Plug>(snatch-hor-or-reg-ctrl-e)*
-i_<Plug>(snatch-hor-or-reg-here)             *i_<Plug>(snatch-hor-or-reg-here)*
-s_<Plug>(snatch-hor-or-reg-ctrl-y)         *s_<Plug>(snatch-hor-or-reg-ctrl-y)*
-s_<Plug>(snatch-hor-or-reg-ctrl-e)         *s_<Plug>(snatch-hor-or-reg-ctrl-e)*
-s_<Plug>(snatch-hor-or-reg-here)             *s_<Plug>(snatch-hor-or-reg-here)*
+i_<Plug>(snatch-by-register-ctrl-y)       *i_<Plug>(snatch-by-register-ctrl-y)*
+s_<Plug>(snatch-by-register-ctrl-y)       *s_<Plug>(snatch-by-register-ctrl-y)*
 
-        Mixed mapping of |<Plug>(snatch-horizontal-ctrl-y)| and
-        |<Plug>(snatch-reg-ctrl-y)|, and the same applies the rest. For the
-        details, follow the respective tags.
+        Same as |<Plug>(snatch-by-register)|, but adjust cursor just above.
+        The names are derived from |i_CTRL-Y|.
 
-                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)*
-                                   *i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)*
-                                     *i_<Plug>(snatch-oneshot-hor-or-reg-here)*
-                                   *s_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)*
-                                   *s_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)*
-                                     *s_<Plug>(snatch-oneshot-hor-or-reg-here)*
-i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-i_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
-i_<Plug>(snatch-oneshot-hor-or-reg-here)
-s_<Plug>(snatch-oneshot-hor-or-reg-ctrl-y)
-s_<Plug>(snatch-oneshot-hor-or-reg-ctrl-e)
-s_<Plug>(snatch-oneshot-hor-or-reg-here)
+i_<Plug>(snatch-by-register-ctrl-e)       *i_<Plug>(snatch-by-register-ctrl-e)*
+s_<Plug>(snatch-by-register-ctrl-e)       *s_<Plug>(snatch-by-register-ctrl-e)*
 
-        Almost same as |i_<Plug>(snatch-hor-or-reg-ctrl-y)| but the
-        detection for horizontal motion is one-shot: once cursor moves
-        vertically, you have to use |registers| to |snatch| text.
+        Same as |<Plug>(snatch-by-register)|, but adjust cursor just below.
+        The names are derived from |i_CTRL-E|.
 
 i_<Plug>(snatch-completion-confirm)       *i_<Plug>(snatch-completion-confirm)*
 
@@ -362,10 +323,11 @@ Q. Can we use |operator| directly?
 A. Add the following snippet in your vimrc.
 >
         " Make sure g:snatch#clean_registers contains '0'.
-        imap <C-y> <Plug>(snatch-reg-ctrl-y)y
+        imap <C-y> <Plug>(snatch-by-register-ctrl-y)y
         " Or use <SID> if your `y` could be mapped:
         inoremap <SID>y y
-        imap <SID>(snatch-operator-ctrl-y) <Plug>(snatch-reg-ctrl-y)<SID>y
+        imap <SID>(snatch-operator-ctrl-y)
+        \ <Plug>(snatch-by-register-ctrl-y)<SID>y
         imap <C-y> <SID>(snatch-operator-ctrl-y)
 
         " It's also applied to `cmap`.
@@ -392,6 +354,10 @@ A. Set |g:snatch#force_restore_cursor_highlight| to 1.
 <
 ==============================================================================
 COMPATIBILITY                                             *snatch-compatibility*
+
+2021-06-17
+* Abolish all the "motion" strategy features. You can find the detail in the
+  issue #60 of the repository.
 
 2021-06-16
 * Remove c_<Plug>(snatch-operator) and x_<Plug>(snatch-into-cmdline) in favor

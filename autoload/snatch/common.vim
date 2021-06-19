@@ -1,9 +1,6 @@
 let s:stat = {}
 let s:prev_mode = snatch#status#new('NONE').register('prev_mode')
-let s:strategies = snatch#status#new([]).register('strategies')
 let s:is_sneaking = snatch#status#new(v:false).register('is_sneaking')
-let s:pre_keys = snatch#status#new('').register('pre_keys')
-let s:last_strategy = snatch#status#new('').register('last_strategy')
 
 const s:is_cmdline_mode = '^[-:>/?@=]$'
 
@@ -12,11 +9,6 @@ if s:use_guicursor
   const s:hl_cursor_config = 'n-o:block-SnatchCursor'
   const s:default_hl_cursor = 'a:Cursor'
 endif
-
-function! s:abort_if_no_strategies_are_available() abort
-  if !empty(s:strategies.get()) | return | endif
-  call snatch#common#abort()
-endfunction
 
 augroup snatch/watch
   " For the simplicity, keep `is_sneaking` managed within this augroup.
@@ -27,28 +19,10 @@ augroup snatch/watch
 
   autocmd User SnatchAbortedPost   call s:is_sneaking.set(v:false)
   autocmd User SnatchCancelledPost call s:is_sneaking.set(v:false)
-
-  autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:strategies.remove(
-        \ s:oneshot_hor
-        \ ? 'oneshot_horizontal'
-        \ : 'horizontal_motion')
-  autocmd User SnatchAbortedInPart-horizontal_motion
-        \ call s:abort_if_no_strategies_are_available()
 augroup END
-
-function! s:wait_if_surely_in_normal_mode(...) abort
-  if mode() !=# 'n'
-    call timer_start(50, expand('<SID>') .'wait_if_surely_in_normal_mode')
-    return
-  endif
-
-  call s:wait()
-endfunction
 
 function! s:save_state(config) abort
   call s:prev_mode.set(a:config.prev_mode)
-  call s:strategies.set(get(a:config, 'strategies', []))
 endfunction
 
 function! s:set_another_cursorhl() abort
@@ -80,20 +54,11 @@ endfunction
 
 function! snatch#common#prepare(config) abort
   doautocmd <nomodeline> User SnatchReadyPre
-  noautocmd stopinsert
-
   call s:save_state(a:config)
   call s:set_another_cursorhl()
-
-  const pre_keys = get(a:config, 'pre_keys', '')
-  call s:pre_keys.set(pre_keys)
-  if pre_keys !=# ''
-    call feedkeys(pre_keys, 'ni')
-  endif
-
   " Note: Although `:stopinsert` above, and even the success of command,
   " `execute 'normal!' prekeys`, we're NOT in normal mode yet.
-  call s:wait_if_surely_in_normal_mode()
+  call s:wait()
 endfunction
 
 function! s:wait() abort
@@ -110,15 +75,7 @@ function! s:wait() abort
   autocmd BufWinLeave <buffer> ++once call snatch#common#abort()
   call snatch#augroup#end()
 
-  const strategies = deepcopy(s:strategies.get())
-  let s:oneshot_hor = index(strategies, 'oneshot_horizontal') >= 0
-  if s:oneshot_hor || index(strategies, 'horizontal_motion') >= 0
-    call snatch#strategy#motion#wait(s:oneshot_hor)
-  endif
-
-  if index(strategies, 'register') >= 0
-    call snatch#strategy#register#wait()
-  endif
+  call snatch#strategy#register#wait()
 
   if g:snatch#timeoutlen > -1
     const callback = g:snatch#cancellation_policy ==? 'cancel'
@@ -126,7 +83,10 @@ function! s:wait() abort
           \ : 'snatch#common#abort'
     call timer_start(g:snatch#timeoutlen, callback)
   endif
-  doautocmd <nomodeline> User SnatchReadyPost
+
+  const after_prekeys_sent = 20
+  call timer_start(after_prekeys_sent,
+        \ {-> execute(':doautocmd <nomodeline> User SnatchReadyPost')})
 endfunction
 
 function! s:clean_up() abort
@@ -172,7 +132,6 @@ endfunction
 
 " Terminate snatching successfully.
 function! snatch#common#exit(strategy) abort
-  call s:last_strategy.set(a:strategy)
   call s:clean_up()
   doautocmd <nomodeline> User SnatchInsertPost
 endfunction
