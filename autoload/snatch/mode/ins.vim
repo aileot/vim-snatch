@@ -84,8 +84,9 @@ function! s:flash_insertchars(lnum, col, new_chars) abort
   endif
 
   const m = matchadd('SnatchInsertChars', pat_insertchars)
+  const winid = s:win_id.get()
   function! s:delete_highlight(timer) abort closure
-    call matchdelete(m)
+    call matchdelete(m, winid)
   endfunction
 
   call timer_start(g:snatch#flash_duration_for_insertchars,
