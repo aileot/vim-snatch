@@ -35,10 +35,14 @@ inoremap <expr> <Plug>(snatch-by-register)        snatch#mode#ins#start()
 inoremap <expr> <Plug>(snatch-by-register-ctrl-y) snatch#mode#ins#start(col('.') == 1 ? 'k' : 'kl')
 inoremap <expr> <Plug>(snatch-by-register-ctrl-e) snatch#mode#ins#start(col('.') == 1 ? 'j' : 'jl')
 
+inoremap <expr> <Plug>(snatch-by-register-wincmd-p) snatch#mode#ins#start("\<C-w>p")
+
 snoremap <SID>(erase-placeholder) <Space><BS>
-smap <Plug>(snatch-by-register)        <SID>(erase-placeholder)<Plug>(snatch-by-register)
-smap <Plug>(snatch-by-register-ctrl-y) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-y)
-smap <Plug>(snatch-by-register-ctrl-e) <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-e)
+
+smap <Plug>(snatch-by-register)          <SID>(erase-placeholder)<Plug>(snatch-by-register)
+smap <Plug>(snatch-by-register-ctrl-y)   <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-y)
+smap <Plug>(snatch-by-register-ctrl-e)   <SID>(erase-placeholder)<Plug>(snatch-by-register-ctrl-e)
+smap <Plug>(snatch-by-register-wincmd-p) <SID>(erase-placeholder)<Plug>(snatch-by-register-wincmd-p)
 
 if !get(g:, 'snatch#no_default_mappings', 0)
   cmap <C-o> <Plug>(snatch-by-register)
@@ -46,10 +50,11 @@ if !get(g:, 'snatch#no_default_mappings', 0)
   smap <C-y> <Plug>(snatch-by-register-ctrl-y)
   smap <C-e> <Plug>(snatch-by-register-ctrl-e)
 
-  imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-by-register-ctrl-y)'
-  imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)'  : '<Plug>(snatch-by-register-ctrl-e)'
-
+  imap <C-g><C-o> <Plug>(snatch-by-register)
   imap <C-g><C-y> <Plug>(snatch-by-register-ctrl-y)
   imap <C-g><C-e> <Plug>(snatch-by-register-ctrl-e)
-  imap <C-g><C-o> <Plug>(snatch-by-register)
+  imap <C-g><C-p> <Plug>(snatch-by-register-wincmd-p)
+
+  imap <expr> <C-y> pumvisible() ? '<Plug>(snatch-completion-confirm)' : '<Plug>(snatch-by-register-ctrl-y)'
+  imap <expr> <C-e> pumvisible() ? '<Plug>(snatch-completion-cancel)'  : '<Plug>(snatch-by-register-ctrl-e)'
 endif

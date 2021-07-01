@@ -229,6 +229,12 @@ s_<Plug>(snatch-by-register-ctrl-e)       *s_<Plug>(snatch-by-register-ctrl-e)*
         Same as |<Plug>(snatch-by-register)|, but adjust cursor just below.
         The names are derived from |i_CTRL-E|.
 
+i_<Plug>(snatch-by-register-wincmd-p)   *i_<Plug>(snatch-by-register-wincmd-p)*
+s_<Plug>(snatch-by-register-wincmd-p)   *s_<Plug>(snatch-by-register-wincmd-p)*
+
+        Same as |<Plug>(snatch-by-register)|, but adjust cursor into the
+        previous (last accessed) window.
+
 i_<Plug>(snatch-completion-confirm)       *i_<Plug>(snatch-completion-confirm)*
 
         Confirm the currently selected match. It is just a wrapper of `<C-y>`
